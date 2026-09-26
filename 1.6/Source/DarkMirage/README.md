@@ -38,11 +38,11 @@ The layered atmosphere was informed by the Killing Instinct aura in MRK's assort
 Run from the mod root:
 
 ```powershell
-& .\Source\DarkMirageUnity\build.ps1
-msbuild "Source\Bernael Xenotype.csproj" -restore /t:Rebuild /p:Configuration=Debug /v:minimal /nologo
+& .\1.6\Source\DarkMirage\Unity\build.ps1
+msbuild "1.6\Source\Bernael Xenotype.csproj" -restore /t:Rebuild /p:Configuration=Debug /v:minimal /nologo
 ```
 
-The shader project uses Unity 2022.3.62f3 and the Built-in Render Pipeline. The build script uses `-noUpm`; pass `-UnityPath` to select another editor installation. The C# code is compiled into the main mod assembly by `Source/Bernael Xenotype.csproj`; there is no separate project. It keeps the namespace `Bernael.DarkMirageDemo` so the defs and saved decoys stay valid. Pass `-p:RimWorldDir=...` if the game is not found.
+The shader project uses Unity 2022.3.62f3 and the Built-in Render Pipeline. The build script uses `-noUpm`; pass `-UnityPath` to select another editor installation. The C# code is compiled into the main mod assembly by `1.6/Source/Bernael Xenotype.csproj`; there is no separate project. Pass `-p:RimWorldDir=...` if the game is not found.
 
 Runtime files are `1.6/Assemblies/Bernael Xenotype.dll` and `1.6/AssetBundles/darkmirage_win`. Both must be distributed with the Defs and English language data. The shader bundle currently targets Windows / Direct3D 11.
 

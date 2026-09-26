@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -15,7 +14,6 @@
     <Deterministic>true</Deterministic>
     <PathMap>$(MSBuildThisFileDirectory)=/_/</PathMap>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
@@ -25,7 +23,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
@@ -35,7 +32,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-
   <PropertyGroup>
     <RimWorldManagedDir Condition=" '$(RimWorldManagedDir)' == '' And '$(RimWorldDir)' != '' And Exists('$(RimWorldDir)\RimWorldWin64_Data\Managed') ">$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManagedDir>
     <RimWorldManagedDir Condition=" '$(RimWorldManagedDir)' == '' And Exists('C:\Program Files %28x86%29\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed') ">C:\Program Files %28x86%29\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManagedDir>
@@ -43,25 +39,20 @@
     <RimWorldManagedDir Condition=" '$(RimWorldManagedDir)' == '' And Exists('D:\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed') ">D:\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManagedDir>
     <RimWorldManagedDir Condition=" '$(RimWorldManagedDir)' == '' And Exists('E:\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed') ">E:\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManagedDir>
   </PropertyGroup>
-
   <Target Name="VerifyRimWorldManagedDir" BeforeTargets="BeforeBuild">
     <Error Condition=" '$(RimWorldManagedDir)' == '' " Text="RimWorld-Installation nicht gefunden. Build mit -p:RimWorldDir=&quot;X:\Pfad\zu\RimWorld&quot; aufrufen oder RimWorldManagedDir direkt setzen." />
   </Target>
-
   <ItemGroup>
     <Compile Include="Bernael\**\*.cs" />
   </ItemGroup>
-
-  <!-- Dark Mirage psycast. Keeps its own namespace Bernael.DarkMirageDemo so the defs and
-       saved decoys (<thing Class="Bernael.DarkMirageDemo.DarkMirage">) stay valid. -->
+  <!-- Dark Mirage psycast. The Unity project under DarkMirage\Unity builds the shader bundle;
+       only its shared distance-field code is compiled into the mod. -->
   <ItemGroup>
-    <Compile Include="DarkMirageDemo\DarkMirage.cs" />
-    <Compile Include="DarkMirageDemo\MirageVisuals.cs" />
-    <Compile Include="DarkMirageDemo\DebugActions.cs" />
-    <Compile Include="DarkMirageUnity\Assets\Shared\MirageDistanceField.cs" />
-    <Compile Include="DarkMirageDemo\MirageQaHarness.cs" Condition=" $(DefineConstants.Contains('MIRAGE_QA')) And Exists('DarkMirageDemo\MirageQaHarness.cs') " />
+    <Compile Include="DarkMirage\DarkMirage.cs" />
+    <Compile Include="DarkMirage\MirageVisuals.cs" />
+    <Compile Include="DarkMirage\DebugActions.cs" />
+    <Compile Include="DarkMirage\Unity\Assets\Shared\MirageDistanceField.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManagedDir)\Assembly-CSharp.dll</HintPath>
@@ -106,13 +97,11 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Lib.Harmony">
       <Version>2.4.2</Version>
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
   </ItemGroup>
-
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

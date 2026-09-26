@@ -17,29 +17,29 @@ obj/
 1.6/Source/obj/Debug/PublicizedAssemblies/
 
 # Unity-generated state; keep source assets, metadata and the build entry point.
-1.6/Source/DarkMirageUnity/Library/
-1.6/Source/DarkMirageUnity/Temp/
-1.6/Source/DarkMirageUnity/Logs/
-1.6/Source/DarkMirageUnity/UserSettings/
-1.6/Source/DarkMirageUnity/Build/
-1.6/Source/DarkMirageUnity/Builds/
-1.6/Source/DarkMirageUnity/MemoryCaptures/
-1.6/Source/DarkMirageUnity/Recordings/
-1.6/Source/DarkMirageUnity/*.csproj
-1.6/Source/DarkMirageUnity/*.sln
-1.6/Source/DarkMirageUnity/*.slnx
-1.6/Source/DarkMirageUnity/ProjectSettings/*
-!1.6/Source/DarkMirageUnity/ProjectSettings/ProjectVersion.txt
+1.6/Source/DarkMirage/Unity/Library/
+1.6/Source/DarkMirage/Unity/Temp/
+1.6/Source/DarkMirage/Unity/Logs/
+1.6/Source/DarkMirage/Unity/UserSettings/
+1.6/Source/DarkMirage/Unity/Build/
+1.6/Source/DarkMirage/Unity/Builds/
+1.6/Source/DarkMirage/Unity/MemoryCaptures/
+1.6/Source/DarkMirage/Unity/Recordings/
+1.6/Source/DarkMirage/Unity/*.csproj
+1.6/Source/DarkMirage/Unity/*.sln
+1.6/Source/DarkMirage/Unity/*.slnx
+1.6/Source/DarkMirage/Unity/ProjectSettings/*
+!1.6/Source/DarkMirage/Unity/ProjectSettings/ProjectVersion.txt
 
 # Local-only Dark Mirage tests, captures, previews and verification tools.
-1.6/Source/DarkMirageDemo/QA/
-1.6/Source/DarkMirageDemo/MirageQaHarness.cs
-1.6/Source/DarkMirageDemo/VerifyDefs.cs
-1.6/Source/DarkMirageDemo/verify.ps1
-1.6/Source/DarkMirageUnity/Assets/Editor/MiragePreview.cs
-1.6/Source/DarkMirageUnity/Assets/Editor/MiragePreview.cs.meta
-1.6/Source/DarkMirageUnity/Assets/Editor/MirageDistanceChecks.cs
-1.6/Source/DarkMirageUnity/Assets/Editor/MirageDistanceChecks.cs.meta
+1.6/Source/DarkMirage/QA/
+1.6/Source/DarkMirage/MirageQaHarness.cs
+1.6/Source/DarkMirage/VerifyDefs.cs
+1.6/Source/DarkMirage/verify.ps1
+1.6/Source/DarkMirage/Unity/Assets/Editor/MiragePreview.cs
+1.6/Source/DarkMirage/Unity/Assets/Editor/MiragePreview.cs.meta
+1.6/Source/DarkMirage/Unity/Assets/Editor/MirageDistanceChecks.cs
+1.6/Source/DarkMirage/Unity/Assets/Editor/MirageDistanceChecks.cs.meta
 
 # Build intermediates and secondary output.
 # The shipped assembly lives in 1.6/Assemblies and IS tracked; everything
