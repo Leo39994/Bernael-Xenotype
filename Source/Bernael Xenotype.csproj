@@ -52,6 +52,16 @@
     <Compile Include="Bernael\**\*.cs" />
   </ItemGroup>
 
+  <!-- Dark Mirage psycast. Keeps its own namespace Bernael.DarkMirageDemo so the defs and
+       saved decoys (<thing Class="Bernael.DarkMirageDemo.DarkMirage">) stay valid. -->
+  <ItemGroup>
+    <Compile Include="DarkMirageDemo\DarkMirage.cs" />
+    <Compile Include="DarkMirageDemo\MirageVisuals.cs" />
+    <Compile Include="DarkMirageDemo\DebugActions.cs" />
+    <Compile Include="DarkMirageUnity\Assets\Shared\MirageDistanceField.cs" />
+    <Compile Include="DarkMirageDemo\MirageQaHarness.cs" Condition=" $(DefineConstants.Contains('MIRAGE_QA')) And Exists('DarkMirageDemo\MirageQaHarness.cs') " />
+  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManagedDir)\Assembly-CSharp.dll</HintPath>
@@ -79,6 +89,18 @@
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
       <HintPath>$(RimWorldManagedDir)\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule" Condition=" $(DefineConstants.Contains('MIRAGE_QA')) ">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.ScreenCaptureModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
