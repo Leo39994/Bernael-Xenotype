@@ -20,6 +20,11 @@ test "Dark mirage dies quietly with its caster" project="Bernael" group="Ability
 #
 # Neither decoy is anywhere near its 600 ticks when this runs, so nothing below
 # can be an expiry that happened to arrive.
+#
+# Each decoy is placed the player's way: select the drafted caster, press its
+# "Dark mirage" gizmo, click the cell. "select" replaces the selection, so the
+# second press is Keeper's alone and not a grouped gizmo of both pawns. Each
+# placement runs the 0.6 s warmup (36 ticks) and is a waitfor with 120 ticks.
 
 requires dlc=Biotech
 requires dlc=Royalty
@@ -33,10 +38,14 @@ ability "Keeper" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 draft "Owner"
 draft "Keeper"
 
-cast "Owner" ability=BX_DarkMirage at 4,0
-tick 60 reason="0.6 s warmup is 36 ticks"
-cast "Keeper" ability=BX_DarkMirage at 10,0
-tick 60 reason="0.6 s warmup is 36 ticks"
+select "Owner"
+gizmo "Dark mirage"
+target cell=4,0
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
+select "Keeper"
+gizmo "Dark mirage"
+target cell=10,0
+waitfor thing BX_DarkMirageDecoy at 10,0 ticks=120
 assert thing BX_DarkMirageDecoy at 4,0
 assert thing BX_DarkMirageDecoy at 10,0
 

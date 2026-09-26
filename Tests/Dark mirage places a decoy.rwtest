@@ -8,9 +8,11 @@ test "Dark mirage places a decoy" project="Bernael" group="Ability" created=2026
 #
 # The def carries displayGizmoWhileUndrafted=true next to
 # disableGizmoWhileUndrafted=true, so the ability is shown to an undrafted pawn
-# and greyed out. The kit's "cast" reads Ability.GizmoDisabled before anything
-# else, so that branch is a line here and not an assumption - and it is the one
-# a player meets first. The wording of vanilla's refusal is not pinned: it is
+# and greyed out. The test presses the ability the way a player does - select
+# the caster, press the "Dark mirage" gizmo, click the target cell - and
+# "gizmo ... expect=disabled" reads the greyed-out Command_Ability in the
+# gizmo bar, so that branch is a line here and not an assumption - and it is
+# the one a player meets first. The wording of vanilla's refusal is not pinned: it is
 # not this mod's sentence, and pinning somebody else's wording is how a test
 # goes red on a translation.
 #
@@ -35,23 +37,27 @@ ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 # be answered by a decoy an earlier test left standing.
 assert thing BX_DarkMirageDecoy expect=absent
 
-cast "Bernael" ability=BX_DarkMirage at 4,0 expect=disabled
+select "Bernael"
+gizmo "Dark mirage" expect=disabled
 draft "Bernael"
-cast "Bernael" ability=BX_DarkMirage at 4,0
+gizmo "Dark mirage"
+target cell=4,0
 
-# verbProperties warmupTime is 0.6 s, which is 36 ticks; 60 is that plus
-# margin. The decoy exists from the moment Apply runs, not from the order.
-tick 60 reason="0.6 s warmup is 36 ticks"
+# verbProperties warmupTime is 0.6 s, which is 36 ticks; 120 is that plus the
+# job that carries it and margin. The decoy exists from the moment Apply runs,
+# not from the click.
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
 
 assert thing BX_DarkMirageDecoy at 4,0
 assert inspect "BX_DarkMirageDecoy" contains "Caster: Bernael"
 
-# cooldownTicksRange is 900, and 60 of them are spent above, so the ability is
-# greyed out for another 840. This is the "Works: the cost" row of
+# cooldownTicksRange is 900 and starts when the cast lands; the waitfor above
+# stops the moment the decoy stands, so the gizmo is greyed out for nearly all
+# of them. A player pressing it again meets exactly this. This is the "Works: the cost" row of
 # WHAT_TO_TEST.md's ability section, as far as it is readable: psyfocus and
 # neural heat have no assert subject, and that gap is filed rather than
 # replaced with a line that reads something adjacent.
-cast "Bernael" ability=BX_DarkMirage at 6,0 expect=disabled
+gizmo "Dark mirage" expect=disabled
 
 undraft "Bernael"
 assert log clean

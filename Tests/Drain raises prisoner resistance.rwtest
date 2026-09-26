@@ -7,6 +7,10 @@ test "Drain raises prisoner resistance" project="Bernael" group="Soul" created=2
 # That line is brittle: PawnKindDefs without initialResistanceRange return null
 # there and .Value throws. "assert log clean" is in for that - the resistance
 # value alone would not show a silent abort in the middle of DoDrain.
+#
+# The drain is the player's: the "Soul drain" gizmo on Bernael, then a click on
+# the prisoner. Bernael walks one cell and warms up for 120 ticks before Apply,
+# so the waitfor gives that route 300 ticks at most.
 
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
@@ -14,8 +18,10 @@ spawn Pawn:Colonist at 2,0 name="Prisoner"
 prisoner "Prisoner" resistance=10
 give "Bernael" resource=BX_SoulStarved value=0.1
 
-cast "Bernael" ability=BX_SoulFeeding target="Prisoner"
-tick 180 reason="120 ticks warmup plus slack"
+select "Bernael"
+gizmo "Soul drain"
+target "Prisoner"
+waitfor pawn "Prisoner" hediff=BX_SoulDrained expect=present ticks=300
 
 assert pawn "Prisoner" hediff=BX_SoulDrained expect=present
 assert pawn "Prisoner" resistance min=11 max=11

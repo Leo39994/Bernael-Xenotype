@@ -47,8 +47,14 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Victim"
 
 give "Bernael" resource=BX_SoulStarved value=0.1
-cast "Bernael" ability=BX_SoulFeeding target="Victim"
-tick 180 reason="120 ticks warmup plus slack"
+
+# The drain goes through the "Soul drain" gizmo and a click on the victim, the
+# player's route, so the 120-tick warmup runs before DoDrain. The waitfor holds
+# that for at most 300 ticks; the memories land in the same Apply.
+select "Bernael"
+gizmo "Soul drain"
+target "Victim"
+waitfor pawn "Victim" thought=BX_FedOn expect=present ticks=300
 
 assert pawn "Victim" thought=BX_FedOn expect=present
 assert pawn "Victim" thought=BX_FedOn_Social expect=present

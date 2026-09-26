@@ -7,15 +7,19 @@ test "Bonded baby death kills feeder" project="Bernael" group="Bond" created=202
 # too early - CompShouldRemove drops it the moment BondedFeeder is null or dead -
 # the baby just dies quietly and the feeder walks away.
 #
-# The bond is built the same way as in "Baby drain creates bond".
+# The bond is built the same way as in "Baby drain creates bond": the "Soul
+# drain" gizmo, a click on the baby, and a waitfor over the walk and the
+# 120-tick warmup.
 
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Baby" age=1
 
 give "Bernael" resource=BX_SoulStarved value=0.1
-cast "Bernael" ability=BX_SoulFeeding target="Baby"
-tick 180 reason="120 ticks warmup plus slack"
+select "Bernael"
+gizmo "Soul drain"
+target "Baby"
+waitfor pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present ticks=300
 assert pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present
 
 damage "Baby" amount=9999

@@ -26,6 +26,11 @@ test "Dark mirage burns only the hostiles it reaches" project="Bernael" group="A
 # harmAllLayersUntilOutside spreads what it deals, so a severity here would be
 # a bound on which part the roll chose and not on the 4 the mod passes in.
 #
+# The decoy is placed the player's way: the "Dark mirage" gizmo on the drafted
+# caster (disableGizmoWhileUndrafted) and a click on the cell. That runs the
+# 0.6 s warmup (36 ticks) before Apply, so the placement is a waitfor with 120
+# ticks for warmup and the job that carries it.
+#
 # The scene is built after the cast and under "speed paused": the two pirates
 # are placed, not launched, but their think tree is free the moment the clock
 # runs, and this file's whole claim is about where they stand.
@@ -38,8 +43,10 @@ despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 draft "Bernael"
-cast "Bernael" ability=BX_DarkMirage at 4,0
-tick 60 reason="0.6 s warmup is 36 ticks"
+select "Bernael"
+gizmo "Dark mirage"
+target cell=4,0
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
 assert thing BX_DarkMirageDecoy at 4,0
 
 speed paused

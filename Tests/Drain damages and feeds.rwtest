@@ -1,7 +1,10 @@
 rwtest 1
 test "Drain damages and feeds" project="Bernael" group="Soul" created=2026-09-17T00:00:00
 
-# BX_SoulFeeding is a touch ability with 2 s warmup (120 ticks).
+# BX_SoulFeeding is a touch ability with 2 s warmup (120 ticks). It is used the
+# way a player uses it - the "Soul drain" gizmo, then a click on the victim -
+# so Bernael walks one cell to the victim and warms up before Apply fires. The
+# waitfor holds that route for at most 300 ticks: warmup, walk and slack.
 # CompAbilityEffect_SoulDrain puts BX_SoulDrained at severity 0.4499 on the
 # target and gives the caster +0.2 soul, scaled by the body size of the victim.
 #
@@ -15,8 +18,10 @@ spawn Pawn:Colonist at 2,0 name="Victim"
 # Low enough that the gain shows in the gizmo instead of hitting the cap.
 give "Bernael" resource=BX_SoulStarved value=0.1
 
-cast "Bernael" ability=BX_SoulFeeding target="Victim"
-tick 180 reason="120 ticks warmup plus slack"
+select "Bernael"
+gizmo "Soul drain"
+target "Victim"
+waitfor pawn "Victim" hediff=BX_SoulDrained expect=present ticks=300
 
 assert pawn "Victim" hediff=BX_SoulDrained expect=present
 assert pawn "Victim" hediff=BX_SoulDrained severity min=0.44 max=0.46
