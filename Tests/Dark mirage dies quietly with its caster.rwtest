@@ -48,9 +48,17 @@ waitfor thing BX_DarkMirageDecoy at 10,0 ticks=120
 assert thing BX_DarkMirageDecoy at 4,0
 assert thing BX_DarkMirageDecoy at 10,0
 
+# Both pirates stand one cell from a decoy while "tick 10" runs, armed and
+# hostile. A pirate that hit its decoy in those ticks would destroy it with
+# KillFinalize, which bursts - the Owner half would go red for a reason that is
+# not this file's, the Keeper half would lose its decoy before the control.
+# "pacify" takes their violence away and nothing else; they are placed paused
+# so the step never meets a pirate that has already started an attack.
 speed paused
 spawn Pawn:Pirate at 5,0 name="Beside Owner" faction=enemy
 spawn Pawn:Pirate at 11,0 name="Beside Keeper" faction=enemy
+pacify "Beside Owner"
+pacify "Beside Keeper"
 
 damage "Owner" amount=999
 tick 10 reason="TickInterval reads the caster every tick"

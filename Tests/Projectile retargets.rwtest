@@ -26,14 +26,19 @@ test "Projectile retargets" project="Bernael" group="Weapon" created=2026-09-17T
 # corpses and the Burn hediff stays on the pawn inside one.
 #
 # B must stay up: ValidReplacementTarget rejects a downed candidate, so
-# downing B would make the retarget impossible. What B must not do is shoot
+# downing B would make the retarget impossible. What B must not do is fight
 # back. With an armed Pirate B, the run of 2026-09-24 23:51 ended with B
 # carrying no hediff at all - twenty retargeted shots at 0.5 cannot all miss,
-# so Bernael had stopped firing or B had left the line of sight. B is
-# therefore a Colonist kind in the enemy faction: BasePlayerPawnKind has no
-# weaponTags and no weaponMoney, so B spawns unarmed and without headgear,
-# still up, still hostile, still a valid replacement. Bernael is drafted so a
-# hostile in reach does not make them flee or drop the attack.
+# so Bernael had stopped firing or B had left the line of sight. B became a
+# Colonist kind in the enemy faction then, because no verb could stop a hostile
+# from fighting: BasePlayerPawnKind has no weaponTags and no weaponMoney, so B
+# spawns unarmed and without headgear, still up, still hostile, still a valid
+# replacement. An unarmed hostile still walks over and punches, though, so both
+# pirates are now pacified as well - A because it stands armed while Bernael
+# walks to the lantern, B for the whole run. The Colonist kind stays: it is the
+# unarmoured body this file has been green against, and armour would put a
+# second roll between the shot and the Burn. Bernael is drafted so a hostile in
+# reach does not make them flee or drop the attack.
 #
 # The line after the tick is there for the next red run: if Bernael went
 # down, it fails first and says so, and only a Bernael still standing leaves
@@ -42,9 +47,13 @@ test "Projectile retargets" project="Bernael" group="Weapon" created=2026-09-17T
 # as it should.
 
 requires dlc=Biotech
+speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 8,0 name="Pirate A" faction=enemy
 spawn Pawn:Colonist at 8,3 name="Pirate B" faction=enemy
+pacify "Pirate A"
+pacify "Pirate B"
+speed normal
 spawn Thing:BX_SoulLantern at 1,0
 equip "Bernael" thing=BX_SoulLantern
 

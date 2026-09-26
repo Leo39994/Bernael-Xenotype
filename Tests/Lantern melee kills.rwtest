@@ -13,10 +13,18 @@ test "Lantern melee kills" project=Bernael group=Weapon created=2026-09-17T00:00
 # instead, so a run that holds at 900 of 2500 says it had margin and a run that
 # holds at 2480 is a warning before it is a failure - and nobody has to defend
 # the number again.
+#
+# The pirate is pacified before Bernael walks to the lantern: "equip" runs the
+# real Equip job with the clock going, and an armed pirate one cell away could
+# otherwise land hits on Bernael before the pirate is downed. Placed paused, because
+# "pacify" refuses a pawn that has already started an attack.
 
 requires dlc=Biotech
+speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 1,0 name="Pirate" faction=enemy
+pacify "Pirate"
+speed normal
 spawn Thing:BX_SoulLantern at 0,1 name="lantern"
 equip "Bernael" thing="lantern"
 damage "Pirate" amount=30

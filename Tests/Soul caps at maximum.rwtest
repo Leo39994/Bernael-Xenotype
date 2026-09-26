@@ -4,10 +4,18 @@ test "Soul caps at maximum" project="Bernael" group="Soul" created=2026-09-18T00
 # Counter check to the balance math: nothing may overflow at the top end.
 # Gene_Resource clamps to Max, InitialResourceMax is 1. Neither drinking a
 # fragment nor a kill may go past it, and the surplus is lost, not stored.
+#
+# "ingest" runs the real Ingest job with the clock going, and an armed pirate
+# four cells away can interrupt it. The pirate is only there to die for the kill
+# half, so it is pacified - placed paused, because "pacify" refuses a pawn that
+# has already started an attack.
 
 requires dlc=Biotech
+speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 4,0 name="Pirate" faction=enemy
+pacify "Pirate"
+speed normal
 spawn Thing:BX_BottledSoul at 1,0
 
 give "Bernael" resource=BX_SoulStarved value=1

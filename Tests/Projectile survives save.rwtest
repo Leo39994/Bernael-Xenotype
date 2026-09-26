@@ -8,17 +8,30 @@ test "Projectile survives save" project="Bernael" group="Weapon" created=2026-09
 # Twelve cells apart, 120 ticks warmup, after that a projectile is always in the
 # air. The real guard is "assert log clean": a broken load path throws on the
 # next tick.
+#
+# The pirate is pacified so it cannot down Bernael and end the attack before
+# the Burn line has anything to read. "pacify" is written twice on purpose: the
+# kit keeps the pacified pawns by object, and "reload" builds every pawn anew,
+# so the first line does not survive the load. The second one is issued before
+# the clock runs again; "pacify" refuses a pawn that has already started an
+# attack, so a load that let the pirate act first fails there, loudly.
 
 requires dlc=Biotech
+speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 12,0 name="Pirate" faction=enemy
+pacify "Pirate"
+speed normal
 spawn Thing:BX_SoulLantern at 1,0
 equip "Bernael" thing=BX_SoulLantern
 
 attack "Bernael" target="Pirate"
 tick 150 reason="warmup 120, then the first projectile flies"
 
+speed paused
 reload reason="save and load while a projectile is in the air"
+pacify "Pirate"
+speed normal
 
 tick 900 reason="two more bursts after loading"
 assert log clean
