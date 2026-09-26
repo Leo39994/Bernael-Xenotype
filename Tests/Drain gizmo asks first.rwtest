@@ -1,9 +1,9 @@
 rwtest 1
 test "Drain gizmo asks first" project="Bernael" group="Soul" created=2026-09-17T00:00:00
 
-# The gizmo and targeter route instead of "cast". Only this way
+# The gizmo and targeter route, the only one the kit still has. Only this way
 # CompAbilityEffect_SoulDrain.ConfirmationDialog and ExtraLabelMouseAttachment
-# run - "cast" calls Activate directly and skips both.
+# run - the removed "cast" called Activate directly and skipped both.
 #
 # BX_SoulDrained is stage "extreme" from 0.60 (lifeThreatening), one drain adds
 # 0.4499. Starting at 0.5 lands on 0.9499: life threatening, not yet lethal.

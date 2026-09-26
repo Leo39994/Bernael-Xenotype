@@ -24,7 +24,6 @@ test "Dark mirage looks like its caster" project="Bernael" group="Ability" creat
 #
 requires dlc=Biotech
 requires dlc=Royalty
-requires verb=ability
 
 despawn Thing:BX_DarkMirageDecoy
 sky glow=0

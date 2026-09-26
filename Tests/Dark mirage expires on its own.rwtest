@@ -23,7 +23,6 @@ test "Dark mirage expires on its own" project="Bernael" group="Ability" created=
 
 requires dlc=Biotech
 requires dlc=Royalty
-requires verb=ability
 
 despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael

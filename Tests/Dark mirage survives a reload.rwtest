@@ -26,7 +26,6 @@ test "Dark mirage survives a reload" project="Bernael" group="Ability" created=2
 
 requires dlc=Biotech
 requires dlc=Royalty
-requires verb=ability
 
 despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
