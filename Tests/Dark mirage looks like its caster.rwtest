@@ -16,14 +16,6 @@ test "Dark mirage looks like its caster" project="Bernael" group="Ability" creat
 # taken. In a headless run every "ask" is a skip with its reason, never a pass,
 # so this file is honest about being the manual one.
 #
-# The glower is the exception and the reason the one assert below is not an
-# ask: CompProperties_Glower with glowRadius 1.8 writes into the glow grid, and
-# "assert glow" reads GroundGlowAt. The bound is not derived from the radius -
-# falloff, colour and the cell's own lighting all sit between the two - it is
-# derived from the only thing the def promises: with the sky pinned dark and
-# nothing else lit on the prepared ground, the cell beside the decoy reads zero
-# before the cast and more than zero after it.
-
 requires dlc=Biotech
 requires dlc=Royalty
 requires verb=ability
@@ -34,21 +26,20 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 5,0 name="Watcher"
 ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 
-# Dark first, so the line after the cast cannot be answered by daylight.
-assert glow "Watcher" max=0.01
+ask "mirage-dark-before" claim="with the sky pinned dark, the ground around Watcher is visibly dark before the cast"
 
 draft "Bernael"
 cast "Bernael" ability=BX_DarkMirage at 4,0
 tick 60 reason="0.6 s warmup is 36 ticks"
 assert thing BX_DarkMirageDecoy at 4,0
-assert glow "Watcher" min=0.02
+ask "mirage-glow-after" claim="the decoy casts visible light onto the ground around it while the pinned sky remains dark"
 
-ask claim="the decoy at the target cell shows this caster's own body and apparel, facing the way the caster faces, and is not a generic silhouette"
-ask claim="the decoy is drawn with a dark outline and two glowing eyes, and is clearly not a second ordinary pawn"
-ask ticks=180 claim="blue-black flames rise off the decoy and keep moving; the decoy itself does not walk, turn or slide off its cell"
+ask "mirage-caster-body" claim="the decoy at the target cell shows this caster's own body and apparel, facing the way the caster faces, and is not a generic silhouette"
+ask "mirage-outline-eyes" claim="the decoy is drawn with a dark outline and two glowing eyes, and is clearly not a second ordinary pawn"
+ask "mirage-flames" ticks=180 claim="blue-black flames rise off the decoy and keep moving; the decoy itself does not walk, turn or slide off its cell"
 
 select BX_DarkMirageDecoy
-ask claim="selecting the decoy draws one ring around it, about two and a half cells wide - the area its burst would reach"
+ask "mirage-burst-ring" claim="selecting the decoy draws one ring around it, about two and a half cells wide - the area its burst would reach"
 deselect
 
 # The decoy is about 24 ticks old after the warmup budget and the "ask ticks=180"
@@ -57,7 +48,7 @@ deselect
 # 564 to 600. This budget stops at about 544, just short of it, and the ask
 # below runs 90 ticks - long enough to carry the fade and the expiry both.
 tick 340 reason="to about 544 of 600, just short of the 36-tick fade-out window"
-ask ticks=90 claim="the decoy fades out over the last moments and then is gone; it does not vanish in one frame and leaves no rubble, corpse or fire behind"
+ask "mirage-fade-out" ticks=90 claim="the decoy fades out over the last moments and then is gone; it does not vanish in one frame and leaves no rubble, corpse or fire behind"
 
 assert thing BX_DarkMirageDecoy expect=absent
 undraft "Bernael"

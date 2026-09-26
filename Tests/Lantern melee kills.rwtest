@@ -1,6 +1,19 @@
 rwtest 1
 test "Lantern melee kills" project=Bernael group=Weapon created=2026-09-17T00:00:00
 
+# The kill is stochastic: swing interval, hit roll, which body part the swing
+# lands on, how much of the burn stacks before the pawn bleeds out. There is no
+# number of ticks that is the right one, so the test does not name one as a
+# guess - it names a budget and lets "waitfor" stop the moment the pirate dies.
+#
+# That matters for what a green line means here. "tick 2500" + "assert dead"
+# was green at 1800 ticks eight times and red four, and the only thing that
+# changed between them was the pirate. The budget was raised to 2500 once and
+# has exactly one green run behind it. "waitfor" reports the tick it held at
+# instead, so a run that holds at 900 of 2500 says it had margin and a run that
+# holds at 2480 is a warning before it is a failure - and nobody has to defend
+# the number again.
+
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 1,0 name="Pirate" faction=enemy
@@ -12,7 +25,6 @@ draft "Bernael"
 attack "Bernael" target="Pirate" melee=true
 assert pawn "Bernael" drafted
 assert pawn "Bernael" job=AttackMelee
-tick 2500 reason="about 20 swings at 1.5 to 1.8 s cooldown"
-assert pawn "Pirate" dead
+waitfor pawn "Pirate" dead ticks=2500
 undraft "Bernael"
 assert log clean

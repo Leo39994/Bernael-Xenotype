@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -6,6 +6,7 @@ using Verse;
 namespace Bernael.DarkMirageDemo
 {
     // Each decoy owns an immutable capture. Never recolor or patch the caster's render tree.
+    [StaticConstructorOnStartup]
     public sealed class MirageVisuals : IDisposable
     {
         public const int CaptureSize = 512;

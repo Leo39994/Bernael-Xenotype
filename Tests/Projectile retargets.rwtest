@@ -23,18 +23,37 @@ test "Projectile retargets" project="Bernael" group="Weapon" created=2026-09-17T
 #
 # Waiting longer is safe in the one direction that matters: B takes 9 burn
 # damage a hit and may be dead by the end, but "assert pawn" resolves through
-# corpses and the Burn hediff stays on the pawn inside one. B shoots back, so
-# only B is checked.
+# corpses and the Burn hediff stays on the pawn inside one.
+#
+# B must stay up: ValidReplacementTarget rejects a downed candidate, so
+# downing B would make the retarget impossible. What B must not do is shoot
+# back. With an armed Pirate B, the run of 2026-09-24 23:51 ended with B
+# carrying no hediff at all - twenty retargeted shots at 0.5 cannot all miss,
+# so Bernael had stopped firing or B had left the line of sight. B is
+# therefore a Colonist kind in the enemy faction: BasePlayerPawnKind has no
+# weaponTags and no weaponMoney, so B spawns unarmed and without headgear,
+# still up, still hostile, still a valid replacement. Bernael is drafted so a
+# hostile in reach does not make them flee or drop the attack.
+#
+# The line after the tick is there for the next red run: if Bernael went
+# down, it fails first and says so, and only a Bernael still standing leaves
+# the Burn line to blame the retarget itself. Bernael's job is not asserted:
+# once B is dead the remaining shots go to A, and when A dies the attack ends
+# as it should.
 
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 8,0 name="Pirate A" faction=enemy
-spawn Pawn:Pirate at 8,3 name="Pirate B" faction=enemy
+spawn Pawn:Colonist at 8,3 name="Pirate B" faction=enemy
 spawn Thing:BX_SoulLantern at 1,0
 equip "Bernael" thing=BX_SoulLantern
 
 down "Pirate A"
+draft "Bernael"
 attack "Bernael" target="Pirate A"
 
 tick 1320 reason="four cycles of warmup 120, burst 5x20 and cooldown 120, plus flight"
+assert pawn "Bernael" downed expect=absent
 assert pawn "Pirate B" hediff=Burn expect=present
+
+undraft "Bernael"

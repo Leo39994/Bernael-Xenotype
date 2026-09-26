@@ -8,30 +8,37 @@ test "Abyssal reach lengthens a psycast" project="Bernael" group="Genes" created
 # of BX_Bernael, so the xenotype is what sets the two pawns apart.
 #
 # BX_DarkMirage is the psycast this file measures with, because its
-# verbProperties range of 19.9 puts both bounds inside one test map:
+# verbProperties range of 19.9 puts both readings far apart:
 #
 #   without the gene   19.9 cells
 #   with the gene      19.9 * 1.25 = 24.875 cells
 #
-# The target cell sits at 22, which is 2.1 past the plain range and 2.875 short
-# of the extended one. Neither margin is close enough for a rounding rule or a
-# diagonal to decide the answer.
+# Both bounds are asserted at both ends, so the test fails on a factor of 1.0
+# and on a factor of 2.0 alike. A single "min" would pass on a patch that
+# multiplied by anything at all.
 #
-# No assert reads a verb's effective range, and none is needed: the kit's
-# "cast" asks Ability.CanApplyOn before it activates anything, and that is
-# where the range is checked - so the refusal a player would get is the
-# observable, and it is the one this file reads. A test that read the number
-# instead would be reading the patch back to itself.
+# This file used to measure the range with "cast ... expect=refused" at a cell
+# 22 away. That does not work and never did: CastStep.Refusal asks
+# GizmoDisabled, Ability.CanCast and Ability.CanApplyOn, and
+# Ability.CanApplyOn(LocalTargetInfo) runs the effect comps and one self-target
+# rule and nothing else. The range lives in Verb.CanHitTargetFrom, behind
+# "num2 > EffectiveRange * EffectiveRange", and no branch of the step reaches
+# it - so the refusal was red for a pawn that the game would have refused.
+# Worse, Ability.Activate applies the effects straight out with no verb, no
+# warmup and no range, so the other half of that file was green whatever the
+# patch did. Both halves are gone; what the cast path can honestly say about
+# this ability is said in "Dark mirage places a decoy".
 #
-# The near cast by "Plain" is the line that makes the refusal mean anything.
-# Without it, "refused at 22 cells" is equally true of a pawn that never got
-# the ability, and this test would pass on a broken grant.
+# "assert ability" does not exist yet, so every step below reports skip with
+# the missing name as its reason until it lands. That is the shape: the wish is
+# in the run, it is grey and not red, and the day the assert kind arrives this
+# file starts measuring without being touched.
 
 requires dlc=Biotech
 requires dlc=Royalty
 requires verb=ability
+requires assert=ability
 
-despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 0,1 name="Plain"
 assert pawn "Bernael" gene=BX_AbyssalReach expect=present
@@ -42,19 +49,12 @@ ability "Plain" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 draft "Bernael"
 draft "Plain"
 
-# 22 cells is past 19.9, so the pawn without the gene cannot reach it.
-cast "Plain" ability=BX_DarkMirage at 22,0 expect=refused
+# The pawn without the gene reads the def's own 19.9 and nothing else. The
+# bounds are tight enough that a factor applied to everyone would break them.
+assert ability BX_DarkMirage on "Plain" range min=19.5 max=20.5
 
-# The same pawn, the same ability, a cell it does reach: the refusal above was
-# about the distance and not about the grant.
-cast "Plain" ability=BX_DarkMirage at 8,1
-tick 60 reason="0.6 s warmup is 36 ticks"
-assert thing BX_DarkMirageDecoy at 8,1
-
-# 22 cells is inside 24.875, so the gene carries the cast that far.
-cast "Bernael" ability=BX_DarkMirage at 22,0
-tick 60 reason="0.6 s warmup is 36 ticks"
-assert thing BX_DarkMirageDecoy at 22,0
+# 19.9 * 1.25 = 24.875. Both ends again, so 1.25 is the only factor that fits.
+assert ability BX_DarkMirage on "Bernael" range min=24.5 max=25.5
 
 undraft "Bernael"
 undraft "Plain"

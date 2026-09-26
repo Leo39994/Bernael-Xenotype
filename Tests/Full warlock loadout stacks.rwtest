@@ -21,15 +21,24 @@ test "Full warlock loadout stacks" project="Bernael" group="Items" created=2026-
 # stat, so Royalty makes no difference to these two numbers.
 #
 # Mood is pinned high on purpose. PsychicEntropyRecoveryRate carries a
-# StatPart_Pain with factor 3, and BX_WitheredSoulHediff sits on every Bernael
-# and turns a low mood into up to 0.35 pain - which would pull both readings
-# down by a fifth and make the bounds below meaningless. Mood 0.95 puts the
-# hediff in its "Absence of pain" stage, so the gear is the only thing moving.
+# StatPart_Pain with factor 3, and vanilla's PainFactor is 1 + pain * 3 - pain
+# raises this stat, it does not lower it. BX_WitheredSoulHediff sits on every
+# Bernael and maps mood to severity 0.1 + 0.9 * mood; below severity 0.9
+# ("Aching pain", mood under about 0.89) it adds 0.15 pain, which multiplies
+# the reading by 1.45: 0.96 fully equipped became 1.392 in the runs of
+# 2026-09-24.
 #
-# If a run still reads low on both entropy lines, the pawn was generated with
-# an age hediff that carries pain of its own. Pin the age on the spawn line
-# rather than widening the bounds - a bound wide enough to swallow pain is
-# also wide enough to swallow the gear.
+# One pin is not enough. Mood drifts from 0.95 towards the pawn's own thought
+# level while it walks and dresses - about 1600 ticks - and the hediff reads
+# the need every 420 ticks, so on some pawns the second reading already sat
+# in the pain stage. The mood is pinned again after the gear is on, and the
+# severity is asserted above each entropy line, so a pain factor shows up as
+# its own failure instead of as a wrong stat.
+#
+# If the severity line holds and the entropy line still reads high, the pawn
+# was generated with an age hediff that carries pain of its own. Pin the age
+# on the spawn line rather than widening the bounds - a bound wide enough to
+# swallow pain is also wide enough to swallow the gear.
 
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
@@ -40,6 +49,7 @@ spawn Thing:BX_SoulLantern at 4,0
 give "Bernael" need=Mood value=0.95
 tick 480 reason="Hediff_SeverityBasedOnNeed only reads the need every 420 ticks"
 
+assert pawn "Bernael" hediff=BX_WitheredSoulHediff severity min=0.9
 assert pawn "Bernael" stat=PsychicSensitivity max=2.0
 assert pawn "Bernael" stat=PsychicEntropyRecoveryRate min=0.74 max=0.84
 
@@ -50,6 +60,10 @@ equip "Bernael" thing=BX_SoulLantern
 assert pawn "Bernael" apparel=BX_Headgear_Warlock
 assert pawn "Bernael" apparel=BX_Apparel_Warlock
 assert pawn "Bernael" equipment=BX_SoulLantern
+
+give "Bernael" need=Mood value=0.95
+tick 480 reason="Hediff_SeverityBasedOnNeed only reads the need every 420 ticks"
+assert pawn "Bernael" hediff=BX_WitheredSoulHediff severity min=0.9
 
 assert pawn "Bernael" stat=PsychicSensitivity min=2.3
 assert pawn "Bernael" stat=PsychicEntropyRecoveryRate min=0.91 max=1.01

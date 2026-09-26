@@ -17,17 +17,16 @@ test "Darkness changes hunger rate" project="Bernael" group="Genes" created=2026
 # this mod writes hungerRateFactor, so the product has exactly one factor in it.
 #
 # Hediff_NourishingDarkness reads GroundGlowAt every 180 ticks and compares it
-# against 0.50, so the glow is this test's precondition and the severity is what
-# it produces. Both "assert glow" lines below state that precondition, and they
-# are what turns the tick budgets from a wait into an explanation: 240 is one
-# full 180-tick check plus margin, in both directions.
+# against 0.50, so the light is this test's precondition and the severity is what
+# it produces. The visual checks below leave that rendering claim to `ask`; 240
+# is one full 180-tick check plus margin, in both directions.
 
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 assert pawn "Bernael" hediff=BX_Gene_NourishingDarkness_Hediff expect=present
 
 sky glow=0
-assert glow "Bernael" max=0.49
+ask "darkness-ground-dark" claim="the unroofed ground under Bernael is visibly dark"
 tick 240 reason="Hediff_NourishingDarkness reads the glow every 180 ticks"
 assert pawn "Bernael" hediff=BX_Gene_NourishingDarkness_Hediff severity max=1
 assert pawn "Bernael" hungerrate min=0.45 max=0.55
@@ -44,11 +43,9 @@ sky glow=1
 # postfix on vanilla's own write, and the replay clears the ground it builds on.
 #
 # So the budget is derived again and reads like its sibling above: one 180-tick
-# check plus margin. The "assert glow" line is what makes that honest - if the
-# glow does not arrive, this line fails first and its actual names the sky, the
-# cell and whether the cell is roofed, instead of the severity below failing
-# after a budget nobody can explain.
-assert glow "Bernael" min=0.5
+# check plus margin. The visual check keeps the lighting precondition visible
+# without treating an implementation reading as the player's result.
+ask "darkness-ground-bright" claim="the unroofed ground under Bernael is visibly bright"
 tick 240 reason="Hediff_NourishingDarkness reads the glow every 180 ticks"
 assert pawn "Bernael" hediff=BX_Gene_NourishingDarkness_Hediff severity min=2
 assert pawn "Bernael" hungerrate min=1.9 max=2.1

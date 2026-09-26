@@ -1,0 +1,72 @@
+rwtest 1
+test "Dark mirage is refused out of range" project="Bernael" group="Ability" created=2026-09-21T00:00:00
+
+# This file is the proof for the second half of the 2026-09-21 finding: that
+# nothing in the kit could see an ability's range. It does not measure the
+# number - "Abyssal reach lengthens a psycast" does that with
+# "assert ability ... range". This one proves that the game itself turns an
+# out-of-range aim down, and it proves it through the route a player takes.
+#
+# "cast" is not that route. It calls Ability.Activate directly, which runs
+# PreActivate and ApplyEffects and nothing else - no verb, no warmup, no job
+# and no range. The route the game uses is two steps, and both are verbs this
+# kit already had:
+#
+#   gizmo "Dark mirage"     Command_Ability.ProcessInput -> Targeter.BeginTargeting
+#   target cell=...         the map click -> Verb_CastAbility.ValidateTarget
+#
+# ValidateTarget asks Verb.CanHitTarget first, and on a no it posts
+# "AbilityOutOfRange" and keeps asking for a target. That is what expect=refused
+# reads: the targeter is still open after the click. No logic of vanilla is
+# mirrored here, so nothing in this file goes stale when Ludeon moves the gate.
+#
+# BX_DarkMirage carries verbProperties range 19.9 and requireLineOfSight, and
+# the pawn is a plain colonist without BX_AbyssalReach, so 19.9 is the whole
+# reach. 22 is outside it and 10 is inside.
+#
+# The second half is a control, and it is the half that makes the first half
+# worth anything. A refused aim would also read green if the gizmo never opened
+# a targeter at all, or if the label were wrong - the test would be green for
+# the wrong reason forever. So the same gizmo is pressed again at a cell inside
+# the range, that aim has to be taken, and the decoy has to stand there
+# afterwards. Green on both lines means the route works and the range is what
+# separated them.
+#
+# On a kit without expect= on "target" this file goes red, not green: the older
+# handler treats a targeter that is still asking as a failure. A key cannot be
+# held back by "requires", so the loud failure is the safeguard.
+
+requires dlc=Biotech
+requires dlc=Royalty
+requires verb=ability
+
+despawn Thing:BX_DarkMirageDecoy
+spawn Pawn:Colonist at 0,0 name="Plain"
+ability "Plain" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+
+# disableGizmoWhileUndrafted is true on the def, so an undrafted pawn offers the
+# gizmo greyed out and ProcessInput would never open a targeter.
+draft "Plain"
+
+# "gizmo" reads the gizmo bar of the selection, so the caster has to be selected.
+select "Plain"
+assert thing BX_DarkMirageDecoy expect=absent
+
+# 22 is outside the 19.9 the def writes. The targeter has to keep asking.
+gizmo "Dark mirage"
+target cell=22,0 expect=refused
+
+# The control: 10 is inside the range, over open ground, so line of sight holds
+# and the same aim has to be taken.
+gizmo "Dark mirage"
+target cell=10,0
+
+# warmupTime is 0.6 s, so 36 ticks, and the job has to walk nowhere. 90 is that
+# plus margin - this line is not decoration here the way it is behind "cast",
+# because this route really does run a job and a warmup.
+tick 90 reason="0.6 s warmup is 36 ticks, plus the job that carries it"
+
+assert thing BX_DarkMirageDecoy at 10,0
+
+undraft "Plain"
+assert log clean

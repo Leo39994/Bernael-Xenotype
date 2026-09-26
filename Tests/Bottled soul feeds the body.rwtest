@@ -11,6 +11,12 @@ test "Bottled soul feeds the body" project="Bernael" group="Items" created=2026-
 # 0.30 before, about 0.60 after. The bounds are five points wide because the
 # need keeps falling while the ingest job runs.
 #
+# Exactly one bottle lies on the map because vanilla decides how many the pawn
+# drinks: FoodUtility.StackCountForNutrition rounds NutritionWanted / 0.3, and
+# at 0.30 Food that is 0.7 / 0.3 -> 2. With two bottles present the pawn drank
+# both and landed at 0.868. The sky is pinned dark so Nourishing Darkness holds
+# the hunger rate at its low end during the walk instead of doubling it by day.
+#
 # preferability DesperateOnly and nonDrugIngestibleWithoutFoodNeed are not in
 # the way here - "ingest" drinks the thing directly instead of waiting for the
 # pawn to choose it. Whether a merely hungry colonist would pick it up on its
@@ -18,7 +24,8 @@ test "Bottled soul feeds the body" project="Bernael" group="Items" created=2026-
 
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
-spawn Thing:BX_BottledSoul at 1,0 count=2
+spawn Thing:BX_BottledSoul at 1,0 count=1
+sky glow=0
 
 give "Bernael" need=Food value=0.3
 assert pawn "Bernael" need=Food min=0.28 max=0.32
