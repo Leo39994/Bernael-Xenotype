@@ -28,7 +28,7 @@ spawn Pawn:Pirate at 8,0 name="Pirate A" faction=enemy
 spawn Pawn:Pirate at 8,3 name="Pirate B" faction=enemy
 pacify "Pirate A"
 pacify "Pirate B"
-speed normal
+speed x1
 spawn Thing:BX_SoulLantern at 1,0
 equip "Bernael" thing=BX_SoulLantern
 

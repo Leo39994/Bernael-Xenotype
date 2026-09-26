@@ -168,24 +168,6 @@
 <!-- Moved withered soul hediff to the hediff file -->
 	
 	<GeneDef>
-		<defName>BX_NourishingDarkness</defName>
-		<label>Nourishing Darkness</label>
-		<description>Reduced hunger rate by 50% when the pawn is in the dark. Hunger rate increased by 200% when standing in light.</description>
-		<geneClass>Bernael_Xenotype.Gene_Hediff</geneClass>
-		<biostatCpx>1</biostatCpx>
-		<biostatMet>1</biostatMet>
-		<displayOrderInCategory>438</displayOrderInCategory>
-		<iconPath>UI/Icons/Genes/BX_Darkeater</iconPath>
-		<modExtensions>
-			<li Class="Bernael_Xenotype.GeneAddHediffExtension">
-				<hediffsToAdd>
-					<li>BX_Gene_NourishingDarkness_Hediff</li>
-				</hediffsToAdd>
-			</li>
-		</modExtensions>
-	</GeneDef>
-	
-	<GeneDef>
 		<defName>BX_Nihilism</defName>
 		<label>Nihilism</label>
 		<description>Carriers of this gene are much less likely to be recruited and change their ideology.</description>

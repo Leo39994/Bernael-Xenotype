@@ -24,7 +24,7 @@ speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 1,0 name="Pirate" faction=enemy
 pacify "Pirate"
-speed normal
+speed x1
 spawn Thing:BX_SoulLantern at 0,1 name="lantern"
 equip "Bernael" thing="lantern"
 damage "Pirate" amount=30

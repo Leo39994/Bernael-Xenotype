@@ -15,7 +15,7 @@ speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 4,0 name="Pirate" faction=enemy
 pacify "Pirate"
-speed normal
+speed x1
 spawn Thing:BX_BottledSoul at 1,0
 
 give "Bernael" resource=BX_SoulStarved value=1

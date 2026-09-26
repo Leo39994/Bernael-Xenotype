@@ -2,7 +2,7 @@ rwtest 1
 test "Spawn sets gene hediffs" project="Bernael" group="Basics" created=2026-09-17T00:00:00
 
 # The base test: does the xenotype bring its gene driven hediffs on spawn?
-# All four come from PostAdd, so immediately and without ticks.
+# All three come from PostAdd, so immediately and without ticks.
 
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
@@ -10,8 +10,7 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 # Gene_DepravedHead puts BX_Blindness on every part with "eye" in the defName.
 assert pawn "Bernael" hediff=BX_Blindness expect=present
 
-# The three Gene_Hediff genes through their GeneAddHediffExtension.
-assert pawn "Bernael" hediff=BX_Gene_NourishingDarkness_Hediff expect=present
+# The two Gene_Hediff genes through their GeneAddHediffExtension.
 assert pawn "Bernael" hediff=BX_ReaperEcstasy expect=present
 assert pawn "Bernael" hediff=BX_WitheredSoulHediff expect=present
 

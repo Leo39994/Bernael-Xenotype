@@ -21,7 +21,7 @@ speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 12,0 name="Pirate" faction=enemy
 pacify "Pirate"
-speed normal
+speed x1
 spawn Thing:BX_SoulLantern at 1,0
 equip "Bernael" thing=BX_SoulLantern
 
@@ -31,7 +31,7 @@ tick 150 reason="warmup 120, then the first projectile flies"
 speed paused
 reload reason="save and load while a projectile is in the air"
 pacify "Pirate"
-speed normal
+speed x1
 
 tick 900 reason="two more bursts after loading"
 assert log clean
