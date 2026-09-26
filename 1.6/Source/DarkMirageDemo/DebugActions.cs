@@ -19,7 +19,7 @@ namespace Bernael.DarkMirageDemo
                     IntVec3 cell = pawn.Position + new IntVec3(x,0,z);
                     if (!MirageUtility.CanSpawnAt(cell,pawn.Map)) continue;
                     DarkMirage mirage = MirageUtility.Spawn(pawn,cell,def);
-                    string path = System.IO.Path.Combine(def.modContentPack.RootDir,"Source/DarkMirageDemo/QA/PlayerExport");
+                    string path = System.IO.Path.Combine(def.modContentPack.RootDir,"1.6/Source/DarkMirageDemo/QA/PlayerExport");
                     try { mirage.ExportVisualPreview(path); Log.Message("[Dark Mirage] Exported preview: " + path); }
                     finally { mirage.Dismiss(); }
                     return;

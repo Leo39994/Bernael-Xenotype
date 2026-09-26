@@ -10,7 +10,7 @@ public static class BuildMirage
 {
     public static void Build()
     {
-        string root = Path.GetFullPath(Path.Combine(Application.dataPath,"../../.."));
+        string root = Path.GetFullPath(Path.Combine(Application.dataPath,"../../../.."));
         string output = Path.GetFullPath(Path.Combine(Application.dataPath,"../Library/MirageBundles"));
         Directory.CreateDirectory(output);
         PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, new[] { GraphicsDeviceType.Direct3D11 });
