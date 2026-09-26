@@ -1,42 +1,5 @@
 <Defs>
 
-	<HediffDef>
-		<defName>BX_Gene_NourishingDarkness_Hediff</defName>
-		<label>Nourishing Darkness</label>
-		<description>Reduced hunger rate by 50% when the pawn is in the dark. Hunger rate increased by 200% when standing in light.</description>
-		<hediffClass>Bernael_Xenotype.Hediff_NourishingDarkness</hediffClass>
-		<initialSeverity>1</initialSeverity>
-		<minSeverity>0</minSeverity>
-		<maxSeverity>3</maxSeverity>
-		<!-- <lethalSeverity>1</lethalSeverity> -->
-		<defaultLabelColor>(0.8, 0, 0.7)</defaultLabelColor>
-		<makesSickThought>false</makesSickThought>
-		<scenarioCanAdd>false</scenarioCanAdd>
-		<isBad>false</isBad>
-		<everCurableByItem>false</everCurableByItem>
-		<keepOnBodyPartRestoration>True</keepOnBodyPartRestoration>
-		<stages>
-			<li>
-				<becomeVisible>false</becomeVisible>
-				<minSeverity>1</minSeverity>
-				<label>Dark</label>
-				<hungerRateFactor>0.5</hungerRateFactor>
-			</li>
-			<li>
-				<becomeVisible>false</becomeVisible>
-				<minSeverity>2</minSeverity>
-				<label>Light</label>
-				<hungerRateFactor>2</hungerRateFactor>
-			</li>
-		</stages>
-		<comps>
-			<!-- <li Class="HediffCompProperties_Disappears"> -->
-			<!-- <disappearsAfterTicks>601</disappearsAfterTicks> -->
-			<!-- <showRemainingTime>false</showRemainingTime> -->
-			<!-- </li> -->
-		</comps>
-	</HediffDef>
-
 	<HediffDef MayRequire="Sov.Nephilim">
 		<defName>BX_Mutation_Hediff</defName>
 		<label>Mutation</label>
