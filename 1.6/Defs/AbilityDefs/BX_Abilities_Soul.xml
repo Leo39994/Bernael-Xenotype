@@ -14,14 +14,14 @@
 		<category>Bernael</category>
 		<displayOrder>100</displayOrder>
 		<jobDef>CastAbilityOnThing</jobDef>
-		<warmupStartSound>Bloodfeed_Cast</warmupStartSound>
+		<warmupStartSound>BX_SoulDrain</warmupStartSound>
 		<hostile>false</hostile>
 		<casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
 		<verbProperties>
 			<verbClass>Verb_CastAbility</verbClass>
 			<drawAimPie>false</drawAimPie>
 			<range>3.9</range>
-			<warmupTime>2</warmupTime>
+			<warmupTime>4</warmupTime>
 			<targetParams>
 				<canTargetSelf>false</canTargetSelf>
 				<canTargetBuildings>false</canTargetBuildings>

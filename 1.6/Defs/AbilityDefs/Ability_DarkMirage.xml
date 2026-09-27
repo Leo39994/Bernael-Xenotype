@@ -14,7 +14,7 @@
     <disableGizmoWhileUndrafted>true</disableGizmoWhileUndrafted>
     <targetRequired>true</targetRequired>
     <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
-    <warmupSound>PsycastCastLoop</warmupSound>
+    <warmupSound>BX_Cast1</warmupSound>
     <statBases>
       <Ability_PsyfocusCost>0.04</Ability_PsyfocusCost>
       <Ability_EntropyGain>12</Ability_EntropyGain>
@@ -22,7 +22,7 @@
     <verbProperties>
       <verbClass>RimWorld.Verb_CastPsycast</verbClass>
       <range>19.9</range>
-      <warmupTime>0.6</warmupTime>
+      <warmupTime>1.2</warmupTime>
       <requireLineOfSight>true</requireLineOfSight>
       <targetParams>
         <canTargetLocations>true</canTargetLocations>
