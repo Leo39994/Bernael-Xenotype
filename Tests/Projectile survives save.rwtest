@@ -15,9 +15,15 @@ test "Projectile survives save" project="Bernael" group="Weapon" created=2026-09
 # so the first line does not survive the load. The second one is issued before
 # the clock runs again; "pacify" refuses a pawn that has already started an
 # attack, so a load that let the pirate act first fails there, loudly.
+#
+# Both stand in one sealed room, walls from -1,-2 to 13,2: the inside runs from
+# 0 to 12 along x, so Bernael, the lantern and the pirate are all in it, and
+# door=none keeps every other pawn on the map out of the line of fire and the
+# two of them in it, across the reload as well.
 
 requires dlc=Biotech
 speed paused
+room at -1,-2 size=15,5 door=none name="range"
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 12,0 name="Pirate" faction=enemy
 pacify "Pirate"
@@ -34,5 +40,11 @@ pacify "Pirate"
 speed x1
 
 tick 900 reason="two more bursts after loading"
+requires assert=job
+assert pawn "Bernael" job=AttackStatic
 assert log clean
+# The room holds the pirate within twelve cells of Bernael. If this line is
+# red, the room is not where the pawns are, and the Burn line below would be
+# red for that reason and not for the load.
+assert pawn "Pirate" near="Bernael" max=12
 assert pawn "Pirate" hediff=Burn expect=present
