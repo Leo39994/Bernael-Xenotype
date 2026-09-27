@@ -6,7 +6,7 @@ Shader "Bernael/DarkMirage"
         _DistanceTex ("Caster silhouette distance (linear)", 2D) = "white" {}
         _Phase ("Simulation time", Float) = 0
         _SpawnAge ("Seconds since summoning", Float) = 10
-        _RevealBounds ("Captured pawn bottom/top UV", Vector) = (0.3,0.75,0,0)
+        _RevealBounds ("Captured pawn bottom/top/left/right UV", Vector) = (0.3,0.75,0.3,0.7)
         _Seed ("Phase offset", Float) = 0
         _Opacity ("Lifetime opacity", Range(0,1)) = 1
         _EyeA ("Eye A: UV, enabled, scale", Vector) = (0.47,0.6,1,1)
@@ -70,9 +70,75 @@ Shader "Bernael/DarkMirage"
                 float halo = exp2(-r * 0.24)*0.52 + exp2(-r * 0.065)*0.13;
                 return float2(core, halo) * eye.z;
             }
+            float joinFlames(float a, float b, float radius)
+            {
+                float h=saturate(0.5+0.5*(b-a)/radius);
+                return lerp(b,a,h)-radius*h*(1-h);
+            }
+            // A broad curved tongue with a tapered tip. Its shape travels with
+            // the rising flame packet; it does not oscillate sideways in place.
+            float flameTongue(float2 uv, float2 anchor, float width, float reach,
+                float bend, float curl)
+            {
+                float y=uv.y-anchor.y;
+                float h=saturate(y/reach);
+                float center=anchor.x + bend*h*h + curl*width*sin(h*3.141593)*h;
+                float radius=width*pow(saturate(1-h),0.8)
+                    *(0.88+0.16*sin(h*3.141593));
+                if(y<0) return length(uv-anchor)-radius;
+                float2 bounds=float2(abs(uv.x-center)-radius,y-reach);
+                // Euclidean distance outside the tip gives a round white cap
+                // and smooth halo, instead of a square caused by max(x,y).
+                return length(max(bounds,0))+min(max(bounds.x,bounds.y),0);
+            }
+            float risingFlame(float2 uv, float2 anchor, float width, float rise,
+                float direction, float phase, float time)
+            {
+                // Independent emission rates and per-emission shapes remove the
+                // shared sine-wave rhythm. Two overlapping packets feed each root.
+                float rate=0.90+0.35*randomCell(float2(phase,17.2));
+                float clock=time*rate+phase
+                    +0.12*(softNoise(float2(time*0.7,phase+4.2))-0.5);
+                float field=1;
+                [unroll] for(int packet=0;packet<2;packet++)
+                {
+                    float tick=clock+packet*0.5;
+                    float cycle=floor(tick);
+                    float age=frac(tick);
+                    float variation=randomCell(float2(cycle,phase+packet*13.7));
+                    float lean=randomCell(float2(cycle+9.1,phase))-0.5;
+                    // The tip always travels up. Later, the tail catches it to
+                    // pinch off a small wisp rather than pull the whole tip down.
+                    float tip=0.022+rise*(0.82+variation*0.36)*age;
+                    float lift=(tip+0.012)*smoothstep(0.42,1.0,age);
+                    float2 root=anchor+float2(lean*0.012*age,lift-0.012);
+                    float reach=max(tip-lift+0.012,0.003);
+                    // Side roots must feed the existing blue bed gradually;
+                    // a fast radius ramp makes the lower white contour kick out.
+                    float birthEnd=lerp(0.14,0.28,abs(direction));
+                    float widthScale=smoothstep(0,birthEnd,age)
+                        *(1-smoothstep(0.52,1.0,age));
+                    float bodyWidth=max(width*(0.85+variation*0.30)*widthScale,0.0005);
+                    float bend=(direction*0.45+lean*1.60)*width*(0.25+age*1.3);
+                    float tongue=flameTongue(uv,root,bodyWidth,reach,bend,lean*2.4);
+                    // Anchor the side flame's first section inside the blue bed.
+                    // Its rising head remains free, but a new packet cannot puff
+                    // out the lower boundary before it has started climbing.
+                    tongue+=abs(direction)*0.018
+                        *(1-smoothstep(0,0.045,uv.y-anchor.y));
+                    // End with no stroke/glow before the cycle wraps. The next
+                    // packet starts inside the connected blue bed, without a pop.
+                    tongue+=0.090*smoothstep(0.80,1.0,age)
+                        +0.090*(1-smoothstep(0,max(birthEnd,0.16),age));
+                    field=joinFlames(field,tongue,0.012);
+                }
+                return field;
+            }
             float4 frag(v2f i) : SV_Target
             {
                 float t = _Phase + _Seed;
+                // Slow only the flame flow; summoning, expiry and eyes keep their timing.
+                float flameTime = _Phase*0.70 + _Seed;
                 float2 uv = i.uv;
                 float4 source = tex2D(_MainTex, uv);
                 float a = source.a;
@@ -99,66 +165,94 @@ Shader "Bernael/DarkMirage"
                 float fireIgnition = smoothstep(1.15,1.35,_SpawnAge)
                     * (1-smoothstep(fireFront-0.025,fireFront+0.025,uv.y));
 
-                // Fixed exterior volume. Animation transports density UP through it;
-                // it never swings the entire outline or a solid flame sheet sideways.
-                float crown = smoothstep(0.43,0.73,uv.y);
-                float root = smoothstep(0.013,0.024,distance);
-                float footFade = smoothstep(0.305,0.370,uv.y);
-                float outward = max(distance-0.021,0);
-                float width = 0.029+0.053*crown;
-                float envelope = exp2(-pow(outward/width,2)*2.1);
-                // The stored distance saturates at 0.125 UV; end the volume before it
-                // saturates so faint noise cannot leak across the whole background.
-                envelope *= 1-smoothstep(0.095,0.12,distance);
-                float2 flowUV = uv*float2(32,13) + float2(_Seed*0.21,-t*1.6421053);
-                flowUV.x += (softNoise(flowUV*0.27+8.2)-0.5)*0.32;
-                // The detail layer has the same transport velocity in UV space.
-                // It adds depth without counter-moving ripples or horizontal wobble.
-                float flow = softNoise(flowUV)*0.88 + softNoise(flowUV*1.65+float2(7,19))*0.12;
-                float threads = smoothstep(0.18,0.74,flow);
-                // The connected flame bed cannot be punched out by a dark noise cell.
-                // Broader rising tongues grow out of it, rather than appearing as
-                // isolated bright fragments separated by two multiplied thresholds.
-                float bed = exp2(-pow(outward/(0.022+0.021*crown),2)*1.6);
-                bed *= 1-smoothstep(0.095,0.12,distance);
-                float bedAlpha = bed*0.43*root*footFade;
-                float tongueAlpha = envelope*pow(threads,1.2)*0.83*root*footFade;
-                float fireAlpha = 1-(1-bedAlpha)*(1-tongueAlpha);
-                float heat = pow(saturate(bed*0.22+threads*envelope*0.88),1.25);
-                float3 fireColor = lerp(float3(0.075,0.14,0.29),float3(0.29,0.59,0.85),heat);
-                float radiance = pow(heat,2.0)*envelope*root*footFade*0.18;
-
-                // Stable close glow merges into the moving translucent threads.
-                float halo = exp2(-pow(max(distance-0.011,0)/0.018,2))*0.20;
-                halo *= smoothstep(0.0095,0.015,distance)*footFade;
-                float3 rgb = fireColor*fireAlpha + float3(0.17,0.40,0.66)*halo*(1-fireAlpha)
-                    + float3(0.16,0.48,0.76)*radiance;
-                float alpha = fireAlpha+halo*(1-fireAlpha);
+                // Solid blue flame sheets around the unchanged caster outline.
+                // The packed contour anchors are generated once from the caster.
+                float flame=distance-0.035;
+                float span=max(_RevealBounds.w-_RevealBounds.z,0.12);
+                [unroll] for(int tongue=0;tongue<5;tongue++)
+                {
+                    float lane=(tongue+0.5)/5.0;
+                    float x=lerp(_RevealBounds.z,_RevealBounds.w,lane);
+                    float rootY=tex2D(_DistanceTex,float2(x,0.5)).g;
+                    float phase=tongue*2.399+_Seed;
+                    float width=clamp(span*0.132,0.0275,0.0473);
+                    float2 anchor=float2(x,rootY);
+                    if(rootY>0.01)
+                    {
+                        flame=joinFlames(flame,risingFlame(uv,anchor,width,0.185,0,phase,flameTime),0.025);
+                    }
+                }
+                // Side tongues curl upwards out of the shoulders and lower body.
+                [unroll] for(int side=0;side<2;side++)
+                {
+                    float sign=side*2-1;
+                    [unroll] for(int tongue=0;tongue<2;tongue++)
+                    {
+                        float y=lerp(_RevealBounds.x,_RevealBounds.y,0.14+tongue*0.36);
+                        float4 contour=tex2D(_DistanceTex,float2(0.5,y));
+                        float x=side==0?contour.b:contour.a;
+                        float phase=side*4.7+tongue*2.399+_Seed;
+                        // Keep newborn bases under the permanent blue sheet;
+                        // only the upward part should push out the visible edge.
+                        float2 anchor=float2(x+sign*0.008,y);
+                        if(contour.a>contour.b)
+                        {
+                            flame=joinFlames(flame,risingFlame(uv,anchor,0.0363,0.155,sign,phase,flameTime),0.023);
+                        }
+                    }
+                }
+                // Use the same continuous field for fill, stroke and glow; only
+                // the antialiasing coverage depends on screen derivatives.
+                float edge=flame;
+                float fill=coverage(edge);
+                const float rimWidth=0.012; // Twice the previous 0.006 UV white stroke.
+                float stroke=coverage(edge-rimWidth);
+                float tint=saturate((uv.y-(_RevealBounds.x-0.035)) /
+                    max(_RevealBounds.y-_RevealBounds.x+0.12,0.15));
+                float3 navy=float3(0.075,0.137,0.173);
+                float3 fireColor=lerp(float3(0.49,0.70,0.86),float3(0.74,0.865,0.945),tint);
+                // Broad curved ribbons travel upward inside the BLUE sheet.
+                // Deeper blue troughs and pale crests give the flame depth while
+                // keeping the character and the solid white contour independent.
+                float2 flowUV=uv*float2(14,8)+float2(_Seed*0.3,-flameTime*1.35);
+                float curl=softNoise(flowUV*0.48+float2(3.7,8.1));
+                flowUV.x+=(curl-0.5)*1.4;
+                float flow=softNoise(flowUV);
+                float ribbons=softNoise(flowUV*float2(1.55,0.80)+float2(4.3,9.2));
+                float depth=smoothstep(0.20,0.80,flow);
+                float crest=smoothstep(0.48,0.83,ribbons)*(0.45+0.55*depth);
+                fireColor*=0.87+0.14*depth;
+                fireColor=lerp(fireColor,float3(0.81,0.92,0.99),crest*0.30);
+                float innerLight=exp2(-pow(min(edge,0)/0.016,2)*1.4)*0.28;
+                fireColor=lerp(fireColor,float3(0.90,0.96,1),innerLight);
+                float3 rgb=lerp(float3(1,1,1),fireColor,fill)*stroke;
+                float glowDistance=max(edge-rimWidth,0);
+                float glow=exp2(-pow(glowDistance/0.014,2)*1.7)*0.32
+                    +exp2(-pow(glowDistance/0.028,2)*1.5)*0.07;
+                glow*=1-smoothstep(0.035,0.060,glowDistance);
+                rgb+=float3(0.93,0.97,1)*glow*(1-stroke);
+                float alpha=stroke+glow*(1-stroke);
                 rgb *= fireIgnition;
                 alpha *= fireIgnition;
-                // Editor inspection renders the complete flame with no pawn covering it.
-                if (_PreviewFireOnly>0.5) return float4(rgb,alpha)*_Opacity;
+                // Editor inspection isolates the exterior flame layer.
+                if (_PreviewFireOnly>0.5) return float4(rgb,alpha)*(_Opacity*(1-outline));
 
-                // Outside -> inside: flat ghost fire, a short luminous band, then a
-                // thick almost-black vanilla outline. The bands stay separate.
-                float glowDistance = max(distance-0.0095,0);
-                float glow = exp2(-pow(glowDistance/0.008,2))*0.35*(1-outline);
-                rgb = rgb*(1-glow) + float3(0.20,0.41,0.68)*glow;
-                alpha = alpha + glow*(1-alpha);
-                rgb = lerp(rgb,float3(0.008,0.014,0.028)*0.97,outline);
-                alpha = lerp(alpha,0.97,outline);
+                // Keep the caster a single dark shape within the pale fire.
+                rgb = lerp(rgb,navy,outline);
+                alpha = lerp(alpha,1,outline);
                 float detail = dot(source.rgb, float3(0.25,0.55,0.2));
-                float3 bodyColor = lerp(float3(0.025,0.047,0.09),float3(0.068,0.13,0.20),smoothstep(0.15,0.7,detail));
-                rgb = lerp(rgb,bodyColor*0.86,a);
-                alpha = lerp(alpha,0.86,a);
+                float3 bodyColor = navy
+                    + smoothstep(0.15,0.7,detail)*float3(0.007,0.009,0.010);
+                rgb = lerp(rgb,bodyColor,a);
+                alpha = lerp(alpha,1,a);
                 rgb *= reveal;
                 alpha *= reveal;
                 float dissolveEdge = (1-smoothstep(0.009,0.045,revealField))*reveal*outline
                     * (1-step(1,bodyProgress));
-                rgb += float3(0.12,0.40,0.62)*dissolveEdge*0.68;
+                rgb += float3(0.51,0.71,0.86)*dissolveEdge*0.68;
                 float2 eyes = (eyeLight(uv,_EyeA) + eyeLight(uv,_EyeB))*eyeIgnition;
                 float pulse = 0.94 + sin(t*2.4)*0.06;
-                rgb += (float3(0.64,0.94,1)*eyes.x + float3(0.08,0.50,0.90)*eyes.y)*pulse;
+                rgb += (float3(1,1,1)*eyes.x + float3(0.51,0.71,0.86)*eyes.y)*pulse;
                 alpha = saturate(alpha + eyes.x*0.5 + eyes.y*0.18);
                 float border = smoothstep(0,0.025,uv.x)*smoothstep(0,0.025,1-uv.x)*
                                smoothstep(0,0.025,uv.y)*smoothstep(0,0.025,1-uv.y);

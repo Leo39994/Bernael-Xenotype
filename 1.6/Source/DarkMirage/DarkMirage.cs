@@ -4,6 +4,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.Sound;
 
 namespace Bernael_Xenotype
 {
@@ -13,6 +14,10 @@ namespace Bernael_Xenotype
         public float burstRadius = 2.4f;
         public float frostbiteDamage = 4f;
         public float targetPriority = 2.5f;
+        public SoundDef startSound;
+        public SoundDef ambientSound;
+        public SoundDef endSound;
+        public int ambientStartTicks = 117;
     }
 
     public sealed class CompProperties_DarkMirage : CompProperties_AbilityEffect
@@ -95,6 +100,12 @@ namespace Bernael_Xenotype
 #endif
         private bool suppressBurst;
         private bool burstDone;
+        private Sustainer ambientSound;
+        private bool endSoundPlayed;
+        private const int FadeOutTicks = 36;
+        // Static buildings otherwise stretch TickInterval to 15 ticks, which would
+        // break PerTick sound maintenance and delay the visual/audio end transition.
+        protected override int MaxTickIntervalRate => 1;
         private MirageSettings Settings => def.GetModExtension<MirageSettings>();
         Thing IAttackTarget.Thing => this;
         public LocalTargetInfo TargetCurrentlyAimingAt => LocalTargetInfo.Invalid;
@@ -109,7 +120,13 @@ namespace Bernael_Xenotype
                 createdTick = Find.TickManager.TicksGame;
                 expiresTick = createdTick + Settings.durationTicks;
             }
-            if (!respawningAfterLoad) EnsureVisuals();
+            if (!respawningAfterLoad)
+            {
+                EnsureVisuals();
+                Settings.startSound?.PlayOneShot(SoundInfo.InMap(new TargetInfo(Position, Map)));
+            }
+            // One-shot cues belong to the original lifetime, not the loading process.
+            else if (expiresTick - Find.TickManager.TicksGame <= FadeOutTicks) endSoundPlayed = true;
         }
 
         protected override void TickInterval(int delta)
@@ -123,6 +140,14 @@ namespace Bernael_Xenotype
                 return;
             }
             int now = Find.TickManager.TicksGame;
+            if (expiresTick - now <= FadeOutTicks) PlayEndSound();
+            else if (now - createdTick >= Settings.ambientStartTicks)
+            {
+                if (ambientSound == null || ambientSound.Ended)
+                    ambientSound = Settings.ambientSound?.TrySpawnSustainer(
+                        SoundInfo.InMap(new TargetInfo(Position, Map), MaintenanceType.PerTick));
+                ambientSound?.Maintain();
+            }
             if (now >= expiresTick)
             {
                 Destroy();
@@ -154,22 +179,38 @@ namespace Bernael_Xenotype
 #endif
             int now = Find.TickManager.TicksGame;
             // Spawn is revealed by the shader; retain the existing 36-tick fade-out.
-            float opacity = Mathf.Clamp01((expiresTick - now) / 36f);
+            float opacity = Mathf.Clamp01((expiresTick - now) / (float)FadeOutTicks);
             EnsureVisuals();
             visuals?.Draw(drawLoc, now - createdTick, opacity);
         }
 
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
+            StopAmbientSound();
             visuals?.Dispose();
             visuals = null;
             base.DeSpawn(mode);
+        }
+
+        private void StopAmbientSound()
+        {
+            if (ambientSound != null && !ambientSound.Ended) ambientSound.End();
+            ambientSound = null;
+        }
+
+        private void PlayEndSound()
+        {
+            StopAmbientSound();
+            if (endSoundPlayed || !Spawned) return;
+            endSoundPlayed = true;
+            Settings.endSound?.PlayOneShot(SoundInfo.InMap(new TargetInfo(Position, Map)));
         }
 
         public void ExportVisualPreview(string directory)
         {
             EnsureVisuals();
             System.IO.Directory.CreateDirectory(directory);
+            if (snapshotPng.NullOrEmpty()) snapshotPng = visuals?.EncodeSnapshot();
             System.IO.File.WriteAllBytes(System.IO.Path.Combine(directory,"caster.png"),System.Convert.FromBase64String(snapshotPng));
             for (int i=0; i<4; i++) visuals.ExportPreview(System.IO.Path.Combine(directory,"mirage-"+i+".png"), i*0.35f);
             System.IO.File.WriteAllText(System.IO.Path.Combine(directory,"anchors.txt"),"Facing="+Rotation+"\nEyeA="+eyeA+"\nEyeB="+eyeB);
@@ -184,6 +225,7 @@ namespace Bernael_Xenotype
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
             if (Destroyed) return;
+            PlayEndSound();
             // Deconstruction, map removal and replacement must never deal damage.
             bool detonate = !suppressBurst && !burstDone && Spawned &&
                 (mode == DestroyMode.Vanish || mode == DestroyMode.KillFinalize);
@@ -211,6 +253,10 @@ namespace Bernael_Xenotype
             Scribe_Values.Look(ref createdTick, "mirageCreatedTick");
             Scribe_Values.Look(ref expiresTick, "mirageExpiresTick");
             Scribe_Values.Look(ref burstDone, "mirageBurstDone");
+            Scribe_Values.Look(ref endSoundPlayed, "mirageEndSoundPlayed");
+            // Encode only when an active mirage actually needs to be saved.
+            if (Scribe.mode == LoadSaveMode.Saving && snapshotPng.NullOrEmpty())
+                snapshotPng = visuals?.EncodeSnapshot();
             Scribe_Values.Look(ref snapshotPng, "mirageSnapshotPng");
             // Vector4.ToString rounds to two decimals: use scalar serialization to keep subpixel anchors.
             if (Scribe.mode == LoadSaveMode.LoadingVars)

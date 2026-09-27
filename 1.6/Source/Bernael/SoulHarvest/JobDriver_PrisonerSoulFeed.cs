@@ -17,6 +17,10 @@ namespace Bernael_Xenotype
 
         protected Pawn Prisoner => (Pawn)job.targetA.Thing;
 
+        private Toil drainToil;
+
+        public bool IsDraining(Pawn victim) => HaveCurToil && CurToil == drainToil && Prisoner == victim;
+
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             return pawn.Reserve(job.targetA, job, 1, -1, null, errorOnFailed);
@@ -27,7 +31,20 @@ namespace Bernael_Xenotype
             this.FailOnDespawnedOrNull(TargetIndex.A);
             this.FailOn(() => !Prisoner.IsPrisonerOfColony || !Prisoner.guest.PrisonerIsSecure || Prisoner.InAggroMentalState || Prisoner.guest.IsInteractionDisabled(PrisonerInteractionModeDefOf.Bloodfeed));
             yield return Toils_Interpersonal.GotoPrisoner(pawn, Prisoner, PrisonerInteractionModeDefOf.Bloodfeed);
-            yield return Toils_General.WaitWith(TargetIndex.A, WaitTicks, useProgressBar: true).PlaySustainerOrSound(SoundDefOf.Bloodfeed_Cast);
+            drainToil = Toils_General.WaitWith(TargetIndex.A, WaitTicks, useProgressBar: true)
+                .PlaySustainerOrSound(SoundDefOf.Bloodfeed_Cast);
+            bool visualsStarted = false;
+            void EnsureVisuals()
+            {
+                if (visualsStarted) return;
+                visualsStarted = true;
+                SoulDrainVisuals.BeginFeeding(pawn, Prisoner, ticksLeftThisToil);
+            }
+            drainToil.AddPreInitAction(EnsureVisuals);
+            // Toil init actions do not replay on load. Reuse the saved link or start
+            // one for the remaining wait when loading a save from before this VFX.
+            drainToil.AddPreTickAction(EnsureVisuals);
+            yield return drainToil;
             yield return Toils_General.Do(delegate
             {
                 SoulUtility.DoDrain(pawn, Prisoner, HemogenGain, VictimResistance, BernaelUtility.cachedSoulDrainedHediff, BloodLoss, BernaelDefOf.BX_FedOn, BernaelDefOf.BX_FedOn_Social);

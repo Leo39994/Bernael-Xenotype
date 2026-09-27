@@ -7,6 +7,21 @@ namespace Bernael_Xenotype
     // then sampled by the shader; no per-frame CPU work or extra save payload.
     public static class MirageDistanceField
     {
+        public sealed class Data
+        {
+            public readonly int Width, Height;
+            public readonly Color32[] Pixels;
+            public readonly Vector4 RevealBounds;
+
+            public Data(int width, int height, Color32[] pixels, Vector4 revealBounds)
+            {
+                Width = width;
+                Height = height;
+                Pixels = pixels;
+                RevealBounds = revealBounds;
+            }
+        }
+
         public static Texture2D Create(Texture2D snapshot)
         {
             Vector4 ignored;
@@ -15,32 +30,60 @@ namespace Bernael_Xenotype
 
         public static Texture2D Create(Texture2D snapshot, out Vector4 revealBounds)
         {
-            int width = snapshot.width, height = snapshot.height;
-            Color32[] pixels = snapshot.GetPixels32();
-            int bottom=height, top=-1;
+            Data data = Compute(snapshot.GetPixels32(), snapshot.width, snapshot.height);
+            revealBounds = data.RevealBounds;
+            return CreateTexture(data);
+        }
+
+        // Owns this pixel array. Pure array/math work; safe on a worker thread.
+        // Texture readback and upload remain on Unity's main thread.
+        public static Data Compute(Color32[] pixels, int width, int height)
+        {
+            int bottom=height, top=-1, left=width, right=-1;
+            var columnTop = new int[width];
+            var rowLeft = new int[height];
+            var rowRight = new int[height];
+            for (int y=0;y<height;y++) rowLeft[y]=width;
             for(int i=0;i<pixels.Length;i++)
             {
                 if(pixels[i].a<8) continue;
-                int row=i/width;
+                int row=i/width, column=i%width;
                 bottom=Math.Min(bottom,row);
                 top=Math.Max(top,row);
+                left=Math.Min(left,column);
+                right=Math.Max(right,column);
+                if(pixels[i].a<128) continue;
+                columnTop[column]=Math.Max(columnTop[column],row+1);
+                rowLeft[row]=Math.Min(rowLeft[row],column);
+                rowRight[row]=Math.Max(rowRight[row],column+1);
             }
-            revealBounds = top<bottom ? new Vector4(0,1,0,0) :
-                new Vector4((float)bottom/height,(float)(top+1)/height,0,0);
+            Vector4 revealBounds = top<bottom ? new Vector4(0,1,0,1) :
+                new Vector4((float)bottom/height,(float)(top+1)/height,(float)left/width,(float)(right+1)/width);
             float[] outside = Transform(pixels,width,height,true);
             float[] inside = Transform(pixels,width,height,false);
             float range = width * 0.125f;
             for (int i=0; i<pixels.Length; i++)
             {
                 float distance = (float)(Math.Sqrt(outside[i])-Math.Sqrt(inside[i]));
-                byte encoded = (byte)Mathf.RoundToInt(Mathf.Clamp01(0.5f+distance/(2*range))*255);
-                pixels[i] = new Color32(encoded,encoded,encoded,255);
+                byte encoded = (byte)Math.Round(Math.Max(0f, Math.Min(1f, 0.5f+distance/(2*range)))*255);
+                int x=i%width, y=i/width;
+                // R: signed distance. G/B/A: top/left/right contour anchors.
+                // Tongues grow from the captured outline, including hats and gear.
+                pixels[i] = new Color32(encoded,
+                    (byte)Math.Round(255f*columnTop[x]/height),
+                    (byte)Math.Round(255f*rowLeft[y]/width),
+                    (byte)Math.Round(255f*rowRight[y]/width));
             }
-            var result = new Texture2D(width,height,TextureFormat.RGBA32,false,true) {
+            return new Data(width, height, pixels, revealBounds);
+        }
+
+        public static Texture2D CreateTexture(Data data)
+        {
+            var result = new Texture2D(data.Width,data.Height,TextureFormat.RGBA32,false,true) {
                 name = "DarkMirage silhouette distance", filterMode = FilterMode.Bilinear,
                 wrapMode = TextureWrapMode.Clamp
             };
-            result.SetPixels32(pixels);
+            result.SetPixels32(data.Pixels);
             result.Apply(false,true);
             return result;
         }

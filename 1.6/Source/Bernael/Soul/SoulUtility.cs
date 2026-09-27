@@ -123,6 +123,7 @@ namespace Bernael_Xenotype
             {
                 victim.guest.resistance = Mathf.Min(victim.guest.resistance + victimResistanceGain, victim.kindDef.initialResistanceRange.Value.TrueMax);
             }
+            SoulDrainVisuals.Complete(biter, victim);
         }
         public static bool TryConvertBaby(Pawn drainer, Pawn victim)
         {

@@ -40,7 +40,7 @@
     <comps>
       <li Class="CompProperties_Glower">
         <glowRadius>1.8</glowRadius>
-        <glowColor>(70,125,255,0)</glowColor>
+        <glowColor>(185,217,237,0)</glowColor>
       </li>
     </comps>
     <modExtensions>
@@ -49,6 +49,10 @@
         <burstRadius>2.4</burstRadius>
         <frostbiteDamage>4</frostbiteDamage>
         <targetPriority>2.5</targetPriority>
+        <startSound>BX_DarkMirage_Start</startSound>
+        <ambientSound>BX_DarkMirage_Ambient</ambientSound>
+        <endSound>BX_DarkMirage_End</endSound>
+        <ambientStartTicks>117</ambientStartTicks>
       </li>
     </modExtensions>
   </ThingDef>

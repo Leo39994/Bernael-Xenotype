@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <SoundDef>
+    <defName>BX_DarkMirage_Start</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>4</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains><li Class="AudioGrain_Clip"><clipPath>DarkMirage/DarkMirage_Start</clipPath></li></grains>
+        <volumeRange>65</volumeRange>
+        <pitchRange>1</pitchRange>
+        <distRange>14~40</distRange>
+        <muteWhenPaused>true</muteWhenPaused>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <SoundDef>
+    <defName>BX_DarkMirage_Ambient</defName>
+    <context>MapOnly</context>
+    <sustain>true</sustain>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <maxSimultaneous>4</maxSimultaneous>
+    <sustainFadeoutTime>0.35</sustainFadeoutTime>
+    <subSounds>
+      <li>
+        <grains><li Class="AudioGrain_Clip"><clipPath>DarkMirage/DarkMirage_AmbientLoop</clipPath></li></grains>
+        <volumeRange>32</volumeRange>
+        <pitchRange>1</pitchRange>
+        <distRange>14~40</distRange>
+        <muteWhenPaused>true</muteWhenPaused>
+        <sustainLoop>true</sustainLoop>
+        <sustainAttack>0.4</sustainAttack>
+        <sustainSkipFirstAttack>false</sustainSkipFirstAttack>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <SoundDef>
+    <defName>BX_DarkMirage_End</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>4</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains><li Class="AudioGrain_Clip"><clipPath>DarkMirage/DarkMirage_End</clipPath></li></grains>
+        <volumeRange>80</volumeRange>
+        <pitchRange>1</pitchRange>
+        <distRange>14~40</distRange>
+        <muteWhenPaused>true</muteWhenPaused>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>
