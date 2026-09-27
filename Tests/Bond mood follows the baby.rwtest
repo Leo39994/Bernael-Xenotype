@@ -16,9 +16,11 @@ test "Bond mood follows the baby" project="Bernael" group="Bond" created=2026-09
 # "present" could not go green here and "expect=absent" went green without
 # looking at anything.
 #
-# The bond is made the way a player makes it, through the drain;
-# "Baby drain creates bond" walks that path in full and this test only checks
-# that it happened before it starts measuring.
+# The bond is made the way a player makes it, through the drain: the "Soul
+# drain" gizmo and a click on the baby. "Baby drain creates bond" walks that
+# path in full and this test only checks that it happened before it starts
+# measuring. The walk and the 120-tick warmup are waited out with a waitfor on
+# the feeder hediff, 300 ticks at most.
 #
 # Tick budget: SituationalThoughtHandler recalculates a cached thought once it
 # is older than 100 ticks, so 120 is one full interval plus slack. It is also
@@ -33,8 +35,10 @@ spawn Pawn:Colonist at 1,0 name="Baby" age=1
 spawn Pawn:Colonist at 5,0 name="Childless" xenotype=BX_Bernael
 
 give "Bernael" resource=BX_SoulStarved value=0.1
-cast "Bernael" ability=BX_SoulFeeding target="Baby"
-tick 180 reason="120 ticks warmup plus slack"
+select "Bernael"
+gizmo "Soul drain"
+target "Baby"
+waitfor pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present ticks=300
 assert pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present
 
 # The stage index is the marker, the mood is what the stage stands for, and the

@@ -16,9 +16,14 @@ test "Dark mirage looks like its caster" project="Bernael" group="Ability" creat
 # taken. In a headless run every "ask" is a skip with its reason, never a pass,
 # so this file is honest about being the manual one.
 #
+# The decoy is placed the player's way: the "Dark mirage" gizmo on the drafted
+# caster, then a click on the cell. The 0.6 s warmup (36 ticks) runs before
+# Apply, so the placement is a waitfor with 120 ticks. The caster is deselected
+# afterwards so the scene the questions ask about carries no selection
+# brackets and no gizmo bar, as it did before.
+#
 requires dlc=Biotech
 requires dlc=Royalty
-requires verb=ability
 
 despawn Thing:BX_DarkMirageDecoy
 sky glow=0
@@ -29,9 +34,12 @@ ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 ask "mirage-dark-before" claim="with the sky pinned dark, the ground around Watcher is visibly dark before the cast"
 
 draft "Bernael"
-cast "Bernael" ability=BX_DarkMirage at 4,0
-tick 60 reason="0.6 s warmup is 36 ticks"
+select "Bernael"
+gizmo "Dark mirage"
+target cell=4,0
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
 assert thing BX_DarkMirageDecoy at 4,0
+deselect
 ask "mirage-glow-after" claim="the decoy casts visible light onto the ground around it while the pinned sky remains dark"
 
 ask "mirage-caster-body" claim="the decoy at the target cell shows this caster's own body and apparel, facing the way the caster faces, and is not a generic silhouette"
@@ -42,12 +50,13 @@ select BX_DarkMirageDecoy
 ask "mirage-burst-ring" claim="selecting the decoy draws one ring around it, about two and a half cells wide - the area its burst would reach"
 deselect
 
-# The decoy is about 24 ticks old after the warmup budget and the "ask ticks=180"
-# above spends 180 more, so it stands at about 204 here. durationTicks is 600
-# and DrawAt ramps the opacity down over the last 36, which is the window from
-# 564 to 600. This budget stops at about 544, just short of it, and the ask
-# below runs 90 ticks - long enough to carry the fade and the expiry both.
-tick 340 reason="to about 544 of 600, just short of the 36-tick fade-out window"
+# The waitfor after the cast stops the moment the decoy stands, so it is about
+# 0 ticks old there, and the "ask ticks=180" above spends 180 more, so it stands
+# at about 180 here. durationTicks is 600 and DrawAt ramps the opacity down over
+# the last 36, which is the window from 564 to 600. This budget stops at about
+# 544, just short of it, and the ask below runs 90 ticks - long enough to carry
+# the fade and the expiry both.
+tick 364 reason="to about 544 of 600, just short of the 36-tick fade-out window"
 ask "mirage-fade-out" ticks=90 claim="the decoy fades out over the last moments and then is gone; it does not vanish in one frame and leaves no rubble, corpse or fire behind"
 
 assert thing BX_DarkMirageDecoy expect=absent

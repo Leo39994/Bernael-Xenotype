@@ -20,11 +20,22 @@ test "Lantern shot burns target" project="Bernael" group="Weapon" created=2026-0
 # burn damage a hit and may well be dead by the end, but "assert pawn" resolves
 # through corpses as well, and a Burn hediff stays on the pawn inside one.
 #
-# The pirate shoots back, so only the target is checked.
+# The pirate is pacified. It used to shoot back, and a Bernael it downed ended
+# the attack and left the Burn line red for a reason that is not the weapon's.
+# It is placed under "speed paused" because "pacify" refuses a pawn that has
+# already started an attack, and the clock runs again before the equip walk.
+#
+# "assert shots" sits in front of the Burn line so a red run says which half
+# broke: no projectile at all is the firing path, projectiles without a burn
+# is the hit or the damage. min=1 and no more, because the pirate may go down
+# early and end the attack after any burst.
 
 requires dlc=Biotech
+speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 6,0 name="Pirate" faction=enemy
+pacify "Pirate"
+speed x1
 spawn Thing:BX_SoulLantern at 1,0
 equip "Bernael" thing=BX_SoulLantern
 
@@ -32,4 +43,5 @@ attack "Bernael" target="Pirate"
 assert pawn "Bernael" job=AttackStatic
 
 tick 1320 reason="four cycles of warmup 120, burst 5x20 and cooldown 120, plus flight"
+assert shots "Bernael" min=1
 assert pawn "Pirate" hediff=Burn expect=present

@@ -28,8 +28,17 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Baby" age=1
 
 give "Bernael" resource=BX_SoulStarved value=0.1
-cast "Bernael" ability=BX_SoulFeeding target="Baby"
-tick 180 reason="120 ticks warmup plus slack"
+
+# The drain is used the way a player uses it: the "Soul drain" gizmo, then a
+# click on the baby. Bernael walks next to it and runs the 2 s warmup (120
+# ticks) before Apply fires, so the first assert of the order waits for the
+# conversion instead of reading it at once. 300 is warmup, the one-cell walk
+# and slack. Everything TryConvertBaby does happens in that one Apply, so once
+# Blindness is there the asserts below read a finished conversion.
+select "Bernael"
+gizmo "Soul drain"
+target "Baby"
+waitfor pawn "Baby" hediff=BX_Blindness expect=present ticks=300
 
 assert pawn "Baby" hediff=BX_Blindness expect=present
 assert pawn "Baby" hediff=BX_SoulDrained expect=absent

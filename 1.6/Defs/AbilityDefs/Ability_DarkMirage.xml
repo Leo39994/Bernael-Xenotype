@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- Royalty level-2 psycast; the dedicated dev action provides immediate demo access. -->
+  <!-- Royalty level-2 psycast; the dedicated dev action grants it immediately. -->
   <AbilityDef MayRequire="Ludeon.RimWorld.Royalty">
     <defName>BX_DarkMirage</defName>
     <label>dark mirage</label>
@@ -32,7 +32,7 @@
       </targetParams>
     </verbProperties>
     <comps>
-      <li Class="Bernael.DarkMirageDemo.CompProperties_DarkMirage">
+      <li Class="Bernael_Xenotype.CompProperties_DarkMirage">
         <mirageDef>BX_DarkMirageDecoy</mirageDef>
       </li>
     </comps>

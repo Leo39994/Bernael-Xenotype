@@ -7,10 +7,10 @@ test "Dark mirage is refused out of range" project="Bernael" group="Ability" cre
 # "assert ability ... range". This one proves that the game itself turns an
 # out-of-range aim down, and it proves it through the route a player takes.
 #
-# "cast" is not that route. It calls Ability.Activate directly, which runs
-# PreActivate and ApplyEffects and nothing else - no verb, no warmup, no job
-# and no range. The route the game uses is two steps, and both are verbs this
-# kit already had:
+# The old "cast" verb was not that route, and the kit has since removed it: it
+# called Ability.Activate directly, which runs PreActivate and ApplyEffects and
+# nothing else - no verb, no warmup, no job and no range. The route the game
+# uses is two steps, and both are verbs this kit already had:
 #
 #   gizmo "Dark mirage"     Command_Ability.ProcessInput -> Targeter.BeginTargeting
 #   target cell=...         the map click -> Verb_CastAbility.ValidateTarget
@@ -38,7 +38,6 @@ test "Dark mirage is refused out of range" project="Bernael" group="Ability" cre
 
 requires dlc=Biotech
 requires dlc=Royalty
-requires verb=ability
 
 despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Plain"
@@ -62,8 +61,8 @@ gizmo "Dark mirage"
 target cell=10,0
 
 # warmupTime is 0.6 s, so 36 ticks, and the job has to walk nowhere. 90 is that
-# plus margin - this line is not decoration here the way it is behind "cast",
-# because this route really does run a job and a warmup.
+# plus margin - this line is not decoration here the way it was behind the old
+# "cast", because this route really does run a job and a warmup.
 tick 90 reason="0.6 s warmup is 36 ticks, plus the job that carries it"
 
 assert thing BX_DarkMirageDecoy at 10,0

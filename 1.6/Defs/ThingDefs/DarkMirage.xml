@@ -4,7 +4,7 @@
     <defName>BX_DarkMirageDecoy</defName>
     <label>dark mirage</label>
     <description>TODO.</description>
-    <thingClass>Bernael.DarkMirageDemo.DarkMirage</thingClass>
+    <thingClass>Bernael_Xenotype.DarkMirage</thingClass>
     <category>Building</category>
     <tickerType>Normal</tickerType>
     <drawerType>RealtimeOnly</drawerType>
@@ -44,7 +44,7 @@
       </li>
     </comps>
     <modExtensions>
-      <li Class="Bernael.DarkMirageDemo.MirageSettings">
+      <li Class="Bernael_Xenotype.MirageSettings">
         <durationTicks>600</durationTicks>
         <burstRadius>2.4</burstRadius>
         <frostbiteDamage>4</frostbiteDamage>

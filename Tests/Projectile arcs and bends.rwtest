@@ -15,12 +15,20 @@ test "Projectile arcs and bends" project="Bernael" group="Art" created=2026-09-1
 # up more than once. "Projectile retargets" runs far longer, but only because it
 # has to outlast the hit roll - an eye does not, so this one stays short enough
 # to watch in one sitting.
+#
+# Both pirates are pacified, placed paused because "pacify" refuses a pawn that
+# has already started an attack. An armed Pirate B that shoots Bernael down
+# ends the scene before the person has seen a single bend.
 
 requires dlc=Biotech
 requires mod=Mortis.BX
+speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 8,0 name="Pirate A" faction=enemy
 spawn Pawn:Pirate at 8,3 name="Pirate B" faction=enemy
+pacify "Pirate A"
+pacify "Pirate B"
+speed x1
 spawn Thing:BX_SoulLantern at 1,0
 equip "Bernael" thing=BX_SoulLantern
 

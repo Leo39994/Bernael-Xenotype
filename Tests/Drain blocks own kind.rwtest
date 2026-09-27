@@ -7,9 +7,9 @@ test "Drain blocks own kind" project=Bernael group=Soul created=2026-09-17T00:00
 # the moment both pawns stand on the map and stays true - it depends on no tick,
 # no distance and no job.
 #
-# Asserting only the refusal did not prove that. Four runs passed and two failed
-# on the same assembly, and every pass took seconds: t=5.15, t=7.41, t=8.93
-# against a step timeout of ten. A refusal that arrives late is not this
+# Asserting only the refusal, through the old "cast" verb, did not prove that.
+# Four runs passed and two failed on the same assembly, and every pass took
+# seconds: t=5.15, t=7.41, t=8.93 against a step timeout of ten. A refusal that arrives late is not this
 # refusal - it is one of the other ways the cast can stop being offered, and all
 # of them are caster-side or distance-side: BX_SoulFeeding carries
 # CompProperties_AbilityRequiresCapacity for Manipulation, it is a touch verb
@@ -27,10 +27,18 @@ test "Drain blocks own kind" project=Bernael group=Soul created=2026-09-17T00:00
 #    passing for the wrong reason. It landing is what makes the line above mean
 #    "the target was the difference".
 #
-# Read t= on the refusal when this test is green. At t=0.0 the rule fired. Any
-# wait at all, and especially the note the report writes past half the timeout,
-# means it drifted into green again and the two asserts below are carrying the
-# test on their own.
+# Both attempts are a player's: the "Soul drain" gizmo on Bernael, then a click
+# on the target. The click runs Verb_CastAbility.ValidateTarget, which asks
+# CompAbilityEffect_SoulDrain.Valid, and on a no the targeter keeps asking -
+# that is what "target ... expect=refused" reads. The caster-side reasons named
+# above no longer hide behind the refusal: no manipulation or a cooldown grey
+# the gizmo out, and the "gizmo" line itself goes red. Distance cannot refuse
+# either, because a touch verb walks to its target. So the refusal of the aim is
+# the target's genes, and the Stranger line is still the control that proves
+# the same gizmo and the same caster do land.
+#
+# The Stranger drain runs the one-cell walk and the 120-tick warmup, so its
+# first assert is a waitfor with 300 ticks for warmup, walk and slack.
 
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
@@ -51,12 +59,14 @@ assert pawn "Kin" gene=BX_SoulStarved expect=present
 assert pawn "Stranger" gene=BX_SoulStarved expect=absent
 assert pawn "Stranger" gene=BX_SoulFeeder expect=absent
 
-cast "Bernael" ability=BX_SoulFeeding target="Kin" expect=refused
+select "Bernael"
+gizmo "Soul drain"
+target "Kin" expect=refused
 tick 60 reason="in case the cast went through anyway"
 assert pawn "Kin" hediff=BX_SoulDrained expect=absent
 
-cast "Bernael" ability=BX_SoulFeeding target="Stranger"
-tick 180 reason="120 ticks of warmup plus slack to walk one cell"
-assert pawn "Stranger" hediff=BX_SoulDrained expect=present
+gizmo "Soul drain"
+target "Stranger"
+waitfor pawn "Stranger" hediff=BX_SoulDrained expect=present ticks=300
 assert pawn "Kin" hediff=BX_SoulDrained expect=absent
 assert log clean

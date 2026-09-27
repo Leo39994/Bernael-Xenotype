@@ -3,9 +3,15 @@ test "Abyssal reach lengthens a psycast" project="Bernael" group="Genes" created
 
 # Patch_Verb_EffectiveRange is a postfix on the Verb.EffectiveRange getter. It
 # leaves every verb alone except a Verb_CastAbility whose Ability.def.IsPsycast
-# is true, and there it multiplies the range by AbyssalReachUtility.RangeFactor
-# = 1.25 when the caster has an active BX_AbyssalReach. The gene is an endogene
-# of BX_Bernael, so the xenotype is what sets the two pawns apart.
+# is true, and there it multiplies the range when the caster has an active
+# BX_AbyssalReach. The gene is an endogene of BX_Bernael, so the xenotype is
+# what sets the two pawns apart.
+#
+# The 1.25 below is the promise the player reads in the gene's description -
+# "increasing the range of all psycast abilities by 25%" - and not
+# AbyssalReachUtility.RangeFactor, which is the copy the code multiplies with.
+# A test that took its number from that constant would agree with any value
+# somebody typed into it.
 #
 # BX_DarkMirage is the psycast this file measures with, because its
 # verbProperties range of 19.9 puts both readings far apart:
@@ -29,15 +35,16 @@ test "Abyssal reach lengthens a psycast" project="Bernael" group="Genes" created
 # patch did. Both halves are gone; what the cast path can honestly say about
 # this ability is said in "Dark mirage places a decoy".
 #
-# "assert ability" does not exist yet, so every step below reports skip with
-# the missing name as its reason until it lands. That is the shape: the wish is
-# in the run, it is grey and not red, and the day the assert kind arrives this
-# file starts measuring without being touched.
+# This file was written before "ability" and "assert ability" existed and
+# carried "requires verb=ability" and "requires assert=ability" so that it
+# skipped until they landed. Both are in the kit now, so the lines are gone and
+# the two range asserts below really measure - which also means neither of them
+# has been seen red yet. A build with the factor at 1.0 has to fail line
+# "range min=24.5" with "EffectiveRange reads 19.9" before this file counts as
+# proof.
 
 requires dlc=Biotech
 requires dlc=Royalty
-requires verb=ability
-requires assert=ability
 
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 0,1 name="Plain"

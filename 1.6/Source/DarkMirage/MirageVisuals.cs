@@ -3,7 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Bernael.DarkMirageDemo
+namespace Bernael_Xenotype
 {
     // Each decoy owns an immutable capture. Never recolor or patch the caster's render tree.
     [StaticConstructorOnStartup]

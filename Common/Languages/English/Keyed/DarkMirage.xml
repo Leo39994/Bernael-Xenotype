@@ -2,6 +2,6 @@
 <LanguageData>
   <BX_MirageShaderMissing>Dark Mirage shader is unavailable. Check the AssetBundle installation and restart RimWorld.</BX_MirageShaderMissing>
   <BX_MirageBlocked>Dark mirage needs a visible, walkable cell without pawns, fire, buildings or blueprints.</BX_MirageBlocked>
-  <BX_MirageGranted>Dark Mirage demo granted to {0}. Draft this pawn to cast it.</BX_MirageGranted>
+  <BX_MirageGranted>Dark Mirage granted to {0}. Draft this pawn to cast it.</BX_MirageGranted>
   <BX_MirageInspect>Caster: {0}\nDissipates in: {1} s\nStationary decoy · Cold-flame burst on expiry or combat destruction</BX_MirageInspect>
 </LanguageData>

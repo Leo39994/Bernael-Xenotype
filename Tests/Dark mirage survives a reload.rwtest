@@ -19,19 +19,22 @@ test "Dark mirage survives a reload" project="Bernael" group="Ability" created=2
 #                                    as an owner loss on the next tick
 #
 # The budgets are the same arithmetic as "Dark mirage expires on its own": the
-# decoy is about 24 ticks old when the reload happens, 504 after the first
-# budget and about 684 after the second, against durationTicks 600.
+# decoy is placed through the "Dark mirage" gizmo and a click on the cell, the
+# waitfor stops the moment it stands, so it is about 0 ticks old when the
+# reload happens, 500 after the first budget and about 680 after the second,
+# against durationTicks 600.
 
 requires dlc=Biotech
 requires dlc=Royalty
-requires verb=ability
 
 despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 draft "Bernael"
-cast "Bernael" ability=BX_DarkMirage at 4,0
-tick 60 reason="0.6 s warmup is 36 ticks"
+select "Bernael"
+gizmo "Dark mirage"
+target cell=4,0
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
 assert thing BX_DarkMirageDecoy at 4,0
 assert inspect "BX_DarkMirageDecoy" contains "Caster: Bernael"
 
@@ -42,10 +45,10 @@ reload reason="the decoy scribes its caster, its created tick and its expiry"
 assert thing BX_DarkMirageDecoy at 4,0
 assert inspect "BX_DarkMirageDecoy" contains "Caster: Bernael"
 
-tick 480 reason="about 504 of the 600 ticks spent, counted from before the reload"
+tick 500 reason="about 500 of the 600 ticks spent, counted from before the reload"
 assert thing BX_DarkMirageDecoy at 4,0
 
-tick 180 reason="about 684 ticks, past the 600 of durationTicks"
+tick 180 reason="about 680 ticks, past the 600 of durationTicks"
 assert thing BX_DarkMirageDecoy expect=absent
 
 undraft "Bernael"

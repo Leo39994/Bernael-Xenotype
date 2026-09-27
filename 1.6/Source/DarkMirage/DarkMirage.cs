@@ -5,7 +5,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace Bernael.DarkMirageDemo
+namespace Bernael_Xenotype
 {
     public sealed class MirageSettings : DefModExtension
     {

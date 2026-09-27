@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Bernael.DarkMirageDemo
+namespace Bernael_Xenotype
 {
     // Shared by the game and the editor preview. Built once per captured pawn,
     // then sampled by the shader; no per-frame CPU work or extra save payload.
