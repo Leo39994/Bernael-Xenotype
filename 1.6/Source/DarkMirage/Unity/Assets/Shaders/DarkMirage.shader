@@ -161,7 +161,10 @@ Shader "Bernael/DarkMirage"
                 if (bodyProgress>=1) reveal=1;
                 float eyeIgnition = smoothstep(0.85,1.15,_SpawnAge);
                 float fireProgress = smoothstep(1.15,1.95,_SpawnAge);
-                float fireFront = lerp(bottom-0.06,top+0.17,fireProgress);
+                // Move the entire reveal band above the canvas once ignited.
+                // Capping it relative to the pawn keeps clipping tall flame tips
+                // and their glow long after the summoning animation has ended.
+                float fireFront = lerp(bottom-0.06,1.025,fireProgress);
                 float fireIgnition = smoothstep(1.15,1.35,_SpawnAge)
                     * (1-smoothstep(fireFront-0.025,fireFront+0.025,uv.y));
 
