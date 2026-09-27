@@ -113,7 +113,7 @@
 <HediffDef>
 	<defName>BX_ReaperEcstasy</defName>
 	<label>Reaper's Ecstasy</label>
-	<description>A dark psychic phenomenon causes this creature to feed upon the soul of fallen enemies, increasing psychic prowess while slightly refilling their soul saturation.</description>
+	<description>A dark psychic phenomenon causes this creature to feed upon the soul of fallen enemies, increasing psychic prowess while slightly refilling their soul saturation. Each hostile kill refreshes the shared decay timer. After one in-game hour without another kill, the effect loses one level per hour.</description>
 	<hediffClass>Bernael_Xenotype.Hediff_ReapersEcstasy</hediffClass>
 	<initialSeverity>1</initialSeverity>
 	<minSeverity>0</minSeverity>
@@ -165,7 +165,7 @@
 	<modExtensions>
 		<li Class="Bernael_Xenotype.ReaperModExt">
 			<killRefillPct>10</killRefillPct>
-			<decayTickInterval>60</decayTickInterval>
+			<decayTickInterval>2500</decayTickInterval>
 		</li>
 	</modExtensions>
 	<comps>
