@@ -1,5 +1,6 @@
 ﻿using System;
 using RimWorld;
+using System.Collections.Generic;
 using Verse;
 namespace Bernael_Xenotype
 {
@@ -7,11 +8,17 @@ namespace Bernael_Xenotype
     {
         private new CompProperties_AbilitySoulDrain Props => (CompProperties_AbilitySoulDrain)props;
 
+        public override IEnumerable<Mote> CustomWarmupMotes(LocalTargetInfo target)
+        {
+            SoulDrainVisuals.Begin(parent.pawn, target.Pawn, parent);
+            yield break;
+        }
+
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             base.Apply(target, dest);
             Pawn pawn = target.Pawn;
-            if (pawn == null)
+            if (pawn == null || pawn.Dead)
             {
                 return;
             }
@@ -34,7 +41,7 @@ namespace Bernael_Xenotype
         public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
         {
             Pawn pawn = target.Pawn;
-            if (pawn == null)
+            if (pawn == null || pawn.Dead)
             {
                 return false;
             }

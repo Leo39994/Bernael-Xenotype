@@ -1,5 +1,6 @@
 ﻿using System;
 using RimWorld;
+using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
@@ -16,6 +17,7 @@ namespace Bernael_Xenotype
         private Texture2D snapshot;
         private Texture2D distanceField;
         private Material material;
+        private Task<MirageDistanceField.Data> pendingDistanceField;
         private readonly MaterialPropertyBlock properties = new MaterialPropertyBlock();
         private Vector4 eyeA;
         private Vector4 eyeB;
@@ -51,21 +53,46 @@ namespace Bernael_Xenotype
             else
             {
                 Capture(owner.Caster, owner.Rotation);
-                savedImage = Convert.ToBase64String(ImageConversion.EncodeToPNG(snapshot));
                 savedEyeA = eyeA;
                 savedEyeB = eyeB;
             }
             snapshot.name = "DarkMirage caster snapshot " + owner.ThingID;
             snapshot.wrapMode = TextureWrapMode.Clamp;
             snapshot.filterMode = FilterMode.Bilinear;
-            Vector4 revealBounds;
-            distanceField = MirageDistanceField.Create(snapshot,out revealBounds);
+            Color32[] pixels = snapshot.GetPixels32();
+            int width = snapshot.width, height = snapshot.height;
+            pendingDistanceField = Task.Run(() => MirageDistanceField.Compute(pixels, width, height));
             material = new Material(shader) { name = "DarkMirage " + owner.ThingID, mainTexture = snapshot };
-            material.SetTexture("_DistanceTex", distanceField);
-            material.SetVector("_RevealBounds", revealBounds);
             material.SetVector("_EyeA", eyeA);
             material.SetVector("_EyeB", eyeB);
             material.SetFloat("_Seed", (owner.thingIDNumber % 997) * 0.13f);
+        }
+
+        public string EncodeSnapshot()
+        {
+            return snapshot == null ? null : Convert.ToBase64String(ImageConversion.EncodeToPNG(snapshot));
+        }
+
+        private bool FinishDistanceField(bool wait = false)
+        {
+            if (distanceField != null) return true;
+            if (pendingDistanceField == null || (!wait && !pendingDistanceField.IsCompleted)) return false;
+            Task<MirageDistanceField.Data> task = pendingDistanceField;
+            pendingDistanceField = null;
+            try
+            {
+                MirageDistanceField.Data data = task.GetAwaiter().GetResult();
+                distanceField = MirageDistanceField.CreateTexture(data);
+                material.SetTexture("_DistanceTex", distanceField);
+                material.SetVector("_RevealBounds", data.RevealBounds);
+                return true;
+            }
+            catch (Exception error)
+            {
+                Dispose();
+                Log.Error("[Dark Mirage] Distance field generation failed: " + error);
+                return false;
+            }
         }
 
         private void Capture(Pawn caster, Rot4 facing)
@@ -78,7 +105,7 @@ namespace Bernael_Xenotype
             CameraClearFlags previousClear = camera.clearFlags;
             Vector3 previousPosition = camera.transform.position;
             float previousSize = camera.orthographicSize;
-            float previousAspect = camera.aspect;
+            Rect previousRect = camera.rect;
             var capture = new RenderTexture(CaptureSize, CaptureSize, 24, RenderTextureFormat.ARGB32)
             {
                 name = "DarkMirage temporary capture", antiAliasing = 1,
@@ -89,9 +116,14 @@ namespace Bernael_Xenotype
                 capture.Create();
                 camera.clearFlags = CameraClearFlags.SolidColor;
                 camera.backgroundColor = Color.clear;
-                camera.aspect = 1f;
+                // Keep aspect automatic: assigning even its old value permanently
+                // pins this shared camera and squashes later portraits/atlas frames.
+                camera.rect = new Rect(0f, 0f, 1f, 1f);
                 Find.PawnCacheRenderer.RenderPawn(caster, capture, Vector3.zero, 2f / WorldSize, 0f,
                     facing, renderHead: true, renderHeadgear: true, renderClothes: true, portrait: false);
+                // RenderPawn unbinds its target. Rebind our square target so eye
+                // projection uses the capture's aspect without changing aspect mode.
+                camera.targetTexture = capture;
                 camera.orthographicSize = WorldSize * 0.5f;
                 eyeA = EyeAnchor(caster, facing, "LeftEye", camera);
                 eyeB = EyeAnchor(caster, facing, "RightEye", camera);
@@ -108,7 +140,7 @@ namespace Bernael_Xenotype
                 camera.clearFlags = previousClear;
                 camera.transform.position = previousPosition;
                 camera.orthographicSize = previousSize;
-                camera.aspect = previousAspect;
+                camera.rect = previousRect;
                 capture.Release();
                 UnityEngine.Object.Destroy(capture);
             }
@@ -147,7 +179,7 @@ namespace Bernael_Xenotype
 
         public void Draw(Vector3 position, int ageTicks, float opacity)
         {
-            if (material == null || opacity <= 0) return;
+            if (material == null || opacity <= 0 || !FinishDistanceField()) return;
             position.y = AltitudeLayer.Pawn.AltitudeFor();
             position.z += Mathf.Sin(ageTicks / 60f * 2.2f) * 0.016f;
             properties.SetFloat("_Phase", ageTicks / 60f);
@@ -161,7 +193,8 @@ namespace Bernael_Xenotype
         // Explicit dev QA uses this same shader and capture, not a separate mockup.
         public void ExportPreview(string path, float time, float spawnAge = 10f, float opacity = 1f)
         {
-            if (material == null) throw new InvalidOperationException("Mirage material unavailable");
+            if (material == null || !FinishDistanceField(wait: true))
+                throw new InvalidOperationException("Mirage material unavailable");
             var target = RenderTexture.GetTemporary(CaptureSize,CaptureSize,0,RenderTextureFormat.ARGB32);
             RenderTexture previous = RenderTexture.active;
             Texture2D image = null;
@@ -189,6 +222,11 @@ namespace Bernael_Xenotype
 
         public void Dispose()
         {
+            // A dismissed mirage must never upload a late worker result. Observe any
+            // worker failure without retaining the mirage or touching Unity objects.
+            pendingDistanceField?.ContinueWith(task => GC.KeepAlive(task.Exception),
+                TaskContinuationOptions.OnlyOnFaulted);
+            pendingDistanceField = null;
             if (material != null) UnityEngine.Object.Destroy(material);
             if (snapshot != null) UnityEngine.Object.Destroy(snapshot);
             if (distanceField != null) UnityEngine.Object.Destroy(distanceField);
@@ -204,7 +242,7 @@ namespace Bernael_Xenotype
             {
                 float a = i * Mathf.PI * 2f / 12;
                 var data = FleckMaker.GetDataStatic(cell.ToVector3Shifted(),map,FleckDefOf.MicroSparks,0.3f);
-                data.instanceColor = new Color(0.12f,0.5f,0.78f);
+                data.instanceColor = new Color(0.725f,0.85f,0.93f);
                 data.velocity = new Vector3(Mathf.Cos(a),0,Mathf.Sin(a))*radius;
                 map.flecks.CreateFleck(data);
             }

@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using Verse;
 
 namespace Bernael_Xenotype
 {
     public class Gene_Hediff : Gene
     {
-        GeneAddHediffExtension ModExt => def.GetModExtension<GeneAddHediffExtension>();
+        GeneAddHediffExtension ModExt => def?.GetModExtension<GeneAddHediffExtension>();
 
         public override void PostAdd()
         {
@@ -21,19 +22,22 @@ namespace Bernael_Xenotype
 
         private void AddHediffs()
         {
-            if (pawn.health?.hediffSet == null) return;
-            foreach (HediffDef hediffDef in ModExt.hediffsToAdd)
+            List<HediffDef> hediffs = ModExt?.hediffsToAdd;
+            if (pawn?.health?.hediffSet == null || hediffs == null) return;
+            foreach (HediffDef hediffDef in hediffs)
             {
-                pawn.health.GetOrAddHediff(hediffDef);
+                if (hediffDef != null) pawn.health.GetOrAddHediff(hediffDef);
             }
         }
 
         public override void PostRemove()
         {
             base.PostRemove();
-            if (pawn.health?.hediffSet == null) return;
-            foreach (HediffDef hediffDef in ModExt.hediffsToAdd)
+            List<HediffDef> hediffs = ModExt?.hediffsToAdd;
+            if (pawn?.health?.hediffSet == null || hediffs == null) return;
+            foreach (HediffDef hediffDef in hediffs)
             {
+                if (hediffDef == null) continue;
                 Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef);
                 if (hediff == null) continue;
                 pawn.health.RemoveHediff(hediff);

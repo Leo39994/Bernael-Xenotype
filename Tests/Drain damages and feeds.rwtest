@@ -1,10 +1,9 @@
 rwtest 1
 test "Drain damages and feeds" project="Bernael" group="Soul" created=2026-09-17T00:00:00
 
-# BX_SoulFeeding is a touch ability with 2 s warmup (120 ticks). It is used the
-# way a player uses it - the "Soul drain" gizmo, then a click on the victim -
-# so Bernael walks one cell to the victim and warms up before Apply fires. The
-# waitfor holds that route for at most 300 ticks: warmup, walk and slack.
+# BX_SoulFeeding has 3.9-cell range and 2 s warmup (120 ticks).
+# Use the player's "Soul drain" gizmo and click the victim. The waitfor allows
+# up to 300 ticks for warmup and scheduling; this target needs no approach.
 # CompAbilityEffect_SoulDrain puts BX_SoulDrained at severity 0.4499 on the
 # target and gives the caster +0.2 soul, scaled by the body size of the victim.
 #

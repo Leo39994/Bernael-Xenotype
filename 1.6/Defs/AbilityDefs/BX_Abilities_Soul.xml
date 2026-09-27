@@ -9,18 +9,18 @@
 	<AbilityDef ParentName="AbilityTouchBase">
 		<defName>BX_SoulFeeding</defName>
 		<label>Soul drain</label>
-		<description>Touch the target and extract their life essence directly from their skin. The target will lose ??? and will be horrified by the interaction, but will be otherwise unharmed.\n\nCan only target non-soulstarved humans. Soul gain is affected by the target's body size.</description>
+		<description>Draw out a nearby person's life essence. Red-black smoke surrounds a cyan soul in the target's own shape, pulling it directly from their body into the caster's eyes. The target gradually loses color and temporarily turns charcoal gray. Soul drain weakens the target and repeated feeding can be fatal.\n\nCan only target non-soulstarved humans. Soul gain is affected by the target's body size.</description>
 		<iconPath>UI/Icons/Genes/BX_LifeDrain</iconPath>
 		<category>Bernael</category>
 		<displayOrder>100</displayOrder>
-		<warmupEffecter>Bloodfeed_Warmup</warmupEffecter>
+		<jobDef>CastAbilityOnThing</jobDef>
 		<warmupStartSound>Bloodfeed_Cast</warmupStartSound>
 		<hostile>false</hostile>
 		<casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
 		<verbProperties>
-			<verbClass>Verb_CastAbilityTouch</verbClass>
+			<verbClass>Verb_CastAbility</verbClass>
 			<drawAimPie>false</drawAimPie>
-			<range>-1</range>
+			<range>3.9</range>
 			<warmupTime>2</warmupTime>
 			<targetParams>
 				<canTargetSelf>false</canTargetSelf>
