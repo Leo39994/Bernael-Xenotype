@@ -39,11 +39,11 @@ Run from the mod root:
 
 ```powershell
 & .\1.6\Source\DarkMirage\Unity\build.ps1
-msbuild "1.6\Source\Bernael Xenotype.csproj" -restore /t:Rebuild /p:Configuration=Debug /v:minimal /nologo
+dotnet build 1.6\Source\BernaelXenotype.slnx
 ```
 
-The shader project uses Unity 2022.3.62f3 and the Built-in Render Pipeline. The build script uses `-noUpm`; pass `-UnityPath` to select another editor installation. The C# code is compiled into the main mod assembly by `1.6/Source/Bernael Xenotype.csproj`; there is no separate project. Pass `-p:RimWorldDir=...` if the game is not found.
+The shader project uses Unity 2022.3.62f3 and the Built-in Render Pipeline. The build script uses `-noUpm`; pass `-UnityPath` to select another editor installation. The C# code is compiled into the main mod assembly by `1.6/Source/BernaelXenotype.csproj`; there is no separate project. RimWorld references come from the `Krafs.Rimworld.Ref` NuGet package, so no local game install is needed. CI rebuilds and commits the assembly on every push.
 
-Runtime files are `1.6/Assemblies/Bernael Xenotype.dll` and `1.6/AssetBundles/darkmirage_win`. Both must be distributed with the Defs and English language data. The shader bundle currently targets Windows / Direct3D 11.
+Runtime files are `1.6/Assemblies/BernaelXenotype.dll` and `1.6/AssetBundles/darkmirage_win`. Both must be distributed with the Defs and English language data. The shader bundle currently targets Windows / Direct3D 11.
 
 The release build does not require local QA files. Test harnesses, verification scripts, preview tools, captures, videos, logs, temporary profiles and Unity caches are excluded from Git. Source assets, required Unity metadata, build scripts and runtime packages remain eligible for commit.

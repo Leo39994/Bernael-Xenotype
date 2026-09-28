@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using HarmonyLib;
+using RimWorld;
 using Verse;
 
 namespace Bernael_Xenotype
@@ -33,6 +34,20 @@ namespace Bernael_Xenotype
             if (removedGenes.Count == 0) return;
             foreach (XmlNode node in root.SelectNodes(".//overriddenByGene"))
                 if (removedGenes.Contains(node.InnerText)) node.InnerText = "null";
+        }
+    }
+
+    // BX_SoulFeeding moved from Verb_CastAbilityTouch to Verb_CastAbility. On load VerbTracker
+    // drops a saved verb whose class no longer matches and creates a fresh one, but nothing
+    // hands that fresh verb its Ability, so every targeting frame throws on ability.def.
+    [HarmonyPatch(typeof(Ability), nameof(Ability.ExposeData))]
+    public static class Patch_Ability_ExposeData
+    {
+        public static void Postfix(Ability __instance)
+        {
+            if (Scribe.mode != LoadSaveMode.PostLoadInit || __instance.def == null) return;
+            if (__instance.verb is IAbilityVerb abilityVerb && abilityVerb.Ability == null)
+                abilityVerb.Ability = __instance;
         }
     }
 }
