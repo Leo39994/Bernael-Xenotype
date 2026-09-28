@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>BernaelXenotype</AssemblyName>
+    <RootNamespace>Bernael_Xenotype</RootNamespace>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU</Platforms>
+    <OutputPath>../Assemblies/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildThisFileDirectory)=/_/</PathMap>
+    <!-- DarkMirage\Unity holds editor scripts that only Unity can compile; list sources explicitly. -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Bernael\**\*.cs" />
+  </ItemGroup>
+  <!-- Dark Mirage psycast. The Unity project under DarkMirage\Unity builds the shader bundle;
+       only its shared distance-field code is compiled into the mod. -->
+  <ItemGroup>
+    <Compile Include="DarkMirage\DarkMirage.cs" />
+    <Compile Include="DarkMirage\MirageVisuals.cs" />
+    <Compile Include="DarkMirage\DebugActions.cs" />
+    <Compile Include="DarkMirage\Unity\Assets\Shared\MirageDistanceField.cs" />
+  </ItemGroup>
+  <!-- Reference assemblies from NuGet, so the build needs no local RimWorld install (CI, any Steam library). -->
+  <ItemGroup>
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4871" />
+    <PackageReference Include="Lib.Harmony" Version="2.4.2" ExcludeAssets="runtime">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>
