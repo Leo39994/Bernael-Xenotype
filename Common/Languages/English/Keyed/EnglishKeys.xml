@@ -2,9 +2,6 @@
 
     <BX_Mutation_CooldownFinished>Awaiting Grace</BX_Mutation_CooldownFinished>
     <BX_Mutation_MutatesIn>{0} Usages left before mutation</BX_Mutation_MutatesIn>
-    <BX_ReaperEcstasyKillCount>{0}/{1} Kills</BX_ReaperEcstasyKillCount>
-    <BX_ReaperEcstasyKillCountMax>MAX Kills</BX_ReaperEcstasyKillCountMax>
-
     <BX_MessageCannotUseOnSoulFeeder>{ABILITY_label} cannot be used on soul eaters.</BX_MessageCannotUseOnSoulFeeder>
     <BX_WillCauseSeriousSoulDrain>Will cause major soul drain</BX_WillCauseSeriousSoulDrain>
     <BX_WarningPawnWillHaveSeriousSoulDrainFromFeeding>Feeding on {PAWN_nameDef} will result in serious soul damage, leaving {PAWN_objective} unconscious.\n\nAre you sure?</BX_WarningPawnWillHaveSeriousSoulDrainFromFeeding>

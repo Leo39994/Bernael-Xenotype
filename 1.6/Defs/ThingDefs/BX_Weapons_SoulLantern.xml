@@ -3,7 +3,7 @@
 	<ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality">
         <defName>BX_LifeVanquisher</defName>
         <label>life vanquisher</label>
-        <description>A sword forged from captured souls. Its melee damage answers to the wielder's psychic sensitivity: damage is multiplied by 0.5 plus half the wielder's sensitivity, up to 2x damage at 300% sensitivity. Greater sensitivity gives no further bonus.</description>
+        <description>A sword forged from captured souls. Its melee damage is multiplied by the wielder's psychic sensitivity: 100% sensitivity leaves damage unchanged, while 200% doubles it. The multiplier is capped at 3x damage at 300% sensitivity.</description>
         <graphicData>
             <texPath>Things/Weapons/LifeVanquisher/LifeVanquisher</texPath>
             <graphicClass>Graphic_Single</graphicClass>

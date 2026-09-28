@@ -189,7 +189,7 @@
 	<GeneDef>
 		<defName>BX_ReaperEcstasy</defName>
 		<label>Reaper’s Ecstasy</label>
-		<description>Enemy kills improve psycaster abilities (Reduce neural heat, increase psychic sensitivity, etc.). When a Bernael kills a living creature, they automatically harvest a fragment of its soul upon its passing. This allows the player to sustain their Bernael through active combat and hunting rather than just imprisonment.</description>
+		<description>Enemy kills improve psycaster abilities (reduce neural heat, increase psychic sensitivity, etc.). Each hostile kill refreshes the shared decay timer. After one in-game hour without another kill, the effect loses one level per hour. When a Bernael kills a living creature, they automatically harvest a fragment of its soul upon its passing. This allows the player to sustain their Bernael through active combat and hunting rather than just imprisonment.</description>
 		<geneClass>Bernael_Xenotype.Gene_Hediff</geneClass>
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>2</biostatMet>
