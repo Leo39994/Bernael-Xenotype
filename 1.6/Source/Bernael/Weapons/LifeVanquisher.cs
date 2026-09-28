@@ -20,7 +20,30 @@ namespace Bernael_Xenotype
             }
 
             float sensitivity = Mathf.Clamp(attacker.GetStatValue(StatDefOf.PsychicSensitivity), 0f, MaximumSensitivity);
-            __result *= 0.5f + 0.5f * sensitivity;
+            __result *= sensitivity;
+        }
+    }
+
+    // Recovered from the LV2 assembly (3e96d89), which shipped without its source. Reports no
+    // noxious haze for an unspawned Life Vanquisher held on a map that has no MapInfo.
+    [HarmonyPatch(typeof(StatPart_NoxiousHaze), "ActiveFor")]
+    public static class LifeVanquisherNoxiousHazeInfoCardPatch
+    {
+        public static bool Prefix(Thing t, ref bool __result)
+        {
+            if (t?.def != BernaelDefOf.BX_LifeVanquisher || t.Spawned)
+            {
+                return true;
+            }
+            for (IThingHolder holder = t.ParentHolder; holder != null; holder = holder.ParentHolder)
+            {
+                if (holder is Map map && map.info == null)
+                {
+                    __result = false;
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
