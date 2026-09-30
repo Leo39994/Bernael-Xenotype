@@ -1,0 +1,18 @@
+﻿<Defs>
+
+  <!--=============== Gaze of Caligo =============-->
+
+  <GameConditionDef>
+    <defName>BX_GazeCaligo</defName>
+    <conditionClass>Bernael_Xenotype.GameCondition_GazeCaligo</conditionClass>
+    <label>caligo's gaze</label>
+    <description>.</description>
+    <endMessage>Caligo's Gaze is ending.</endMessage>
+    <letterText>You have achieved a monumental milestone. In that very instant, the heavens tremble, and dusk paints the land in deep bluish-black tones. This is no ordinary eclipse - a distant nebula has ignited, and Caligo has cast her gaze upon this region.
+	
+The psychic ether hums with her proximity. Those open to psychic energy experience an unprecedented surge of power, while those whose minds remain closed writhe under intolerable pressure. The only question is whether her attention will prove to be a blessing or a curse.</letterText>
+    <letterDef>ThreatBig</letterDef>
+    <allowUnderground>false</allowUnderground>
+  </GameConditionDef>
+
+</Defs>
