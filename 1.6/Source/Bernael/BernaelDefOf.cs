@@ -26,6 +26,9 @@ namespace Bernael_Xenotype
         public static HediffDef BX_SoulCraving;
         public static HediffDef BX_BabyBond_Feeder;
         public static HediffDef BX_BabyBond_Victim;
+        public static HediffDef BX_GazeCaligoBuff;
+        public static HediffDef BX_GazeCaligoDebuff;
+        public static HediffDef BX_PsychicOverchargeHediff;
         public static AbilityDef BX_SoulFeeding;
         public static ThoughtDef BX_ConsumedGraceThoughtMood;
         public static ThoughtDef BX_HeardDarkSpeech;
@@ -43,6 +46,17 @@ namespace Bernael_Xenotype
         public static RecipeDef BX_ExtractSoul;
 
         public static JobDef BX_PrisonerSoulFeed;
+
+        public static IncidentDef BX_AstralAwakening;
+        public static IncidentDef BX_EthersBlessing;
+        public static IncidentDef BX_PsycasterPilgrimage;
+        public static IncidentDef BX_PsychicOvercharge;
+        public static IncidentDef BX_PsychicBurnout;
+        public static IncidentDef BX_PsychicRupture;
+
+        public static SoundDef BX_Ambient_Gaze;
+        public static SoundDef BX_Gaze_Blink;
+        public static SoundDef BX_Gaze_Move;
 
         [MayRequire("Sov.Nephilim")]
         public static GeneDef GS_Grace_New;

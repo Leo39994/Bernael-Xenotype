@@ -1,0 +1,116 @@
+﻿<Defs>
+
+  <!--=============== Gaze of Caligo =============-->
+
+  <!-- Gaze of Caligo: 2.5 ~ 10.5 -->
+  <IncidentDef>
+    <defName>BX_GazeCaligo</defName>
+    <label>gaze of caligo</label>
+    <category>Misc</category>
+    <targetTags>
+	  <li>Map_PlayerHome</li>
+	</targetTags>
+    <workerClass>IncidentWorker_MakeGameCondition</workerClass>
+    <gameCondition>BX_GazeCaligo</gameCondition>
+    <letterLabel>Caligo's Gaze</letterLabel>
+    <letterDef>NeutralEvent</letterDef>
+    <baseChance>0</baseChance>
+    <minRefireDays>60</minRefireDays>
+    <durationDays>0.5~1.5</durationDays>
+    <canOccurOnAllPlanetLayers>true</canOccurOnAllPlanetLayers>
+  </IncidentDef>
+
+  <!--=============== Outcome Event =============-->
+
+  <IncidentDef>
+    <defName>BX_AstralAwakening</defName>
+    <label>atral awakening</label>
+    <category>Special</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>Bernael_Xenotype.IncidentWorker_AstralAwakening</workerClass>
+    <letterLabel>Astral awakening</letterLabel>
+    <letterText>{PAWNS}.</letterText>
+    <letterDef>PositiveEvent</letterDef>
+    <baseChance>0</baseChance>
+    <minRefireDays>60</minRefireDays>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>BX_EthersBlessing</defName>
+    <label>ethers blessing</label>
+    <category>Special</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>Bernael_Xenotype.IncidentWorker_EthersBlessing</workerClass>
+    <letterLabel>Ethers blessing</letterLabel>
+    <letterText>.</letterText>
+    <letterDef>PositiveEvent</letterDef>
+    <baseChance>0</baseChance>
+    <minRefireDays>60</minRefireDays>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>BX_PsycasterPilgrimage</defName>
+    <label>psycaster pilgrimage</label>
+    <category>Special</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>IncidentWorker_WandererJoin</workerClass>
+    <letterLabel>Psycaster pilgrimage</letterLabel>
+    <letterText>A powerful psycaster arrives at the settlement, drawn by the light of the Gaze, and offers to join.</letterText>
+    <baseChance>0</baseChance>
+    <minRefireDays>60</minRefireDays>
+    <pawnKind>BX_PsycasterPilgrimage</pawnKind>
+    <pawnMustBeCapableOfViolence>true</pawnMustBeCapableOfViolence>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>BX_PsychicOvercharge</defName>
+    <label>psychic overcharge</label>
+    <category>Special</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>Bernael_Xenotype.IncidentWorker_PsychicOvercharge</workerClass>
+    <letterLabel>Psychic overcharge</letterLabel>
+    <letterText>.</letterText>
+    <letterDef>PositiveEvent</letterDef>
+    <baseChance>0</baseChance>
+    <minRefireDays>60</minRefireDays>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>BX_PsychicBurnout</defName>
+    <label>psychic burnout</label>
+    <category>Special</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>Bernael_Xenotype.IncidentWorker_PsychicBurnout</workerClass>
+    <letterLabel>Psychic burnout</letterLabel>
+    <letterText>.</letterText>
+    <letterDef>NegativeEvent</letterDef>
+    <baseChance>0</baseChance>
+    <minRefireDays>60</minRefireDays>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>BX_PsychicRupture</defName>
+    <label>psychic rupture</label>
+    <category>Special</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>Bernael_Xenotype.IncidentWorker_PsychicRupture</workerClass>
+    <letterLabel>Psychic rupture</letterLabel>
+    <letterText>.</letterText>
+    <letterDef>NegativeEvent</letterDef>
+    <baseChance>0</baseChance>
+    <minRefireDays>60</minRefireDays>
+  </IncidentDef>
+
+</Defs>

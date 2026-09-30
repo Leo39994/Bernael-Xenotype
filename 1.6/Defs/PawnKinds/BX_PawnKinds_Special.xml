@@ -1,0 +1,70 @@
+<Defs>
+
+  <PawnKindDef>
+    <defName>BX_PsycasterPilgrimage</defName>
+    <label>psycaster pilgrimage</label>
+    <race>Human</race>
+    <defaultFactionDef>OutlanderCivil</defaultFactionDef>
+    <combatPower>55</combatPower>
+    <minGenerationAge>20</minGenerationAge>
+    <maxGenerationAge>55</maxGenerationAge>
+    <isFighter>true</isFighter>
+    <chemicalAddictionChance>0.05</chemicalAddictionChance>
+    <backstoryCryptosleepCommonality>0.05</backstoryCryptosleepCommonality>
+    <backstoryFiltersOverride>
+      <li>
+        <categories>
+          <li>Offworld</li>
+          <li>Outlander</li>
+          <li>Outsider</li>
+        </categories>
+      </li>
+    </backstoryFiltersOverride>
+    <requiredWorkTags>
+      <li>Violent</li>
+      <li>Caring</li>
+    </requiredWorkTags>
+    <invNutrition>10.0</invNutrition>
+    <inventoryOptions>
+      <subOptionsChooseOne>
+        <li>
+          <thingDef>MedicineIndustrial</thingDef>
+          <countRange>5</countRange>
+        </li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
+    <gearHealthRange>1~1</gearHealthRange>
+    <itemQuality>Good</itemQuality>
+    <weaponMoney>500~500</weaponMoney>
+    <weaponTags>
+      <li>Revolver</li>
+    </weaponTags>
+    <apparelTags>
+      <li>IndustrialBasic</li>
+      <li>IndustrialAdvanced</li>
+    </apparelTags>
+    <apparelRequired>
+      <li>Apparel_CollarShirt</li>
+      <li>Apparel_Pants</li>
+      <li>Apparel_Duster</li>
+      <li>Apparel_FlakVest</li>
+      <li>Apparel_CowboyHat</li>
+    </apparelRequired>
+    <apparelColor>(0.2, 0.2, 0.2)</apparelColor> <!-- Matches favoriteColor -->
+    <ignoreIdeoApparelColors>true</ignoreIdeoApparelColors>
+    <favoriteColor MayRequire="Ludeon.RimWorld.Ideology">Black</favoriteColor>
+    <initialWillRange>0~0</initialWillRange>
+    <initialResistanceRange>0~2</initialResistanceRange>
+    <humanPregnancyChance>0</humanPregnancyChance>
+    <skills>
+      <li>
+        <skill>Shooting</skill>
+        <range>8~16</range>
+      </li>
+    </skills>
+    <techHediffsRequired>
+      <li>PsychicAmplifier</li>
+    </techHediffsRequired>
+  </PawnKindDef>
+
+</Defs>
