@@ -1,22 +1,12 @@
 rwtest 1
 test "Lantern glows when drafted" project="Bernael" group="Weapon" created=2026-09-17T00:00:00
 
-# Patch_PawnRenderUtility_DrawEquipmentAiming draws the lantern glow only for a
-# drafted carrier. CompEquippedSoulLanternGlow is just a marker, the prefix does
-# the work - not readable from state, only from the picture.
-#
-# No ticks: the glow stands still, so the question is put over the frozen scene.
-
 requires dlc=Biotech
 requires mod=Mortis.BX
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Thing:BX_SoulLantern at 1,0
 equip "Bernael" thing=BX_SoulLantern
 
-# draft, not select plus gizmo "Draft": the verb goes straight through
-# Pawn_DraftController, so the line no longer depends on the English gizmo label
-# or on the gizmo bar being drawn at all. It also keeps the selection empty,
-# which takes the selection bracket out of the picture that is being judged.
 draft "Bernael"
 tick 30 reason="one render frame with a drafted pawn"
 ask "lantern-glow-drafted" claim="the drafted pawn holds the lantern and it throws a glow onto the ground around it"

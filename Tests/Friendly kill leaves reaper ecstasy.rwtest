@@ -1,35 +1,8 @@
 rwtest 1
 test "Friendly kill leaves reaper ecstasy" project="Bernael" group="Genes" created=2026-09-20T00:00:00
 
-# Hediff_ReapersEcstasy.Notify_KilledPawn returns before it writes anything when
-# !victim.HostileTo(pawn.Faction). That guard is what keeps the gene from paying
-# a Bernael for a hunting accident, a friendly-fire death or an execution in the
-# colony's own cells, and nothing in the suite walks it: every other file in this
-# family kills a pirate.
-#
-# The order is deliberate. The friendly kill comes first, so "no change" is read
-# against the numbers the setup wrote - initialSeverity 1 from the spawn and the
-# 0.1 the give put in the bar - and not against numbers an earlier kill in the
-# same file left behind. Asserted the other way round, a hook that fires for
-# every victim alike would leave severity at 3 after two kills, and a "still 2"
-# written as min=2 would have been green for it.
-#
-# The hostile kill afterwards is the control, and without it this file is worth
-# nothing: "the counter did not move" is equally green for a guard that held and
-# for a hediff that was never on the pawn, a mod extension that came back null,
-# or a Notify_KilledPawn that vanilla no longer calls. The second half turns all
-# of those into a red line.
-#
-# "Victim" is spawned as a plain colonist and killed by another colonist. That is
-# a HostileTo of false in both directions, which is the branch under test.
-# "Drain blocks own kind" covers the other way a Bernael can be refused a
-# victim - that one is the ability refusing to start, this one is the kill hook
-# refusing to pay.
-
 requires dlc=Biotech
 
-# Severity 2 lives at most one second: Tick takes one off at every
-# pawn.IsHashIntervalTick(60), and assertions poll real frames, not game ticks.
 speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Victim"

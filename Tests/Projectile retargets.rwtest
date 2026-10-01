@@ -1,51 +1,6 @@
 rwtest 1
 test "Projectile retargets" project="Bernael" group="Weapon" created=2026-09-17T00:00:00
 
-# SoulLanternProjectileExtension: maxRetargets 1, retargetOnDowned true.
-# A target that is already down counts as replaceable in TargetNeedsReplacement,
-# and TryRetarget looks for the next hostile pawn in range that is still up. So
-# the shot at A has to hit B.
-#
-# The proof is the burn on B, whom nobody shot at. A stays down and does not
-# fight back, so the order stays stable.
-#
-# The assert is a proxy, not the thing itself: a retarget leaves no trace in
-# game state, and nothing here can read intendedTarget off a bullet in flight.
-# So this file cannot tell "retargeted and missed" from "never retargeted" -
-# that claim belongs to a person and is asked in "Projectile arcs and bends".
-#
-# What stays here is the hit, and it must not fail for the hit roll instead:
-# ResolveRetargetedShot aims on at 0.5 and throws a wild miss otherwise, so a
-# single burst is a coin toss. Only the count of shots buys that away, as in
-# "Lantern shot burns target": one cycle is 320 ticks (warmup 120, burst 5x20,
-# RangedWeapon_Cooldown 120) plus about 18 ticks of flight, so 1320 ticks are
-# four cycles and about twenty retargeted shots.
-#
-# Waiting longer is safe in the one direction that matters: B takes 9 burn
-# damage a hit and may be dead by the end, but "assert pawn" resolves through
-# corpses and the Burn hediff stays on the pawn inside one.
-#
-# B must stay up: ValidReplacementTarget rejects a downed candidate, so
-# downing B would make the retarget impossible. What B must not do is fight
-# back. With an armed Pirate B, the run of 2026-09-24 23:51 ended with B
-# carrying no hediff at all - twenty retargeted shots at 0.5 cannot all miss,
-# so Bernael had stopped firing or B had left the line of sight. B became a
-# Colonist kind in the enemy faction then, because no verb could stop a hostile
-# from fighting: BasePlayerPawnKind has no weaponTags and no weaponMoney, so B
-# spawns unarmed and without headgear, still up, still hostile, still a valid
-# replacement. An unarmed hostile still walks over and punches, though, so both
-# pirates are now pacified as well - A because it stands armed while Bernael
-# walks to the lantern, B for the whole run. The Colonist kind stays: it is the
-# unarmoured body this file has been green against, and armour would put a
-# second roll between the shot and the Burn. Bernael is drafted so a hostile in
-# reach does not make them flee or drop the attack.
-#
-# The line after the tick is there for the next red run: if Bernael went
-# down, it fails first and says so, and only a Bernael still standing leaves
-# the Burn line to blame the retarget itself. Bernael's job is not asserted:
-# once B is dead the remaining shots go to A, and when A dies the attack ends
-# as it should.
-
 requires dlc=Biotech
 speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael

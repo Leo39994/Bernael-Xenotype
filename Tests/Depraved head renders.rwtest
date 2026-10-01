@@ -1,12 +1,6 @@
 rwtest 1
 test "Depraved head renders" project="Bernael" group="Art" created=2026-09-18T00:00:00
 
-# BX_DepravedHead hands the pawn the BX_Depraved head type, which draws
-# Parts/Head/DepravedHead. "Psychic sight replaces eyes" already proves the
-# number side - sight 1.25 and BX_Blindness. What no assert reaches is whether
-# the head is actually drawn, and drawn without eyes. The baseline pawn stands
-# three cells away so the person has the vanilla head to compare against.
-
 requires dlc=Biotech
 requires mod=Mortis.BX
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael

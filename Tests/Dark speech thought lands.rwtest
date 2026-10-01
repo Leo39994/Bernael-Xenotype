@@ -1,16 +1,6 @@
 rwtest 1
 test "Dark speech thought lands" project="Bernael" group="Genes" created=2026-09-17T00:00:00
 
-# Patch_Pawn_InteractionsTracker_TryInteractWith gives BX_HeardDarkSpeech to
-# every partner without BX_DarkSpeech. Two Bernael among themselves must not
-# get it, hence the counter check.
-#
-# Each talk needs its own pair: TryInteractWith stamps lastInteractionTime on
-# both sides and then locks for 120 ticks. A second interact with the same
-# speaker in the same tick is refused, with a red error on top. Ticking in
-# between is worse - in 130 ticks undrafted pawns drift apart, and out of sight
-# or past 6 cells IsGoodPositionForInteraction refuses just the same.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Speaker A" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Listener"
@@ -23,6 +13,4 @@ assert pawn "Listener" thought=BX_HeardDarkSpeech expect=present
 interact "Speaker B" with="Kin" kind=Chitchat
 assert pawn "Kin" thought=BX_HeardDarkSpeech expect=absent
 
-# The postfix runs on every successful talk, animals included. A red error here
-# means it tripped over a partner without a mood need.
 assert log clean

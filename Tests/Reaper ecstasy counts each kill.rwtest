@@ -1,51 +1,14 @@
 rwtest 1
 test "Reaper ecstasy counts each kill" project="Bernael" group="Genes" created=2026-09-20T00:00:00
 
-# "Kill feeds reaper ecstasy" proves that one kill moves the counter at all.
-# This file proves the step size, which that test cannot: it asserts
-# "severity min=2" after a single kill, and min=2 is green for a hook that adds
-# one, four or forty. The old bug this family guards against was exactly of that
-# shape - killRefillPct was once applied as "ValuePercent += 10", an addition
-# that pinned the bar to its cap instead of moving it by a tenth.
-#
-# Hediff_ReapersEcstasy.Notify_KilledPawn does two things per kill:
-#   Severity += 1                                  - initialSeverity is 1, so
-#                                                    two kills read 3
-#   Value += killRefillPct / 100 * Max             - killRefillPct 10 and Max 1,
-#                                                    so 0.1 -> 0.2 -> 0.3
-#
-# The severity is asserted as an equality and the soul as a band, and the
-# difference is not an oversight. The severity is an integer counter that the
-# code writes with a literal "+= 1": every value other than 3 is a different
-# number of increments, and a band would let the very bug this file is for
-# through. The soul is a float the gene also loses 0.04 a day to entropy, so it
-# gets the same +-0.05 band the sibling test uses.
-#
-# Two victims, not one victim hit twice: Notify_KilledPawn runs on the killer's
-# hediffs when a pawn dies, and a corpse dies only once.
-#
-# faction=enemy on both spawns is load-bearing for the same reason it is in the
-# sibling test - the hook returns early on !victim.HostileTo(pawn.Faction), and
-# a spawn without the key falls back to the player faction when the world
-# carries no pirate faction. "Friendly kill leaves reaper ecstasy" is the file
-# that walks that branch on purpose.
-
 requires dlc=Biotech
 
-# Severity 2 and 3 live at most one second each: Tick takes one off at every
-# pawn.IsHashIntervalTick(60), and assertions poll real frames, not game ticks.
-# Paused, no tick passes while a line polls, so nothing in this file races the
-# decay. The sibling test carries the same line for the same reason.
 speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 4,0 name="First" faction=enemy
 spawn Pawn:Pirate at 6,0 name="Second" faction=enemy
 
 give "Bernael" resource=BX_SoulStarved value=0.1
-# The baseline the two counts below are read against. Without it
-# "severity min=2 max=2" is a claim about where the counter ended and says
-# nothing about how far it moved - initialSeverity is a def value and the
-# gene that adds the hediff is free to change it.
 assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=1 max=1
 
 damage "First" amount=999 by="Bernael"

@@ -1,15 +1,6 @@
 rwtest 1
 test "Toddler has no soul" project="Bernael" group="Genes" created=2026-09-18T00:00:00
 
-# BX_SoulStarved has minAgeActive 3. A younger child carries the gene but
-# inactive: no gizmo, no resource, no craving. The other genes still run,
-# BX_Blindness is there from the spawn.
-#
-# Plus the block from Recipe_ExtractSoul.AvailableReport: on a baby it answers
-# "TooSmall", and a rejected report that carries a reason is drawn as a grey
-# option, not as a missing one. The reason compared here is the Biotech
-# translation of that key, "too small"; reason= matches with "contains".
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Child" xenotype=BX_Bernael age=2
 spawn Pawn:Colonist at 2,0 name="Bernael" xenotype=BX_Bernael

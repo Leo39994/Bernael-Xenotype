@@ -5,21 +5,9 @@ requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 assert pawn "Bernael" hediff=BX_WitheredSoulHediff expect=present
 
-# "hediff=" answers whether the hediff is on the pawn, "visible" how it is
-# shown - two different questions. Every stage of this def used to carry
-# becomeVisible false, so up to 35% pain came out of a line that stood nowhere.
-# The three stages with a painOffset show themselves now. The fourth carries
-# becomeVisible false and hides it all the same - why, stands below, at the line
-# that checks it.
-#
-# This used to need select + tab "Health" + assert text on the label. That hangs
-# on the label instead of on the def and checks whether the tab is open along
-# the way; "visible" names the def and puts the stage in the report as well.
 give "Bernael" need=Mood value=0.1
 tick 480 reason="Hediff_SeverityBasedOnNeed reads the need every 420 ticks"
 assert pawn "Bernael" pain min=0.32 max=0.42
-# Visible while it hurts - and this line stands before the negation further
-# down on purpose: both directions in the same file.
 assert pawn "Bernael" hediff=BX_WitheredSoulHediff visible expect=present
 give "Bernael" need=Mood value=0.7
 tick 480 reason="same interval, one stage up"
@@ -27,25 +15,5 @@ assert pawn "Bernael" pain min=0.12 max=0.22
 give "Bernael" need=Mood value=0.95
 tick 480 reason="same interval, into the stage that carries no offset"
 assert pawn "Bernael" pain max=0.08
-# No pain - and still visible, although this stage is the only one carrying
-# becomeVisible false. That is not a bug in the mod, it is
-# Verse.Hediff.Visible:
-#
-#     if (!visible && CurStage != null) return CurStage.becomeVisible;
-#     return true;
-#
-# "visible" is a field there, not an expression. Hediff.Tick sets it to true
-# once, as soon as the hediff has been visible, and scribes it into the save.
-# The def starts at initialSeverity 1 in exactly this stage and is hidden there;
-# the "give need=Mood value=0.1" line at the top sends it past stage 0, and from
-# then on the one-way street has been driven. becomeVisible false means "does
-# not become visible for the first time here", not "is hidden again".
-#
-# This line stood as expect=absent until 2026-09-20 and was red, because it
-# asked the engine for something the engine cannot do. If the hediff really is
-# meant to disappear again, that is a change to the mod and not a fix: override
-# Visible in Hediff_SeverityBasedOnNeed and return CurStage.becomeVisible
-# directly. Until then <becomeVisible>false</becomeVisible> in the def's last
-# stage is dead weight, and this line says what actually happens.
 assert pawn "Bernael" hediff=BX_WitheredSoulHediff visible expect=present
 assert log clean

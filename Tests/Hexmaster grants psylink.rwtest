@@ -1,9 +1,6 @@
 rwtest 1
 test "Hexmaster grants psylink" project="Bernael" group="Basics" created=2026-09-17T00:00:00
 
-# Gene_Hexmaster calls ChangePsylinkLevel(1), but only with Royalty active and
-# only if the pawn has no psylink yet. Without Royalty the test says nothing.
-
 requires dlc=Biotech
 requires dlc=Royalty
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael

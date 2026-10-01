@@ -1,13 +1,6 @@
 rwtest 1
 test "Bernael body renders" project="Bernael" group="Art" created=2026-09-18T00:00:00
 
-# Four genes of the xenotype are pure appearance and no assert reaches any of
-# them: BX_Profane_Halo, BX_CurvedWings, BX_Skin_Withered, BX_CravedBody. They
-# are loaded in almost every test of this suite and checked in none.
-#
-# Textures/Parts holds Halo, Wings, Body and Head. A baseline colonist stands
-# three cells away so the person has something to compare against.
-
 requires dlc=Biotech
 requires mod=Mortis.BX
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael

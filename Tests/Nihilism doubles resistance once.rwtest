@@ -1,10 +1,6 @@
 rwtest 1
 test "Nihilism doubles resistance once" project="Bernael" group="Genes" created=2026-09-17T00:00:00
 
-# Gene_Nihilism doubles resistance as soon as the carrier is a prisoner and
-# remembers that through canDoubleResistance. Once per captivity, not every 180
-# ticks - the second pass is what this test is actually about.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Nihilist" xenotype=BX_Bernael
 prisoner "Nihilist" resistance=10

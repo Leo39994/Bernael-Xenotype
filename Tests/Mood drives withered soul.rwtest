@@ -1,13 +1,6 @@
 rwtest 1
 test "Mood drives withered soul" project="Bernael" group="Genes" created=2026-09-17T00:00:00
 
-# Hediff_SeverityBasedOnNeed ties severity to mood, curve (0, 0.1) to (1, 1),
-# recomputed every 420 ticks. The stages are inverted: severity 0 is "Huge pain"
-# (painOffset 0.35), from 0.3 on "Serious pain" (0.25). Bad mood means low
-# severity and high pain.
-#
-# Mood 0.1 gives 0.19, so it stays in the worst stage.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 assert pawn "Bernael" hediff=BX_WitheredSoulHediff expect=present

@@ -1,60 +1,14 @@
 rwtest 1
 test "Drain blocks own kind" project=Bernael group=Soul created=2026-09-17T00:00:00
 
-# The claim is one line of CompAbilityEffect_SoulDrain.Valid: a target that
-# SoulUtility.IsSoulFeeder says yes to is refused, so a Bernael cannot drain a
-# Bernael. IsSoulFeeder reads two genes and nothing else, so the refusal is true
-# the moment both pawns stand on the map and stays true - it depends on no tick,
-# no distance and no job.
-#
-# Asserting only the refusal, through the old "cast" verb, did not prove that.
-# Four runs passed and two failed on the same assembly, and every pass took
-# seconds: t=5.15, t=7.41, t=8.93 against a step timeout of ten. A refusal that arrives late is not this
-# refusal - it is one of the other ways the cast can stop being offered, and all
-# of them are caster-side or distance-side: BX_SoulFeeding carries
-# CompProperties_AbilityRequiresCapacity for Manipulation, it is a touch verb
-# with a two second warmup, and two idle colonists wander while the step polls.
-# The test was green because the pair had drifted, not because the mod said no.
-#
-# So the refusal is now measured against a control that differs in exactly one
-# thing - the target's genes - and the order is what does the work:
-#
-# 1. Kin first, on an untouched caster. If this is refused, nothing about
-#    Bernael has changed yet.
-# 2. Stranger straight after, same caster, one cell further. If the refusal
-#    above had been caster-side - no manipulation, a cooldown, a mental state -
-#    this cast would be refused as well, and the test goes red instead of
-#    passing for the wrong reason. It landing is what makes the line above mean
-#    "the target was the difference".
-#
-# Both attempts are a player's: the "Soul drain" gizmo on Bernael, then a click
-# on the target. The click runs Verb_CastAbility.ValidateTarget, which asks
-# CompAbilityEffect_SoulDrain.Valid, and on a no the targeter keeps asking -
-# that is what "target ... expect=refused" reads. The caster-side reasons named
-# above no longer hide behind the refusal: no manipulation or a cooldown grey
-# the gizmo out, and the "gizmo" line itself goes red. Distance cannot refuse
-# either, because a touch verb walks to its target. So the refusal of the aim is
-# the target's genes, and the Stranger line is still the control that proves
-# the same gizmo and the same caster do land.
-#
-# The Stranger drain runs the one-cell walk and the 120-tick warmup, so its
-# first assert is a waitfor with 300 ticks for warmup, walk and slack.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Kin" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Stranger"
 give "Bernael" resource=BX_SoulStarved value=0.1
 
-# A probe, not a precondition. "give resource=" fails loudly when the pawn does
-# not carry the gene, so this line splits the two ways the cast can wrongly be
-# offered: green here means Kin is a carrier and the fault sits in the path that
-# reaches Valid(), red here means the second spawned pawn never got the xenotype
-# in the first place.
 give "Kin" resource=BX_SoulStarved value=0.5
 
-# The other half of the control: the rule reads genes, so the pawn it must not
-# protect has to be shown to carry neither.
 assert pawn "Kin" gene=BX_SoulStarved expect=present
 assert pawn "Stranger" gene=BX_SoulStarved expect=absent
 assert pawn "Stranger" gene=BX_SoulFeeder expect=absent

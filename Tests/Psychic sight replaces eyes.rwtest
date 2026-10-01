@@ -1,13 +1,6 @@
 rwtest 1
 test "Psychic sight replaces eyes" project="Bernael" group="Sight" created=2026-09-17T00:00:00
 
-# Gene_DepravedHead takes the eyes and registers the pawn in
-# Gamecomponent_PsychicSight. Patch_PawnCapacityWorker_Sight then sets sight
-# hard to 1.25 - no eyes, no detour.
-#
-# So the important part of the gene hangs on a number, not on a hediff:
-# BX_Blindness alone could sit on a pawn without the gene too.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Baseline"
@@ -15,5 +8,4 @@ spawn Pawn:Colonist at 2,0 name="Baseline"
 assert pawn "Bernael" hediff=BX_Blindness expect=present
 assert pawn "Bernael" capacity=Sight min=1.25
 
-# Counter check, so the patch does not just hand 1.25 to everyone.
 assert pawn "Baseline" capacity=Sight max=1

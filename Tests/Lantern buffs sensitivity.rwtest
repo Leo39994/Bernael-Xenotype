@@ -1,10 +1,6 @@
 rwtest 1
 test "Lantern buffs sensitivity" project="Bernael" group="Weapon" created=2026-09-17T00:00:00
 
-# The base for every weapon test: does the lantern reach the hand and do its
-# equippedStatOffsets apply? PsychicSensitivity 1.0 plus 0.25 from the weapon.
-# A lower bound, because genes and BX_ReaperEcstasy may add on top.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Thing:BX_SoulLantern at 1,0
@@ -13,16 +9,6 @@ equip "Bernael" thing=BX_SoulLantern
 assert pawn "Bernael" equipment=BX_SoulLantern
 assert pawn "Bernael" stat=PsychicSensitivity min=1.25
 
-# "assert nothing at 1,0" stood here and was flaky: the colonist is not drafted
-# yet and wanders one cell while the asserts above run, so the cell reports
-# "BX_SoulLantern, Human" - the pawn itself, with the lantern in hand. That the
-# weapon left the ground is already the claim of the equipment assert above.
-
-# The weapon gizmo only shows up drafted, so the pawn is drafted before the
-# gizmo bar is read. draft instead of gizmo "Draft": the verb sets
-# Pawn_DraftController directly and does not depend on the English label, and a
-# downed or dead pawn is named as such instead of running into a timeout.
-# select stays - the soul gizmo is only drawn for the selection.
 select "Bernael"
 draft "Bernael"
 assert text contains "Soul Saturation" expect=present

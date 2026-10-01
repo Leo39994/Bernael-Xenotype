@@ -1,26 +1,6 @@
 rwtest 1
 test "Dark mirage expires on its own" project="Bernael" group="Ability" created=2026-09-21T00:00:00
 
-# MirageSettings.durationTicks on BX_DarkMirageDecoy is 600. SpawnSetup writes
-# expiresTick = createdTick + 600, and TickInterval calls Destroy() the first
-# tick at or past it.
-#
-# The budgets are that 600 and nothing measured. The decoy is placed the
-# player's way - the "Dark mirage" gizmo on the drafted caster, then a click on
-# the cell - and starts existing when Apply runs at the end of the 36-tick
-# warmup. The waitfor stops the moment the decoy stands, so it is about 0 ticks
-# old there:
-#
-#   after tick 500 -> about 500 ticks old, 100 short of 600, still standing
-#   after tick 180 -> about 680 ticks old,  80 past 600, gone
-#
-# Both margins are wider than the whole warmup, so neither line depends on the
-# exact tick the waitfor saw the decoy.
-#
-# The "still standing" line is the half that makes this a test. Without it a
-# decoy that never spawned, or one that vanished on its first tick, reads
-# exactly like one that lived its 600 ticks and expired.
-
 requires dlc=Biotech
 requires dlc=Royalty
 

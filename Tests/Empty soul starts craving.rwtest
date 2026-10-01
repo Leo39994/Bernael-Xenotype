@@ -1,14 +1,6 @@
 rwtest 1
 test "Empty soul starts craving" project="Bernael" group="Soul" created=2026-09-17T00:00:00
 
-# Two systems in one run:
-# 1. SoulUtility.PostResourceOffset attaches BX_SoulCraving when the resource
-#    crosses from above zero down to zero. Only the transition counts.
-# 2. HediffComp_SeverityFromSoul then pushes severity by 0.25 per game hour.
-#
-# BX_SoulStarved loses 0.04 per day, so 0.0005 needs about 750 ticks to reach
-# zero - hence the tiny starting value.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 

@@ -1,47 +1,12 @@
 rwtest 1
 test "Human has both recipes" project="Bernael" group="Defs" created=2026-09-18T00:00:00
 
-# Patch_Humanlike.xml hangs BX_ExtractSoul and BX_SoulTransfusion on Human with
-# one unconditional PatchOperationAdd. A PatchOperation fails quietly when
-# Ludeon moves the target path: the mod still loads, the operation does nothing,
-# and nothing is logged.
-#
-# A script cannot read the def database - that is deliberate - so the patch is
-# proven where a player meets it: both recipes are offered in the medical
-# operations tab of an ordinary Human. bill queues the recipe and fails with the
-# game's own reason when it is not offered, so a patch that did not land takes
-# this test down with it. That bill discriminates at all - that it does not
-# accept any recipe on any pawn - is pinned by "Bionic eye blocked", which runs
-# the offered and the refused case side by side; it is not repeated here.
-#
-# BX_SoulTransfusion consumes a BX_BottledSoul and the medicine is the surgery's
-# own ingredient: both lie on the map, because a missing ingredient is a second
-# reason for an option to be gone and would measure the wrong thing.
-#
-# No requires line: the patch is unconditional, so this test has to run wherever
-# the mod does. It was written with requires dlc=Biotech, which skipped it for
-# exactly the setup it is supposed to guard.
-
 spawn Pawn:Colonist at 0,0 name="Patient"
 spawn Thing:BX_BottledSoul at 0,2
 spawn Thing:MedicineIndustrial at 1,2 count=2
 
-# Neither recipe is offered on a bare pawn, and for two different reasons that
-# have nothing to do with the patch this test is about.
-#
-# Recipe_ExtractSoul.AvailableOnNow walks Map.mapPawns.FreeColonists and returns
-# false unless one of them has an active BX_SoulStarved - there has to be
-# somebody on the map who would drink the fragment. "Extract soul yields
-# fragment" pins that gate on purpose, one line either side of it; here it is
-# only a precondition, so the Bernael is spawned and nothing is asserted about
-# it.
 spawn Pawn:Colonist at 2,0 name="Drinker" xenotype=BX_Bernael
 
-# Recipe_SoulTransfusion.AvailableOnNow wants a bottled soul on the map, which
-# lies there already, and the patient to carry BX_SoulDrained - there is nothing
-# to transfuse into an undamaged soul. The severity stays under 0.45, because
-# Recipe_ExtractSoul.CompletableEver refuses a pawn at or above that and the
-# first bill would go with it.
 give "Patient" hediff=BX_SoulDrained severity=0.2
 
 bill "Patient" recipe=BX_ExtractSoul

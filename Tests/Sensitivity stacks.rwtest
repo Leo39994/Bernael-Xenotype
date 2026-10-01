@@ -1,21 +1,6 @@
 rwtest 1
 test "Sensitivity stacks" project="Bernael" group="Weapon" created=2026-09-18T00:00:00
 
-# Three sources touch PsychicSensitivity: the lantern offset (+0.25), the
-# statFactor of BX_ReaperEcstasy (curve 1 at severity 1 to 10 at severity 100)
-# and the genes. Offsets apply before factors.
-#
-# The bare pawn is NOT at 1.0: BX_Mastermind carries +0.4, and with Royalty
-# BX_Hexmaster hands out a psylink whose PsychicAmplifier adds +0.5 on top. So
-# the baseline is 1.9 with Royalty and 1.4 without, and a run measured 1.9 where
-# this test used to claim max=1.1.
-#
-# Every bound below therefore holds in both cases and none of them is a decimal
-# check - this is about the three sources stacking at all:
-#   with Royalty:    1.9 -> 2.15 equipped -> about 11.7 at severity 50
-#   without Royalty: 1.4 -> 1.65 equipped -> about  9.0 at severity 50
-# (the factor at severity 50 is 1 + 49 * 9/99, just under 5.5)
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Thing:BX_SoulLantern at 1,0

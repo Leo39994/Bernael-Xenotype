@@ -1,34 +1,6 @@
 rwtest 1
 test "Bond mood follows the baby" project="Bernael" group="Bond" created=2026-09-20T00:00:00
 
-# ThoughtWorker_BabyBond_Mood averages the mood of every pawn in
-# HediffComp_BabyBond_Feeder.BondedBabies and picks a stage from that average:
-#
-#   avg < 0.20 -> stage 0  bonded child is miserable  -15
-#   avg < 0.40 -> stage 1  bonded child is sad         -8
-#   avg < 0.60 -> stage 2  bonded child is content      0
-#   avg < 0.80 -> stage 3  bonded child is happy       +5
-#   else          stage 4  bonded child is joyful     +12
-#
-# Five stages, and a worker stuck on stage 0 passes every test that only asks
-# whether the thought is there. BabyBondMood is a Thought_Situational, so it
-# never enters memories - before stage= and the situational lookup existed,
-# "present" could not go green here and "expect=absent" went green without
-# looking at anything.
-#
-# The bond is made the way a player makes it, through the drain: the "Soul
-# drain" gizmo and a click on the baby. "Baby drain creates bond" walks that
-# path in full and this test only checks that it happened before it starts
-# measuring. The walk and the 120-tick warmup are waited out with a waitfor on
-# the feeder hediff, 300 ticks at most.
-#
-# Tick budget: SituationalThoughtHandler recalculates a cached thought once it
-# is older than 100 ticks, so 120 is one full interval plus slack. It is also
-# an upper bound, not a floor. Need_Seeker moves a mood by at most 0.06 per
-# need interval back towards what the pawn's own thoughts say, so a longer
-# budget would let the value this test sets drift out of the band it was set
-# for. All three moods are picked more than 0.06 clear of every boundary above.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Baby" age=1
@@ -40,17 +12,6 @@ gizmo "Soul drain"
 target "Baby"
 waitfor pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present ticks=300
 assert pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present
-
-# The stage index is the marker, the mood is what the stage stands for, and the
-# name of this file promises the second one. BabyBondMood carries nothing but
-# five baseMoodEffects - miserable -15, sad -8, content 0, happy 5, joyful 12 -
-# so a stage that moves while the mood behind it does not is a def that lost its
-# numbers, and three "stage=" lines would stay green through it.
-#
-# The bands are the def value plus and minus 2, the same width "Craving mood
-# deepens" uses on BX_SoulEnergyCraving. Stage 2 is the one that needs the band
-# most: its value is 0, and "the thought pays nothing" is a claim no presence
-# check can make.
 
 give "Baby" need=Mood value=0.1
 tick 120 reason="a situational thought is recalculated once it is 100 ticks old"
@@ -67,9 +28,5 @@ tick 120 reason="same interval, into the stage that pays mood back"
 assert pawn "Bernael" thought=BabyBondMood stage=4
 assert pawn "Bernael" thought=BabyBondMood mood min=10 max=14
 
-# The other direction, in the same test. GetFeederComp answers null for a
-# Bernael who never drained a baby, so the worker is Inactive and the thought
-# must not be there at all. Without this line a worker that answers stage 4 for
-# everybody reads as correct.
 assert pawn "Childless" thought=BabyBondMood expect=absent
 assert log clean

@@ -1,34 +1,8 @@
 rwtest 1
 test "Reaper ecstasy stops at its cap" project="Bernael" group="Genes" created=2026-09-20T00:00:00
 
-# Hediff_ReapersEcstasy.Notify_KilledPawn writes "this.Severity += 1" with
-# nothing in front of it. Nothing in the mod holds that number down - the clamp
-# is vanilla's, in the Hediff.Severity setter, against def.maxSeverity, which
-# BX_Hediffs.xml sets to 100. A hediff class that ever stops going through that
-# setter - a cached field, a severity written straight into severityInt - loses
-# the clamp without a single line of the mod looking wrong.
-#
-# That matters beyond the number, because severity is what the three
-# statFactorsBySeverity curves are read at, and all three end their points at
-# (100, ...). Past the last point a SimpleCurve holds its final value, so a
-# severity of 101 would not even misprice the stats - it would look exactly
-# right and be wrong only in the label and in the next thing that reads the
-# number. Nothing else in the suite would go red for it.
-#
-# The soul assert is the control, and it is the point of the file: it proves the
-# hook ran on this kill. Without it "severity is still 100" is equally green for
-# a clamp that works and for a Notify_KilledPawn that returned early and never
-# touched anything - and the early return is one "victim.HostileTo" away.
-#
-# killRefillPct 10 against Max 1 moves 0.1 to 0.2, the same arithmetic and the
-# same +-0.05 band the other two files in this family use. The refill is not
-# capped by severity, only by the gene's own Max, which 0.2 is nowhere near.
-
 requires dlc=Biotech
 
-# Severity 100 decays by 1 at every pawn.IsHashIntervalTick(60), so an unpaused
-# game turns "max=100" green for the wrong reason within a second. Paused, no
-# tick passes while a line polls.
 speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 4,0 name="Pirate" faction=enemy
@@ -40,8 +14,6 @@ assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=100 max=100
 damage "Pirate" amount=999 by="Bernael"
 assert pawn "Pirate" dead
 
-# max=100 is the claim. min=100 is there so a hediff that was replaced or reset
-# instead of clamped cannot pass as one that held.
 assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=100 max=100
 assert pawn "Bernael" resource=BX_SoulStarved min=0.15 max=0.25
 

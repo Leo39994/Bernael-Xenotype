@@ -1,20 +1,6 @@
 rwtest 1
 test "Nephilim carries pendulum gene" project="Bernael" group="Defs" created=2026-09-18T00:00:00
 
-# The Nephilim folder only loads with Sov.Nephilim (LoadFolders.xml). Without
-# the mod there is no GS_Nephilim; with it, GS_Nephilim has to carry
-# BX_GracePendulum.
-#
-# A script cannot read the def database - that is deliberate - so the xenotype
-# is applied instead of looked up: spawn ... xenotype= runs the generator's own
-# xenotype path, so the gene tracker of the finished pawn holds what a player
-# would see on that pawn. A GS_Nephilim that does not exist fails the spawn
-# step by name rather than passing as "no gene".
-#
-# The plain colonist is the counterweight and the reason this test says
-# anything: without it, a gene tracker that reports nothing at all would read
-# as a healthy xenotype on the line above.
-
 requires dlc=Biotech
 requires mod=Sov.Nephilim
 spawn Pawn:Colonist at 0,0 name="Neph" xenotype=GS_Nephilim

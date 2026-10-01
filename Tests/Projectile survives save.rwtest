@@ -1,26 +1,6 @@
 rwtest 1
 test "Projectile survives save" project="Bernael" group="Weapon" created=2026-09-18T00:00:00
 
-# The PostLoadInit branch in Projectile_SoulLantern.ExposeData is only reachable
-# when the save happens mid flight: trackingRange, initialTravelDistance and
-# visualArcSide are derived again there, canRetarget is armed again.
-#
-# Twelve cells apart, 120 ticks warmup, after that a projectile is always in the
-# air. The real guard is "assert log clean": a broken load path throws on the
-# next tick.
-#
-# The pirate is pacified so it cannot down Bernael and end the attack before
-# the Burn line has anything to read. "pacify" is written twice on purpose: the
-# kit keeps the pacified pawns by object, and "reload" builds every pawn anew,
-# so the first line does not survive the load. The second one is issued before
-# the clock runs again; "pacify" refuses a pawn that has already started an
-# attack, so a load that let the pirate act first fails there, loudly.
-#
-# Both stand in one sealed room, walls from -1,-2 to 13,2: the inside runs from
-# 0 to 12 along x, so Bernael, the lantern and the pirate are all in it, and
-# door=none keeps every other pawn on the map out of the line of fire and the
-# two of them in it, across the reload as well.
-
 requires dlc=Biotech
 speed paused
 room at -1,-2 size=15,5 door=none name="range"
@@ -43,8 +23,5 @@ tick 900 reason="two more bursts after loading"
 requires assert=job
 assert pawn "Bernael" job=AttackStatic
 assert log clean
-# The room holds the pirate within twelve cells of Bernael. If this line is
-# red, the room is not where the pawns are, and the Burn line below would be
-# red for that reason and not for the load.
 assert pawn "Pirate" near="Bernael" max=12
 assert pawn "Pirate" hediff=Burn expect=present

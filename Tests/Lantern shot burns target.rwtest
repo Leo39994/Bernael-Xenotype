@@ -1,35 +1,6 @@
 rwtest 1
 test "Lantern shot burns target" project="Bernael" group="Weapon" created=2026-09-17T00:00:00
 
-# The whole firing path: Verb_Shoot with 2 s warmup, a burst of 5 shots 20 ticks
-# apart, plus Projectile_SoulLantern as a tracking bullet. BX_SoulProj burns, so
-# the Burn hediff is the proof of a hit.
-#
-# A single shot is a coin toss and the test must not sit on one. At 6 cells the
-# weapon contributes about 0.71 (AccuracyTouch 0.72 lerped towards AccuracyShort
-# 0.68) and the shooter's own ShootingAccuracyPawn is raised to the distance, so
-# roughly one shot in two lands. The budget therefore buys shots, and only the
-# count of them makes the test robust: ten shots still miss everything once in
-# a few thousand runs, twenty do not.
-#
-# One firing cycle is 320 ticks - warmup 120, burst 5x20 = 80, then the 2 s
-# RangedWeapon_Cooldown - plus about 18 ticks of flight at speed 20. 1320 ticks
-# are four such cycles and about twenty shots.
-#
-# Waiting longer is safe in the one direction that matters: the pirate takes 9
-# burn damage a hit and may well be dead by the end, but "assert pawn" resolves
-# through corpses as well, and a Burn hediff stays on the pawn inside one.
-#
-# The pirate is pacified. It used to shoot back, and a Bernael it downed ended
-# the attack and left the Burn line red for a reason that is not the weapon's.
-# It is placed under "speed paused" because "pacify" refuses a pawn that has
-# already started an attack, and the clock runs again before the equip walk.
-#
-# "assert shots" sits in front of the Burn line so a red run says which half
-# broke: no projectile at all is the firing path, projectiles without a burn
-# is the hit or the damage. min=1 and no more, because the pirate may go down
-# early and end the attack after any burst.
-
 requires dlc=Biotech
 speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael

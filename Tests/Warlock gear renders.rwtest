@@ -1,10 +1,6 @@
 rwtest 1
 test "Warlock gear renders" project="Bernael" group="Art" created=2026-09-18T00:00:00
 
-# Nothing here is readable from state - the state asserts already live in
-# "All items reach a pawn". This test is about the picture: do the three
-# textures sit on the pawn, in the right layer order, facing the right way.
-
 requires dlc=Biotech
 requires mod=Mortis.BX
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael

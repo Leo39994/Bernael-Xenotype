@@ -1,21 +1,6 @@
 rwtest 1
 test "Extract soul yields fragment" project=Bernael group=Harvest created=2026-09-18T00:00:00
 
-# The prisoner is built into a cell and not left standing on open ground,
-# because a prisoner outside one starts its escape job and walks off the map
-# edge while the test is still running - the surgery then runs on a pawn that
-# is no longer where the test put it, or no longer there at all. A room is a
-# prison cell only once a prisoner bed stands in it, which is the game's own
-# chain, so the bed goes in before the prisoner does.
-#
-# The second room is where everyone who is not a prisoner waits. A spawn with
-# neither "at" nor "in" searches outward from the map centre, which is where
-# the cell was built, so the doctor would otherwise be dropped into the cell
-# with the patient.
-#
-# The fragment is asserted "present" and not on a cell: OnSurgerySuccess places
-# it with ThingPlaceMode.Near, so the exact cell is the game's to pick.
-
 requires dlc=Biotech
 
 room size=5,5 prison=true name="cell"

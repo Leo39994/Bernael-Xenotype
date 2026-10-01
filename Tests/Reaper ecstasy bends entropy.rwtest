@@ -1,33 +1,12 @@
 rwtest 1
 test "Reaper ecstasy bends entropy" project="Bernael" group="Soul" created=2026-09-19T00:00:00
 
-# BX_ReaperEcstasy carries three statFactorsBySeverity. "Sensitivity stacks"
-# reads the first one and stops there, so the two Royalty-gated ones were
-# never measured - and both hang on MayRequire="Ludeon.Rimworld.Royalty",
-# written with a lowercase w, which is the kind of line that silently drops
-# out of the def without anything going red.
-#
-# PsychicEntropyGain is the stat this test leans on. Its StatDef has no parts,
-# no statFactors and a defaultBaseValue of 1, and nothing in this mod offsets
-# it, so the reading is the hediff's factor and nothing else:
-#
-#   valueBySeverity  (0, 1) (1, 1) (100, 0.1)
-#   severity  50 -> 1 + 49 * (0.1 - 1) / 99 = 0.555
-#   severity 100 -> 0.1
-#
-# PsychicEntropyMax is deliberately not asserted here. Its StatDef multiplies
-# by PsychicSensitivity, which the same hediff is raising at the same time, so
-# a bound on it would be a bound on two moving parts at once.
-
 requires dlc=Biotech
 requires dlc=Royalty
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 
-# A Bernael starts without the hediff, so this is the untouched base value.
 assert pawn "Bernael" stat=PsychicEntropyGain min=0.98 max=1.02
 
-# No ticks between give and assert: Hediff_ReapersEcstasy decays every 60
-# ticks, and a decayed severity is a different test.
 give "Bernael" hediff=BX_ReaperEcstasy severity=50
 assert pawn "Bernael" hediff=BX_ReaperEcstasy expect=present
 assert pawn "Bernael" stat=PsychicEntropyGain min=0.50 max=0.61

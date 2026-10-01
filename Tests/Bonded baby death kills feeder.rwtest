@@ -1,16 +1,6 @@
 rwtest 1
 test "Bonded baby death kills feeder" project="Bernael" group="Bond" created=2026-09-18T00:00:00
 
-# HediffComp_BabyBond_Victim.Notify_PawnDied kills the bonded feeder with
-# 99999 Deterioration damage. That is the sharpest rule in the whole mod and it
-# fires from a callback nobody would notice failing: if the comp is ever removed
-# too early - CompShouldRemove drops it the moment BondedFeeder is null or dead -
-# the baby just dies quietly and the feeder walks away.
-#
-# The bond is built the same way as in "Baby drain creates bond": the "Soul
-# drain" gizmo, a click on the baby, and a waitfor over the walk and the
-# 120-tick warmup.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Baby" age=1

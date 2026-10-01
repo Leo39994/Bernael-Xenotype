@@ -1,36 +1,10 @@
 rwtest 1
 test "Craving mood deepens" project="Bernael" group="Soul" created=2026-09-20T00:00:00
 
-# BX_SoulEnergyCraving is a ThoughtWorker_Hediff over BX_SoulCraving, so its
-# stage is the hediff's stage index one for one:
-#
-#   severity < 0.35 -> hediff "minor"    -> thought stage 0  -10
-#   severity < 0.70 -> hediff "moderate" -> thought stage 1  -15
-#   else               hediff "major"    -> thought stage 2  -20
-#
-# Three stages, three different numbers, and none of them was reachable before
-# this build: a ThoughtWorker never puts its thought into memories, so
-# "expect=present" could not go green and "expect=absent" went green without
-# looking. "Empty soul starts craving" pins how the hediff arrives; this test
-# starts from the hediff and asks what the mood tab says about it.
-#
-# The soul is filled on purpose. HediffComp_SeverityFromSoul adds
-# severityPerHourSoul/2500 per tick while the resource stands above zero, so
-# severity falls by 0.0048 over the 120 ticks below instead of rising by the
-# 0.012 the empty branch would add. Both are far inside the 0.25 and 0.2 of
-# headroom the three severities keep from the next boundary, but a test should
-# say which way it drifts and why.
-#
-# The mood bands are the stage numbers with two points of slack either side.
-# They sit 5 apart, so no band can be satisfied by a neighbouring stage. The
-# stage= line is the exact claim; the mood line is the number a player reads.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 give "Bernael" resource=BX_SoulStarved value=0.5
 
-# The other direction first, and only a real line since situational thoughts
-# became readable: without the hediff the worker answers Inactive.
 assert pawn "Bernael" thought=BX_SoulEnergyCraving expect=absent
 
 give "Bernael" hediff=BX_SoulCraving severity=0.1

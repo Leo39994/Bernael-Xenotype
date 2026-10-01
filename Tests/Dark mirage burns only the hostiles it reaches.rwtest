@@ -1,40 +1,6 @@
 rwtest 1
 test "Dark mirage burns only the hostiles it reaches" project="Bernael" group="Ability" created=2026-09-21T00:00:00
 
-# DarkMirage.Destroy detonates for DestroyMode.Vanish and KillFinalize, and
-# then walks every spawned pawn on the map, skipping each one that is dead,
-# downed, not flesh, not hostile to the mirage, further than burstRadius 2.4,
-# or without line of sight. What is left takes DamageInfo(Frostbite, 4).
-# Vanilla's Frostbite DamageDef carries <hediff>Frostbite</hediff>, so the
-# marker this test reads is that hediff on the victim.
-#
-# The burst is triggered with "despawn" and not by waiting out the 600 ticks,
-# and that is not a detour: "despawn" destroys with DestroyMode.Vanish, which
-# is the exact call TickInterval makes at expiry - "Destroy()" with its default
-# argument. What waiting would add is 600 ticks in which three pawns walk, and
-# a radius claim whose distances the script no longer states is not a claim.
-# "Dark mirage expires on its own" owns the 600 ticks.
-#
-# Three directions, because the filter has three parts and a single victim
-# would pass for any of them:
-#
-#   "Near"  hostile,  1 cell from the decoy  -> burned      (inside 2.4)
-#   "Far"   hostile,  4 cells from the decoy -> not burned  (outside 2.4)
-#   "Ally"  friendly, 1 cell from the decoy  -> not burned  (HostileTo is false)
-#
-# No severity bound on the hediff. DamageWorker_Frostbite picks the part and
-# harmAllLayersUntilOutside spreads what it deals, so a severity here would be
-# a bound on which part the roll chose and not on the 4 the mod passes in.
-#
-# The decoy is placed the player's way: the "Dark mirage" gizmo on the drafted
-# caster (disableGizmoWhileUndrafted) and a click on the cell. That runs the
-# 0.6 s warmup (36 ticks) before Apply, so the placement is a waitfor with 120
-# ticks for warmup and the job that carries it.
-#
-# The scene is built after the cast and under "speed paused": the two pirates
-# are placed, not launched, but their think tree is free the moment the clock
-# runs, and this file's whole claim is about where they stand.
-
 requires dlc=Biotech
 requires dlc=Royalty
 

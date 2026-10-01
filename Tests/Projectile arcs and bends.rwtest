@@ -1,25 +1,6 @@
 rwtest 1
 test "Projectile arcs and bends" project="Bernael" group="Art" created=2026-09-18T00:00:00
 
-# Projectile_SoulLantern.DrawAt adds VisualArcOffset, and PrepareTrackingSegment
-# re-aims the bullet mid-flight when TryRetarget fires. Both are motion across
-# frames: a screenshot catches one position of the bullet and proves nothing
-# about the curve or the bend. Only a person watching it fly can say.
-#
-# "Projectile retargets" stays the machine test - it proves B gets burned, and
-# it stays headless-green. This file only asks about the picture, so it must
-# not repeat the assert: the two can then fail for two different reasons.
-#
-# ticks=600 plays the scene while the question is on screen, then the replay
-# pauses for the answer: two firing cycles, so the curve and the bend both show
-# up more than once. "Projectile retargets" runs far longer, but only because it
-# has to outlast the hit roll - an eye does not, so this one stays short enough
-# to watch in one sitting.
-#
-# Both pirates are pacified, placed paused because "pacify" refuses a pawn that
-# has already started an attack. An armed Pirate B that shoots Bernael down
-# ends the scene before the person has seen a single bend.
-
 requires dlc=Biotech
 requires mod=Mortis.BX
 speed paused

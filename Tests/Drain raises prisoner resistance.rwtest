@@ -1,17 +1,6 @@
 rwtest 1
 test "Drain raises prisoner resistance" project="Bernael" group="Soul" created=2026-09-18T00:00:00
 
-# SoulUtility.DoDrain raises prisoner resistance by resistanceGain 1 and clamps
-# to kindDef.initialResistanceRange.Value.TrueMax.
-#
-# That line is brittle: PawnKindDefs without initialResistanceRange return null
-# there and .Value throws. "assert log clean" is in for that - the resistance
-# value alone would not show a silent abort in the middle of DoDrain.
-#
-# The drain is the player's: the "Soul drain" gizmo on Bernael, then a click on
-# the prisoner. Bernael walks one cell and warms up for 120 ticks before Apply,
-# so the waitfor gives that route 300 ticks at most.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Prisoner"

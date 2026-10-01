@@ -1,45 +1,6 @@
 rwtest 1
 test "Full warlock loadout stacks" project="Bernael" group="Items" created=2026-09-19T00:00:00
 
-# "Sensitivity stacks" puts the lantern, a gene and a hediff on one pawn.
-# The apparel was never in that picture, so the loadout a player actually
-# builds - helmet, armor and lantern together - was measured nowhere.
-#
-# PsychicSensitivity, offsets only:
-#   baseline 1.4 without Royalty, 1.9 with it
-#   + 0.4 helmet + 0.3 armor + 0.25 lantern = 0.95
-#   -> 2.35 or 2.85, so a floor of 2.3 holds either way
-#
-# PsychicEntropyRecoveryRate is the second stat here because it is the only
-# one all three pieces touch and nothing in "Sensitivity stacks" reads:
-#   0.54 defaultBaseValue
-#   + 0.25 BX_Mastermind statOffsets
-#   = 0.79 bare
-#   + 0.070 helmet + 0.060 armor + 0.040 lantern
-#   = 0.96 fully equipped
-# The psylink of BX_Hexmaster is level 1, whose statFactors are 1.0 for this
-# stat, so Royalty makes no difference to these two numbers.
-#
-# Mood is pinned high on purpose. PsychicEntropyRecoveryRate carries a
-# StatPart_Pain with factor 3, and vanilla's PainFactor is 1 + pain * 3 - pain
-# raises this stat, it does not lower it. BX_WitheredSoulHediff sits on every
-# Bernael and maps mood to severity 0.1 + 0.9 * mood; below severity 0.9
-# ("Aching pain", mood under about 0.89) it adds 0.15 pain, which multiplies
-# the reading by 1.45: 0.96 fully equipped became 1.392 in the runs of
-# 2026-09-24.
-#
-# One pin is not enough. Mood drifts from 0.95 towards the pawn's own thought
-# level while it walks and dresses - about 1600 ticks - and the hediff reads
-# the need every 420 ticks, so on some pawns the second reading already sat
-# in the pain stage. The mood is pinned again after the gear is on, and the
-# severity is asserted above each entropy line, so a pain factor shows up as
-# its own failure instead of as a wrong stat.
-#
-# If the severity line holds and the entropy line still reads high, the pawn
-# was generated with an age hediff that carries pain of its own. Pin the age
-# on the spawn line rather than widening the bounds - a bound wide enough to
-# swallow pain is also wide enough to swallow the gear.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Thing:BX_Headgear_Warlock at 2,0

@@ -1,77 +1,9 @@
 rwtest 1
 test "Bottled soul doctor work decides" project="Bernael" group="Work" created=2026-09-18T00:00:00
 
-# WorkGiver_AdministerBottledSoul had no test, because its preconditions cannot be
-# built in a script: it wants a patient in a bed. "work" asks the giver instead
-# of building the world around it, and "bed" covers the one bit of world that is
-# genuinely needed.
-#
-# Four of its exits, in the order HasJobOnThing walks them:
-#
-# 1. no Gene_Soul on the target -> no job, no reason. The giver just does not
-#    apply. Absent, and no bed needed to reach it.
-# 2. unforced and Value at or above 0.25 -> no job, no reason either. Absent.
-#    targetValue sits at 0.5 by default, so 0.5 also keeps ShouldConsumeSoulNow
-#    from ever mattering here - the 0.25 gate comes first.
-# 3. nothing to administer -> JobFailReason NoIngredient, which vanilla spells
-#    "No {label}". Disabled, and the reason is the one the pawn would read.
-#    Reaching it needs a real patient, not just a pawn parked in a bed:
-#    FeedPatientUtility.ShouldBeFed ends in HealthAIUtility.ShouldSeekMedicalRest,
-#    which wants a downed pawn, a tended healing injury or an immunizable
-#    hediff. Hence "down" before "bed". No room is involved anywhere in that
-#    chain - this giver never asks which room the bed stands in, and the ward
-#    the test builds is scaffolding for the bed, not something the giver reads.
-# 4. a gem on the map -> the job FeedPatient.
-#
-# The reasons are matched with "contains", so a relabelled item does not break
-# the test - only a lost JobFailReason does.
-#
-# No line names a cell of the map. Nothing here depends on where anybody stands
-# - the giver is asked straight out and never hands out the job - so every
-# "spawn" looks for its own free cell outward from the map centre and the test
-# runs on a played colony as well as on the empty test map.
-#
-# The bed is the one exception, for a mechanical reason: a free cell is searched
-# as a single cell, and a HospitalBed covers two, so on a built-up map it could
-# come to rest half inside something. It goes into a room the test builds
-# instead, where "in=" measures the whole footprint. The room takes no "at"
-# either and picks its own spot, and it is built before anybody stands on the
-# map, because that search only avoids pawns inside the walls, not on them.
-#
-# Exit 3 is the one the run trips over: the giver answers "no job, and names no
-# reason", which is what every SILENT exit above looks like from the outside,
-# and what a true from HasJobOnThing with a null from JobOnThing looks like as
-# well. The lines before it pin down what the giver reads, so a red line names
-# the gate that closed instead of leaving the guess to the reader:
-#
-#   downed + job=LayDown  - the two halves of FeedPatientUtility.ShouldBeFed.
-#                           It wants a pawn in a bed (CurJob plus an in-bed
-#                           posture) that ShouldSeekMedicalRest counts as a
-#                           patient, and a downed pawn is one.
-#   resource              - the 0.25 gate reads Value, and "give" writes it
-#                           through GetGene, which finds the gene whether it is
-#                           active or not.
-#   forced=true           - skips the 0.25 gate and hands CanReserve its
-#                           ignoreOtherReservations. Green here and red below
-#                           means the soul value or a reservation stops the
-#                           giver. Red here as well means the gate sits earlier:
-#                           either FeedPatientUtility.ShouldBeFed, or the gene
-#                           lookup, because GetFirstGeneOfType only hands out
-#                           ACTIVE genes while "give" above does not care.
-#
-# No pawn has to carry a soul bottle for any of this. The giver looks for one on
-# the map itself and the job it hands out, FeedPatient, is what makes the doctor
-# pick it up - which is why the last two lines only spawn the bottle and ask
-# again.
-
 requires dlc=Biotech
 requires mod=Mortis.BX
 
-# Exit 3 claims there is nothing to administer, and nothing in the test says so:
-# HasJobOnThing searches the whole map for a BX_BottledSoul. Recipe_ExtractSoul
-# drops its product on the map and a product is in no cleanup ledger, so a gem
-# from an earlier test outlives it and this exit is never reached without the
-# line below.
 despawn Thing:BX_BottledSoul
 room size=5,5 name="ward"
 spawn Thing:HospitalBed in="ward"

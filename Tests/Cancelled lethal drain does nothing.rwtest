@@ -1,11 +1,6 @@
 rwtest 1
 test "Cancelled lethal drain does nothing" project="Bernael" group="Soul" created=2026-09-17T00:00:00
 
-# 0.56 plus 0.4499 is past lethalSeverity 1, so the kill prompt shows up.
-# Backing out must leave victim and caster untouched. RimWorld labels the
-# cancel button "Go back" (key GoBack), the other one "Confirm" - a click matches
-# the drawn label exactly, so these two tests assume an English UI.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Victim"

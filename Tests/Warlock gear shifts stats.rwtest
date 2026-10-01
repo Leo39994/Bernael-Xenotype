@@ -1,34 +1,11 @@
 rwtest 1
 test "Warlock gear shifts stats" project="Bernael" group="Items" created=2026-09-19T00:00:00
 
-# "All items reach a pawn" proves the two pieces can be put on, "Warlock gear
-# renders" proves they are drawn. Neither reads a single number, so the whole
-# equippedStatOffsets block of both defs was untested: a renamed stat, a block
-# lost in a merge or a MayRequire that stops matching would all pass green.
-#
-# PainShockThreshold is the stat this test leans on, because it is the only one
-# of the five that nothing else in the mod touches:
-#
-#   defaultBaseValue                 0.80
-#   + BX_Headgear_Warlock            0.05
-#   + BX_Apparel_Warlock             0.10
-#   = 0.95, and the StatDef caps at 0.99, so nothing is clipped
-#
-# It has no <parts> and no <statFactors>, so no gene, no psylink and no pain
-# gets in the way - which is exactly why the bounds may be two hundredths wide
-# instead of the loose lower bounds the psychic stats need.
-#
-# PsychicSensitivity comes along at the end as a lower bound only. The baseline
-# of a Bernael is 1.4 without Royalty and 1.9 with it (see "Sensitivity
-# stacks"), the two pieces add 0.4 + 0.3, so the floor of 2.05 holds in both
-# cases without pinning a decimal.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Thing:BX_Headgear_Warlock at 2,0
 spawn Thing:BX_Apparel_Warlock at 3,0
 
-# Bare, so the two steps below are a difference and not an absolute reading.
 assert pawn "Bernael" stat=PainShockThreshold min=0.78 max=0.82
 assert pawn "Bernael" stat=PsychicSensitivity max=2.0
 

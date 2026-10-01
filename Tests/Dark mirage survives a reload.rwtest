@@ -1,29 +1,6 @@
 rwtest 1
 test "Dark mirage survives a reload" project="Bernael" group="Ability" created=2026-09-21T00:00:00
 
-# DarkMirage.ExposeData scribes the caster reference, createdTick, expiresTick,
-# burstDone, the snapshot and the eye anchors, and SpawnSetup deliberately does
-# not rewrite createdTick or expiresTick when respawningAfterLoad is true. So a
-# decoy that is halfway through its 600 ticks has to come back halfway through
-# them, and not restart and not expire on the spot.
-#
-# That is why the three lines after the reload are three and not one. Each
-# catches a different way the scribing can be wrong:
-#
-#   gone right after the reload   -> expiresTick came back as 0 and the first
-#                                    tick past it destroyed the decoy
-#   still there after 660 ticks   -> expiresTick was rebuilt from the load, so
-#                                    the decoy restarted its full lifetime
-#   caster missing from inspect   -> Scribe_References did not resolve the
-#                                    caster, and TickInterval would dismiss it
-#                                    as an owner loss on the next tick
-#
-# The budgets are the same arithmetic as "Dark mirage expires on its own": the
-# decoy is placed through the "Dark mirage" gizmo and a click on the cell, the
-# waitfor stops the moment it stands, so it is about 0 ticks old when the
-# reload happens, 500 after the first budget and about 680 after the second,
-# against durationTicks 600.
-
 requires dlc=Biotech
 requires dlc=Royalty
 
@@ -40,8 +17,6 @@ assert inspect "BX_DarkMirageDecoy" contains "Caster: Bernael"
 
 reload reason="the decoy scribes its caster, its created tick and its expiry"
 
-# The alias from a spawn line is gone after a reload; BX_DarkMirageDecoy is a
-# def name and is found anyway.
 assert thing BX_DarkMirageDecoy at 4,0
 assert inspect "BX_DarkMirageDecoy" contains "Caster: Bernael"
 

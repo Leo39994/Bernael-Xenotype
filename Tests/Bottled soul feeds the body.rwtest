@@ -1,26 +1,6 @@
 rwtest 1
 test "Bottled soul feeds the body" project="Bernael" group="Items" created=2026-09-19T00:00:00
 
-# "Bottled soul refills" reads BX_SoulStarved and nothing else, so the other
-# half of the def was untested: BX_BottledSoul sits in thingCategories Foods
-# with Nutrition 0.3, and that number is what the Needs tab shows when a pawn
-# drinks one.
-#
-# An adult human's Food need holds 1.0 nutrition, and the assertion reads
-# CurLevelPercentage, so 0.3 nutrition is 30 percentage points on the bar:
-# 0.30 before, about 0.60 after. The bounds are five points wide because the
-# need keeps falling while the ingest job runs.
-#
-# Exactly one bottle lies on the map because vanilla decides how many the pawn
-# drinks: FoodUtility.StackCountForNutrition rounds NutritionWanted / 0.3, and
-# at 0.30 Food that is 0.7 / 0.3 -> 2. With two bottles present the pawn drank
-# both and landed at 0.868.
-#
-# preferability DesperateOnly and nonDrugIngestibleWithoutFoodNeed are not in
-# the way here - "ingest" drinks the thing directly instead of waiting for the
-# pawn to choose it. Whether a merely hungry colonist would pick it up on its
-# own is a different question and wants a JobGiver test, not this one.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Thing:BX_BottledSoul at 1,0 count=1

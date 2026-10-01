@@ -4,26 +4,6 @@ test "Bottled soul warden work decides" project=Bernael group=Work created=2026-
 requires dlc=Biotech
 requires mod=Mortis.BX
 
-# "spawn ... in=<room>" puts a pawn in a room. It does not keep it there, and
-# this file asks about the room a pawn stands in nine times.
-#
-# "Caged" and "Starved" are spawned in the cell and stay plain colonists for a
-# dozen steps after it - nothing tells them to stay, so they walk, and the cell
-# has a door at 0,-2. On 2026-09-21 00:34 that finally showed: step 29 read
-# "Caged is not in a prison cell". It had been true all along and unreachable -
-# every earlier run fell one check higher, at ShouldTakeCareOfPrisoner, and
-# never got to the cell test at all.
-#
-# The room is not the one that moved. Room.IsPrisonCell is a cached field that
-# vanilla only recomputes in Notify_RoomShapeChanged, nothing changed the shape
-# after the bed made it a cell, and IsInPrisonCell accepts an adjacent room too -
-# so even a pawn standing in the doorway would still count. The pawn left.
-#
-# Paused is the right instrument rather than downing the two, because this file
-# is a list of questions put to a giver and wants nothing moving between them.
-# It costs the last line nothing: "tick" and "job" call ReplayClock.LetItRun()
-# themselves and hold again afterwards, so the delivery at the bottom still runs
-# its 4000 ticks.
 speed paused
 despawn Thing:BX_BottledSoul
 room size=5,5 prison=true name="cell"
@@ -51,10 +31,6 @@ assert reach "Warden" to="Wounded" pathEndMode=OnCell
 work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Wounded" expect=disabled reason="needs food before a bottled soul"
 prisoner "Caged"
 assert prisoner "Caged" secure by="Warden"
-# The other half of what the exit below depends on. The gate line above says
-# the warden may tend this prisoner, this one says the prisoner is where the
-# giver needs it - and between them they leave only the missing Gene_Soul for
-# the silent line underneath to mean.
 assert pawn "Caged" room=PrisonCell
 work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Caged" expect=absent
 prisoner "Starved"

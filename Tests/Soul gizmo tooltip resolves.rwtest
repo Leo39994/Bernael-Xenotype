@@ -1,18 +1,6 @@
 rwtest 1
 test "Soul gizmo tooltip resolves" project="Bernael" group="Text" created=2026-09-18T00:00:00
 
-# The first tooltip test in this project - "hover" was used nowhere.
-#
-# GeneGizmo_ResourceSoulStarve.GetTooltip builds its text from seven translation
-# keys, four of them vanilla: BX_NeverConsumeSoul or BX_ConsumeSoulBelow, Gene,
-# RegenerationRate or DrainRate, PerDay. A missing key does not error - RimWorld
-# prints the key itself, and the tooltip keeps working. Nothing else in the
-# suite would catch that.
-#
-# So this does not pin the wording, which changes. It pins that the tooltip is
-# drawn and that no raw key leaks into it. Same trick as the MB_Alert line in
-# "Low soul alert fires".
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 

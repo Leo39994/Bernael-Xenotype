@@ -1,13 +1,6 @@
 rwtest 1
 test "Save roundtrip keeps state" project="Bernael" group="Basics" created=2026-09-17T00:00:00
 
-# The cheapest test with the widest reach: everything ExposeData writes has to
-# survive a save and load. Three spots are covered nowhere else:
-# - Gene_Soul.Value and bottledSoulsAllowed
-# - Gamecomponent_PsychicSight.psychicSeers, saved as a reference list. Lose the
-#   list and sight falls back to blind, silently.
-# - the equipment on the pawn
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Thing:BX_SoulLantern at 1,0

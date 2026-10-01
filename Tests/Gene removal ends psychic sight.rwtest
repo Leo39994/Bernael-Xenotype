@@ -1,10 +1,6 @@
 rwtest 1
 test "Gene removal ends psychic sight" project="Bernael" group="Sight" created=2026-09-18T00:00:00
 
-# Gene_DepravedHead.PostRemove is the way back: blindness off, entry out of
-# Gamecomponent_PsychicSight. If the entry stays, a pawn without the gene keeps
-# seeing psychically and nobody notices, because nothing errors.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 assert pawn "Bernael" hediff=BX_Blindness expect=present

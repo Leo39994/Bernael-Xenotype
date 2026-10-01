@@ -1,56 +1,12 @@
 rwtest 1
 test "Drain leaves fed-on thoughts" project="Bernael" group="Soul" created=2026-09-18T00:00:00
 
-# BX_SoulFeeding carries thoughtDefToGiveTarget BX_FedOn and
-# opinionThoughtDefToGiveTarget BX_FedOn_Social. SoulUtility.DoDrain hands both
-# to the victim's memories, the second one tagged with the biter.
-#
-# Nine of the ten ThoughtDefs in this mod had no test. These two are the ones
-# that reach a pawn on the ability path; the rest hang on the prisoner jobs.
-#
-# Both memories go on the victim, not on the drainer - the social one is the
-# victim's opinion of the drainer.
-#
-# BX_FedOn_Social carries baseOpinionOffset -20 and nothing else, and its
-# presence is all this test reads. It used to bound the opinion as well, at
-# -30..-10, and that line was wrong: opinion= is the whole relationship, not
-# this thought's share of it.
-#
-# Vanilla's own situational social thoughts are in that sum and neither pawn is
-# pinned against them. Disfigured alone is -15, and it applies whenever the
-# drainer happens to carry a permanent scar or a missing part on an eye, ear,
-# nose, jaw or tongue - which the pawn generator rolls - and vanishes entirely
-# when the victim rolled Kind or Ascetic, because CaresAboutOthersAppearance is
-# false for both. The line passed four runs and failed the fifth on the same
-# assembly, reading -35: -20 from the mod, -15 from a roll.
-#
-# Both of those are pinned away now, and by "spawn" itself. Without rolled=true
-# ShapePawn calls three things: GeneratedGear.StripFrom, GeneratedBody.ClearFrom
-# and PawnTraits.Clear. ClearFrom puts missing body parts back and takes off
-# every hediff that is a Hediff_MissingPart, chronic or permanent - exactly the
-# three RelationsUtility.IsDisfigured reads. Clear takes every rolled trait,
-# which puts Kind and Ascetic off the table as well.
-#
-# The line below does not read the sum at all any more. "assert opinion ... of=
-# ... thought=" names this one thought's share of it, and that share is the
-# def's own baseOpinionOffset: -20. The range is +/-5 around that single number
-# and hangs on no chitchat, no trait and no scar.
-#
-# Until this kit only "opinion=" existed, and that is
-# Pawn_RelationsTracker.OpinionOf - the whole relationship, vanilla's
-# situational social thoughts included.
-#
-# If this number ever moves, the def changed and not the dice.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Victim"
 
 give "Bernael" resource=BX_SoulStarved value=0.1
 
-# The drain goes through the "Soul drain" gizmo and a click on the victim, the
-# player's route, so the 120-tick warmup runs before DoDrain. The waitfor holds
-# that for at most 300 ticks; the memories land in the same Apply.
 select "Bernael"
 gizmo "Soul drain"
 target "Victim"

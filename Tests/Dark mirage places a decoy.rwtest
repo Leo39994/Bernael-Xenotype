@@ -1,30 +1,6 @@
 rwtest 1
 test "Dark mirage places a decoy" project="Bernael" group="Ability" created=2026-09-21T00:00:00
 
-# BX_DarkMirage is a Royalty psycast at level 2. CompAbilityEffect_DarkMirage
-# rechecks MirageUtility.CanSpawnAt after the warmup and then puts one
-# BX_DarkMirageDecoy on the target cell, carrying the caster's faction and a
-# reference back to the caster.
-#
-# The def carries displayGizmoWhileUndrafted=true next to
-# disableGizmoWhileUndrafted=true, so the ability is shown to an undrafted pawn
-# and greyed out. The test presses the ability the way a player does - select
-# the caster, press the "Dark mirage" gizmo, click the target cell - and
-# "gizmo ... expect=disabled" reads the greyed-out Command_Ability in the
-# gizmo bar, so that branch is a line here and not an assumption - and it is
-# the one a player meets first. The wording of vanilla's refusal is not pinned: it is
-# not this mod's sentence, and pinning somebody else's wording is how a test
-# goes red on a translation.
-#
-# The ability needs the shader out of 1.6/AssetBundles/darkmirage_win. Without
-# it CompAbilityEffect_DarkMirage.Valid refuses every cast and every line below
-# the draft goes red together - that is the mod's own guard working, not this
-# test being wrong, and the failing step names it.
-#
-# This file owns the placement and nothing else. The lifetime is
-# "Dark mirage expires on its own", the burst is "Dark mirage burns only the
-# hostiles it reaches".
-
 requires dlc=Biotech
 requires dlc=Royalty
 
@@ -32,8 +8,6 @@ despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 
-# Nothing of this def is on the map before the cast, so the assert below cannot
-# be answered by a decoy an earlier test left standing.
 assert thing BX_DarkMirageDecoy expect=absent
 
 select "Bernael"
@@ -42,20 +16,11 @@ draft "Bernael"
 gizmo "Dark mirage"
 target cell=4,0
 
-# verbProperties warmupTime is 0.6 s, which is 36 ticks; 120 is that plus the
-# job that carries it and margin. The decoy exists from the moment Apply runs,
-# not from the click.
 waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
 
 assert thing BX_DarkMirageDecoy at 4,0
 assert inspect "BX_DarkMirageDecoy" contains "Caster: Bernael"
 
-# cooldownTicksRange is 900 and starts when the cast lands; the waitfor above
-# stops the moment the decoy stands, so the gizmo is greyed out for nearly all
-# of them. A player pressing it again meets exactly this. This is the "Works: the cost" row of
-# WHAT_TO_TEST.md's ability section, as far as it is readable: psyfocus and
-# neural heat have no assert subject, and that gap is filed rather than
-# replaced with a line that reads something adjacent.
 gizmo "Dark mirage" expect=disabled
 
 undraft "Bernael"

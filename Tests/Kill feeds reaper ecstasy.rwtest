@@ -1,33 +1,8 @@
 rwtest 1
 test "Kill feeds reaper ecstasy" project="Bernael" group="Genes" created=2026-09-17T00:00:00
 
-# Hediff_ReapersEcstasy.Notify_KilledPawn runs on the hediffs of the killer, so
-# the damage needs an instigator. A weapon would do too, but not
-# deterministically - this is about the counter, not about hit chance.
-#
-# Per kill: severity +1 and soul +10 percent, so 0.1 becomes 0.2. killRefillPct
-# 10 used to be added as "ValuePercent += 10" and pinned the value to the cap.
-#
-# faction=enemy is load-bearing, not decoration. Notify_KilledPawn returns early
-# on !victim.HostileTo(pawn.Faction), and a spawn without the key runs through
-# SpawnFactions.DefaultFor, which falls back to Faction.OfPlayerSilentFail when
-# the world carries no pirate faction. The "pirate" would then be a colonist,
-# the hook would refuse, and "assert pawn dead" would stay green all the same.
-# With the key the step fails loudly instead, and names the factions it found.
-
 requires dlc=Biotech
 
-# Notify_KilledPawn raises the severity by 1 and Tick takes it back off at the
-# next pawn.IsHashIntervalTick(60). Severity 2 lives for a second at most, and
-# when that tick falls depends on thingIDNumber. Assertions poll real frames and
-# not game ticks, so "severity min=2" was a coin toss: two green runs against
-# five red ones on a byte-identical assembly.
-#
-# "speed paused" takes the clock away from the decay. While the line polls, no
-# game tick passes, the 2 stands still, and the decay only runs where the
-# "tick 180" line lets it run - a tick step gets its ticks in a paused game as
-# well and pauses again afterwards. No number in this test hangs on how long an
-# assertion took any more.
 speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 4,0 name="Pirate" faction=enemy
@@ -37,11 +12,8 @@ damage "Pirate" amount=999 by="Bernael"
 
 assert pawn "Pirate" dead
 
-# The soul refill comes first on purpose: it does not decay, so it tells a hook
-# that never ran apart from a severity the decay has already eaten.
 assert pawn "Bernael" resource=BX_SoulStarved min=0.15 max=0.25
 assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2
 
-# decayTickInterval 60: the bonus is gone after barely two seconds.
 tick 180 reason="decay drops 1 severity every 60 ticks"
 assert pawn "Bernael" hediff=BX_ReaperEcstasy severity max=1

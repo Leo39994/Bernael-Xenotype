@@ -1,18 +1,6 @@
 rwtest 1
 test "Bionic eye blocked" project="Bernael" group="Sight" created=2026-09-17T00:00:00
 
-# Bernael eyes are off limits for surgery, everyone else is fine.
-#
-# Patch_Recipe_Surgery_AvailableOnNow forces Recipe_Surgery.AvailableOnNow to
-# false for a pawn with BX_DepravedHead whenever the part is an Eye. That runs
-# per body part, so no eye survives GetPartsToApplyOn x AvailableOnNow and the
-# option is never drawn at all - it is absent, not greyed out. Hence
-# expect=absent and not expect=disabled.
-#
-# The ingredients have to lie on the map or the test measures the wrong thing:
-# a missing BionicEye is isTechHediff and hides the option by itself, missing
-# medicine only greys it out.
-
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Baseline"
