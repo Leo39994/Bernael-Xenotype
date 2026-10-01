@@ -1,68 +1,18 @@
 rwtest 1
-test "Abyssal reach lengthens a psycast" project="Bernael" group="Genes" created=2026-09-21T00:00:00
-
-# Patch_Verb_EffectiveRange is a postfix on the Verb.EffectiveRange getter. It
-# leaves every verb alone except a Verb_CastAbility whose Ability.def.IsPsycast
-# is true, and there it multiplies the range when the caster has an active
-# BX_AbyssalReach. The gene is an endogene of BX_Bernael, so the xenotype is
-# what sets the two pawns apart.
-#
-# The 1.25 below is the promise the player reads in the gene's description -
-# "increasing the range of all psycast abilities by 25%" - and not
-# AbyssalReachUtility.RangeFactor, which is the copy the code multiplies with.
-# A test that took its number from that constant would agree with any value
-# somebody typed into it.
-#
-# BX_DarkMirage is the psycast this file measures with, because its
-# verbProperties range of 19.9 puts both readings far apart:
-#
-#   without the gene   19.9 cells
-#   with the gene      19.9 * 1.25 = 24.875 cells
-#
-# Both bounds are asserted at both ends, so the test fails on a factor of 1.0
-# and on a factor of 2.0 alike. A single "min" would pass on a patch that
-# multiplied by anything at all.
-#
-# This file used to measure the range with "cast ... expect=refused" at a cell
-# 22 away. That does not work and never did: CastStep.Refusal asks
-# GizmoDisabled, Ability.CanCast and Ability.CanApplyOn, and
-# Ability.CanApplyOn(LocalTargetInfo) runs the effect comps and one self-target
-# rule and nothing else. The range lives in Verb.CanHitTargetFrom, behind
-# "num2 > EffectiveRange * EffectiveRange", and no branch of the step reaches
-# it - so the refusal was red for a pawn that the game would have refused.
-# Worse, Ability.Activate applies the effects straight out with no verb, no
-# warmup and no range, so the other half of that file was green whatever the
-# patch did. Both halves are gone; what the cast path can honestly say about
-# this ability is said in "Dark mirage places a decoy".
-#
-# This file was written before "ability" and "assert ability" existed and
-# carried "requires verb=ability" and "requires assert=ability" so that it
-# skipped until they landed. Both are in the kit now, so the lines are gone and
-# the two range asserts below really measure - which also means neither of them
-# has been seen red yet. A build with the factor at 1.0 has to fail line
-# "range min=24.5" with "EffectiveRange reads 19.9" before this file counts as
-# proof.
+test "Abyssal reach lengthens a psycast" project=Bernael group=Genes created=2026-09-21T00:00:00
 
 requires dlc=Biotech
 requires dlc=Royalty
-
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 0,1 name="Plain"
 assert pawn "Bernael" gene=BX_AbyssalReach expect=present
 assert pawn "Plain" gene=BX_AbyssalReach expect=absent
-
 ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 ability "Plain" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 draft "Bernael"
 draft "Plain"
-
-# The pawn without the gene reads the def's own 19.9 and nothing else. The
-# bounds are tight enough that a factor applied to everyone would break them.
 assert ability BX_DarkMirage on "Plain" range min=19.5 max=20.5
-
-# 19.9 * 1.25 = 24.875. Both ends again, so 1.25 is the only factor that fits.
 assert ability BX_DarkMirage on "Bernael" range min=24.5 max=25.5
-
 undraft "Bernael"
 undraft "Plain"
 assert log clean
