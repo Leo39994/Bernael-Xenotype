@@ -16,7 +16,9 @@ assert thing BX_DarkMirageDecoy at 4,0
 
 speed paused
 spawn Pawn:Pirate at 5,0 name="Near" faction=enemy
+pacify "Near"
 spawn Pawn:Pirate at 4,4 name="Far" faction=enemy
+pacify "Far"
 spawn Pawn:Colonist at 3,0 name="Ally"
 
 assert pawn "Near" hediff=Frostbite expect=absent

@@ -6,7 +6,9 @@ requires dlc=Biotech
 speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 4,0 name="First" faction=enemy
+pacify "First"
 spawn Pawn:Pirate at 6,0 name="Second" faction=enemy
+pacify "Second"
 
 give "Bernael" resource=BX_SoulStarved value=0.1
 assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=1 max=1

@@ -5,7 +5,7 @@ requires dlc=Biotech
 speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Pirate at 8,0 name="Pirate A" faction=enemy
-spawn Pawn:Colonist at 8,3 name="Pirate B" faction=enemy
+spawn Pawn:Pirate at 8,3 name="Pirate B" faction=enemy
 pacify "Pirate A"
 pacify "Pirate B"
 speed x1
