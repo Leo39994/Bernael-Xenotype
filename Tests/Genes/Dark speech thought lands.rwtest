@@ -1,0 +1,16 @@
+rwtest 1
+test "Dark speech thought lands" project="Bernael" created=2026-09-17T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Speaker A" xenotype=BX_Bernael
+spawn Pawn:Colonist at 1,0 name="Listener"
+spawn Pawn:Colonist at 4,0 name="Speaker B" xenotype=BX_Bernael
+spawn Pawn:Colonist at 5,0 name="Kin" xenotype=BX_Bernael
+
+interact "Speaker A" with="Listener" kind=Chitchat
+assert pawn "Listener" thought=BX_HeardDarkSpeech expect=present
+
+interact "Speaker B" with="Kin" kind=Chitchat
+assert pawn "Kin" thought=BX_HeardDarkSpeech expect=absent
+
+assert log clean

@@ -1,0 +1,17 @@
+rwtest 1
+test "Soul caps at maximum" project="Bernael" created=2026-09-18T00:00:00
+
+requires dlc=Biotech
+speed paused
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Pirate at 4,0 name="Pirate" faction=enemy
+pacify "Pirate"
+speed x1
+spawn Thing:BX_BottledSoul at 1,0
+
+give "Bernael" resource=BX_SoulStarved value=1
+ingest "Bernael" thing=BX_BottledSoul
+assert pawn "Bernael" resource=BX_SoulStarved max=1
+
+damage "Pirate" amount=999 by="Bernael"
+assert pawn "Bernael" resource=BX_SoulStarved max=1

@@ -1,0 +1,14 @@
+rwtest 1
+test "Soul gizmo tooltip resolves" project="Bernael" created=2026-09-18T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+
+select "Bernael"
+hover "Soul Saturation"
+tick 6 reason="a few frames so the tooltip is drawn"
+
+assert text contains "Soul Saturation" expect=present
+assert text contains "BX_" expect=absent
+assert text contains "MB_" expect=absent
+assert log clean

@@ -1,0 +1,25 @@
+rwtest 1
+test "Drain chain counts no kill" project="Bernael" created=2026-09-18T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,0 name="Victim"
+give "Bernael" resource=BX_SoulStarved value=0.1
+
+select "Bernael"
+gizmo "Soul drain"
+target "Victim"
+waitfor pawn "Victim" hediff=BX_SoulDrained severity min=0.44 ticks=300
+
+gizmo "Soul drain"
+target "Victim"
+click "Confirm"
+waitfor pawn "Victim" hediff=BX_SoulDrained severity min=0.89 ticks=300
+
+gizmo "Soul drain"
+target "Victim"
+click "Confirm"
+waitfor pawn "Victim" dead ticks=600
+
+assert pawn "Victim" dead
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity max=1

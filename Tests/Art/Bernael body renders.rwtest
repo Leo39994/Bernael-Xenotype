@@ -1,0 +1,10 @@
+rwtest 1
+test "Bernael body renders" project="Bernael" created=2026-09-18T00:00:00
+
+requires dlc=Biotech
+requires mod=Mortis.BX
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 3,0 name="Baseline"
+
+tick 30 reason="one render frame after the pawn graphics were built"
+ask "bernael-body" claim="the left pawn has the halo above the head, the wings behind the body and withered skin, all three drawn in the right layer and none of them on the plain colonist to the right"

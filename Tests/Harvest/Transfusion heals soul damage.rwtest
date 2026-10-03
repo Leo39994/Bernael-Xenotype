@@ -1,0 +1,10 @@
+rwtest 1
+test "Transfusion heals soul damage" project=Bernael created=2026-09-18T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Doctor"
+spawn Pawn:Colonist at 2,0 name="Patient"
+spawn Thing:BX_BottledSoul at 2,1
+give "Patient" hediff=BX_SoulDrained severity=0.6
+surgery "Patient" recipe=BX_SoulTransfusion by="Doctor"
+assert pawn "Patient" hediff=BX_SoulDrained expect=present

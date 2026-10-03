@@ -1,0 +1,37 @@
+rwtest 1
+test "Dark mirage looks like its caster" project="Bernael" created=2026-09-21T00:00:00
+
+requires dlc=Biotech
+requires dlc=Royalty
+
+despawn Thing:BX_DarkMirageDecoy
+sky glow=0
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 5,0 name="Watcher"
+ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+
+ask "mirage-dark-before" claim="with the sky pinned dark, the ground around Watcher is visibly dark before the cast"
+
+draft "Bernael"
+select "Bernael"
+gizmo "Dark mirage"
+target cell=4,0
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
+assert thing BX_DarkMirageDecoy at 4,0
+deselect
+ask "mirage-glow-after" claim="the decoy casts visible light onto the ground around it while the pinned sky remains dark"
+
+ask "mirage-caster-body" claim="the decoy at the target cell shows this caster's own body and apparel, facing the way the caster faces, and is not a generic silhouette"
+ask "mirage-outline-eyes" claim="the decoy is drawn with a dark outline and two glowing eyes, and is clearly not a second ordinary pawn"
+ask "mirage-flames" ticks=180 claim="blue-black flames rise off the decoy and keep moving; the decoy itself does not walk, turn or slide off its cell"
+
+select BX_DarkMirageDecoy
+ask "mirage-burst-ring" claim="selecting the decoy draws one ring around it, about two and a half cells wide - the area its burst would reach"
+deselect
+
+tick 364 reason="to about 544 of 600, just short of the 36-tick fade-out window"
+ask "mirage-fade-out" ticks=90 claim="the decoy fades out over the last moments and then is gone; it does not vanish in one frame and leaves no rubble, corpse or fire behind"
+
+assert thing BX_DarkMirageDecoy expect=absent
+undraft "Bernael"
+assert log clean

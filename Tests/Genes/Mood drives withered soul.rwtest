@@ -1,0 +1,14 @@
+rwtest 1
+test "Mood drives withered soul" project="Bernael" created=2026-09-17T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+assert pawn "Bernael" hediff=BX_WitheredSoulHediff expect=present
+
+give "Bernael" need=Mood value=0.1
+tick 480 reason="recomputed every 420 ticks"
+assert pawn "Bernael" hediff=BX_WitheredSoulHediff severity min=0.15 max=0.25
+
+give "Bernael" need=Mood value=0.9
+tick 480 reason="same interval back up"
+assert pawn "Bernael" hediff=BX_WitheredSoulHediff severity min=0.85

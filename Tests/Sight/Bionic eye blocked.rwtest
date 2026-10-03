@@ -1,0 +1,11 @@
+rwtest 1
+test "Bionic eye blocked" project="Bernael" created=2026-09-17T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,0 name="Baseline"
+spawn Thing:BionicEye at 0,2
+spawn Thing:MedicineIndustrial at 1,2 count=2
+
+bill "Bernael" recipe=InstallBionicEye expect=absent
+bill "Baseline" recipe=InstallBionicEye

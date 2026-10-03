@@ -1,0 +1,19 @@
+rwtest 1
+test "Projectile arcs and bends" project="Bernael" created=2026-09-18T00:00:00
+
+requires dlc=Biotech
+requires mod=Mortis.BX
+speed paused
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Pirate at 8,0 name="Pirate A" faction=enemy
+spawn Pawn:Pirate at 8,3 name="Pirate B" faction=enemy
+pacify "Pirate A"
+pacify "Pirate B"
+speed x1
+spawn Thing:BX_SoulLantern at 1,0
+equip "Bernael" thing=BX_SoulLantern
+
+down "Pirate A"
+attack "Bernael" target="Pirate A"
+
+ask "lantern-projectile-arc" ticks=600 claim="the bullet leaves the muzzle on a visible curve, not a straight line, and while it is already in the air it turns away from the downed Pirate A towards Pirate B"

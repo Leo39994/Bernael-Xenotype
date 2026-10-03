@@ -1,0 +1,18 @@
+rwtest 1
+test "Abyssal reach lengthens a psycast" project=Bernael created=2026-09-21T00:00:00
+
+requires dlc=Biotech
+requires dlc=Royalty
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 0,1 name="Plain"
+assert pawn "Bernael" gene=BX_AbyssalReach expect=present
+assert pawn "Plain" gene=BX_AbyssalReach expect=absent
+ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+ability "Plain" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+draft "Bernael"
+draft "Plain"
+assert ability BX_DarkMirage on "Plain" range min=19.5 max=20.5
+assert ability BX_DarkMirage on "Bernael" range min=24.5 max=25.5
+undraft "Bernael"
+undraft "Plain"
+assert log clean

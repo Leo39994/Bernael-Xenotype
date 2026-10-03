@@ -1,0 +1,14 @@
+rwtest 1
+test "Toddler has no soul" project="Bernael" created=2026-09-18T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Child" xenotype=BX_Bernael age=2
+spawn Pawn:Colonist at 2,0 name="Bernael" xenotype=BX_Bernael
+
+assert pawn "Child" hediff=BX_Blindness expect=present
+
+select "Child"
+assert text contains "Soul Saturation" expect=absent
+
+bill "Child" recipe=BX_ExtractSoul expect=disabled reason="too small"
+assert log clean

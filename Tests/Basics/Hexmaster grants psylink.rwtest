@@ -1,0 +1,7 @@
+rwtest 1
+test "Hexmaster grants psylink" project="Bernael" created=2026-09-17T00:00:00
+
+requires dlc=Biotech
+requires dlc=Royalty
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+assert pawn "Bernael" hediff=PsychicAmplifier expect=present

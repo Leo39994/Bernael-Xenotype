@@ -1,0 +1,20 @@
+rwtest 1
+test "Kill feeds reaper ecstasy" project="Bernael" created=2026-09-17T00:00:00
+
+requires dlc=Biotech
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Pirate at 4,0 name="Pirate" faction=enemy
+pacify "Pirate"
+
+give "Bernael" resource=BX_SoulStarved value=0.1
+damage "Pirate" amount=999 by="Bernael"
+
+assert pawn "Pirate" dead
+
+assert pawn "Bernael" resource=BX_SoulStarved min=0.15 max=0.25
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2
+
+tick 180 reason="decay drops 1 severity every 60 ticks"
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity max=1

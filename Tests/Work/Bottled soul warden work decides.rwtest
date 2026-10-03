@@ -1,0 +1,58 @@
+rwtest 1
+test "Bottled soul warden work decides" project=Bernael created=2026-09-18T00:00:00
+
+requires dlc=Biotech
+requires mod=Mortis.BX
+
+speed paused
+despawn Thing:BX_BottledSoul
+room size=5,5 prison=true name="cell"
+room size=5,5 name="store"
+spawn Thing:Bed in="cell"
+spawn Pawn:Colonist in="store" name="Warden"
+spawn Pawn:Colonist in="store" name="Free Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist in="store" name="Captive"
+spawn Pawn:Colonist in="store" name="Wounded"
+spawn Pawn:Colonist in="cell" name="Caged"
+spawn Pawn:Colonist in="cell" name="Starved" xenotype=BX_Bernael
+give "Free Bernael" resource=BX_SoulStarved value=0.1
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Free Bernael" expect=absent
+prisoner "Captive" resistance=10 mode=Execution
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Captive" expect=disabled reason="not set to be brought food"
+prisoner "Captive" mode=MaintainOnly
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Captive" expect=disabled reason="not in a prison cell"
+prisoner "Wounded"
+down "Wounded"
+bed "Wounded"
+assert pawn "Wounded" room=PrisonCell
+assert pawn "Wounded" job=LayDown
+assert pawn "Wounded" downed
+assert reach "Warden" to="Wounded" pathEndMode=OnCell
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Wounded" expect=disabled reason="needs food before a bottled soul"
+prisoner "Caged"
+assert prisoner "Caged" secure by="Warden"
+assert pawn "Caged" room=PrisonCell
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Caged" expect=absent
+prisoner "Starved"
+assert prisoner "Starved" secure by="Warden"
+assert pawn "Starved" room=PrisonCell
+give "Starved" resource=BX_SoulStarved value=0.6 target=0.5
+assert pawn "Starved" gene=BX_SoulStarved expect=present
+assert pawn "Starved" resource=BX_SoulStarved min=0.55 max=0.65
+assert reach "Warden" to="Starved" pathEndMode=OnCell
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="does not want a bottled soul yet"
+give "Starved" resource=BX_SoulStarved value=0.1
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="Bottled Soul essence"
+pack "Starved" thing=BX_BottledSoul
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="can already reach a bottled soul"
+despawn Thing:BX_BottledSoul
+carry "Starved" thing=BX_BottledSoul
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="can already reach a bottled soul"
+despawn Thing:BX_BottledSoul
+spawn Thing:BX_BottledSoul in="cell"
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="can already reach a bottled soul"
+despawn Thing:BX_BottledSoul
+spawn Thing:BX_BottledSoul in="store"
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved"
+job "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" until=done ticks=4000
+assert log clean

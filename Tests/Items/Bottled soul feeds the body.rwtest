@@ -1,0 +1,14 @@
+rwtest 1
+test "Bottled soul feeds the body" project="Bernael" created=2026-09-19T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Thing:BX_BottledSoul at 1,0 count=1
+
+give "Bernael" need=Food value=0.3
+assert pawn "Bernael" need=Food min=0.28 max=0.32
+
+ingest "Bernael" thing=BX_BottledSoul
+assert pawn "Bernael" need=Food min=0.56 max=0.62
+
+assert log clean

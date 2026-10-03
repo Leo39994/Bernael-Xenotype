@@ -1,0 +1,18 @@
+rwtest 1
+test "Lantern shot burns target" project="Bernael" created=2026-09-17T00:00:00
+
+requires dlc=Biotech
+speed paused
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Pirate at 6,0 name="Pirate" faction=enemy
+pacify "Pirate"
+speed x1
+spawn Thing:BX_SoulLantern at 1,0
+equip "Bernael" thing=BX_SoulLantern
+
+attack "Bernael" target="Pirate"
+assert pawn "Bernael" job=AttackStatic
+
+tick 1320 reason="four cycles of warmup 120, burst 5x20 and cooldown 120, plus flight"
+assert shots "Bernael" min=1
+assert pawn "Pirate" hediff=Burn expect=present

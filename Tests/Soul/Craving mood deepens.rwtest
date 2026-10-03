@@ -1,0 +1,24 @@
+rwtest 1
+test "Craving mood deepens" project="Bernael" created=2026-09-20T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+give "Bernael" resource=BX_SoulStarved value=0.5
+
+assert pawn "Bernael" thought=BX_SoulEnergyCraving expect=absent
+
+give "Bernael" hediff=BX_SoulCraving severity=0.1
+tick 120 reason="a situational thought is recalculated once it is 100 ticks old"
+assert pawn "Bernael" thought=BX_SoulEnergyCraving stage=0
+assert pawn "Bernael" thought=BX_SoulEnergyCraving mood min=-12 max=-8
+
+give "Bernael" hediff=BX_SoulCraving severity=0.5
+tick 120 reason="same interval, one stage up"
+assert pawn "Bernael" thought=BX_SoulEnergyCraving stage=1
+assert pawn "Bernael" thought=BX_SoulEnergyCraving mood min=-17 max=-13
+
+give "Bernael" hediff=BX_SoulCraving severity=0.8
+tick 120 reason="same interval, into the stage the low soul alert is written for"
+assert pawn "Bernael" thought=BX_SoulEnergyCraving stage=2
+assert pawn "Bernael" thought=BX_SoulEnergyCraving mood min=-22 max=-18
+assert log clean

@@ -1,0 +1,30 @@
+rwtest 1
+test "Bottled soul doctor work decides" project="Bernael" created=2026-09-18T00:00:00
+
+requires dlc=Biotech
+requires mod=Mortis.BX
+
+despawn Thing:BX_BottledSoul
+room size=5,5 name="ward"
+spawn Thing:HospitalBed in="ward"
+spawn Pawn:Colonist name="Doctor"
+spawn Pawn:Colonist name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist name="Baseline"
+
+work "Doctor" giver=Bernael_FeedBottledSoul on="Baseline" expect=absent
+
+give "Bernael" resource=BX_SoulStarved value=0.5
+work "Doctor" giver=Bernael_FeedBottledSoul on="Bernael" expect=absent
+
+give "Bernael" resource=BX_SoulStarved value=0.1
+down "Bernael"
+bed "Bernael" medical=true
+assert pawn "Bernael" downed
+assert pawn "Bernael" job=LayDown
+assert pawn "Bernael" resource=BX_SoulStarved min=0.05 max=0.15
+work "Doctor" giver=Bernael_FeedBottledSoul on="Bernael" forced=true expect=disabled reason="Bottled Soul essence"
+work "Doctor" giver=Bernael_FeedBottledSoul on="Bernael" expect=disabled reason="Bottled Soul essence"
+
+spawn Thing:BX_BottledSoul
+work "Doctor" giver=Bernael_FeedBottledSoul on="Bernael"
+assert log clean

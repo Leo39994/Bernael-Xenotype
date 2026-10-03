@@ -1,0 +1,32 @@
+rwtest 1
+test "Bond mood follows the baby" project="Bernael" created=2026-09-20T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 1,0 name="Baby" age=1
+spawn Pawn:Colonist at 5,0 name="Childless" xenotype=BX_Bernael
+
+give "Bernael" resource=BX_SoulStarved value=0.1
+select "Bernael"
+gizmo "Soul drain"
+target "Baby"
+waitfor pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present ticks=300
+assert pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present
+
+give "Baby" need=Mood value=0.1
+tick 120 reason="a situational thought is recalculated once it is 100 ticks old"
+assert pawn "Bernael" thought=BabyBondMood stage=0
+assert pawn "Bernael" thought=BabyBondMood mood min=-17 max=-13
+
+give "Baby" need=Mood value=0.5
+tick 120 reason="same interval, two stages up"
+assert pawn "Bernael" thought=BabyBondMood stage=2
+assert pawn "Bernael" thought=BabyBondMood mood min=-2 max=2
+
+give "Baby" need=Mood value=0.95
+tick 120 reason="same interval, into the stage that pays mood back"
+assert pawn "Bernael" thought=BabyBondMood stage=4
+assert pawn "Bernael" thought=BabyBondMood mood min=10 max=14
+
+assert pawn "Childless" thought=BabyBondMood expect=absent
+assert log clean

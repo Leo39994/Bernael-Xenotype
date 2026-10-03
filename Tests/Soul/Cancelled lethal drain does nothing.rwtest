@@ -1,0 +1,20 @@
+rwtest 1
+test "Cancelled lethal drain does nothing" project="Bernael" created=2026-09-17T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,0 name="Victim"
+
+give "Bernael" resource=BX_SoulStarved value=0.1
+give "Victim" hediff=BX_SoulDrained severity=0.56
+
+select "Bernael"
+gizmo "Soul drain"
+target "Victim"
+
+assert window Dialog_MessageBox contains "will kill" expect=present
+click "Go back"
+
+tick 180 reason="in case the cast went through anyway"
+assert pawn "Victim" hediff=BX_SoulDrained severity max=0.57
+assert pawn "Bernael" resource=BX_SoulStarved max=0.11
