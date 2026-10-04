@@ -9,11 +9,11 @@ give "Bernael" resource=BX_SoulStarved value=0.1
 give "Victim" hediff=BX_SoulDrained severity=0.5
 
 select "Bernael"
-gizmo "Soul drain"
-target "Victim"
+gizmo "Soul drain" expect=allowed
+target "Victim" expect=allowed
 
 assert window Dialog_MessageBox contains "serious soul damage" expect=present
 click "Confirm"
 
-tick 180 reason="120 ticks warmup plus slack"
+tick 180 note="120 ticks warmup plus slack"
 assert pawn "Victim" hediff=BX_SoulDrained expect=present

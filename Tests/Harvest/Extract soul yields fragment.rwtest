@@ -10,14 +10,14 @@ spawn Thing:Bed in="cell"
 spawn Pawn:Colonist in="ward" name="Doctor"
 spawn Pawn:Colonist in="cell" name="Prisoner"
 prisoner "Prisoner" resistance=10
-assert pawn "Prisoner" room=PrisonCell
+assert pawn "Prisoner" room=PrisonCell expect=present
 
 bill "Prisoner" recipe=BX_ExtractSoul expect=absent
 spawn Pawn:Colonist in="ward" name="Bernael" xenotype=BX_Bernael
-bill "Prisoner" recipe=BX_ExtractSoul
+bill "Prisoner" recipe=BX_ExtractSoul expect=allowed
 surgery "Prisoner" recipe=BX_ExtractSoul by="Doctor"
-assert pawn "Prisoner" hediff=BX_SoulDrained severity min=0.94 max=0.96
+assert pawn "Prisoner" hediff=BX_SoulDrained severity min=0.94 max=0.96 expect=present
 assert thing BX_BottledSoul expect=present
 surgery "Prisoner" recipe=BX_ExtractSoul by="Doctor"
-assert pawn "Prisoner" hediff=BX_SoulDrained severity max=0.96
+assert pawn "Prisoner" hediff=BX_SoulDrained severity max=0.96 expect=present
 assert log clean

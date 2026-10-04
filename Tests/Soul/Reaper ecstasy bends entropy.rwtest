@@ -5,13 +5,13 @@ requires dlc=Biotech
 requires dlc=Royalty
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 
-assert pawn "Bernael" stat=PsychicEntropyGain min=0.98 max=1.02
+assert pawn "Bernael" stat=PsychicEntropyGain min=0.98 max=1.02 expect=present
 
 give "Bernael" hediff=BX_ReaperEcstasy severity=50
 assert pawn "Bernael" hediff=BX_ReaperEcstasy expect=present
-assert pawn "Bernael" stat=PsychicEntropyGain min=0.50 max=0.61
+assert pawn "Bernael" stat=PsychicEntropyGain min=0.50 max=0.61 expect=present
 
 give "Bernael" hediff=BX_ReaperEcstasy severity=100
-assert pawn "Bernael" stat=PsychicEntropyGain min=0.08 max=0.12
+assert pawn "Bernael" stat=PsychicEntropyGain min=0.08 max=0.12 expect=present
 
 assert log clean

@@ -14,13 +14,13 @@ assert pawn "Stranger" gene=BX_SoulStarved expect=absent
 assert pawn "Stranger" gene=BX_SoulFeeder expect=absent
 
 select "Bernael"
-gizmo "Soul drain"
+gizmo "Soul drain" expect=allowed
 target "Kin" expect=refused
-tick 60 reason="in case the cast went through anyway"
+tick 60 note="in case the cast went through anyway"
 assert pawn "Kin" hediff=BX_SoulDrained expect=absent
 
-gizmo "Soul drain"
-target "Stranger"
+gizmo "Soul drain" expect=allowed
+target "Stranger" expect=allowed
 waitfor pawn "Stranger" hediff=BX_SoulDrained expect=present ticks=300
 assert pawn "Kin" hediff=BX_SoulDrained expect=absent
 assert log clean

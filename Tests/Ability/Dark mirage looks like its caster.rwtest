@@ -14,10 +14,10 @@ ask "mirage-dark-before" claim="with the sky pinned dark, the ground around Watc
 
 draft "Bernael"
 select "Bernael"
-gizmo "Dark mirage"
-target cell=4,0
-waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
-assert thing BX_DarkMirageDecoy at 4,0
+gizmo "Dark mirage" expect=allowed
+target cell=4,0 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120 expect=present
+assert thing BX_DarkMirageDecoy at 4,0 expect=present
 deselect
 ask "mirage-glow-after" claim="the decoy casts visible light onto the ground around it while the pinned sky remains dark"
 
@@ -29,7 +29,7 @@ select BX_DarkMirageDecoy
 ask "mirage-burst-ring" claim="selecting the decoy draws one ring around it, about two and a half cells wide - the area its burst would reach"
 deselect
 
-tick 364 reason="to about 544 of 600, just short of the 36-tick fade-out window"
+tick 364 note="to about 544 of 600, just short of the 36-tick fade-out window"
 ask "mirage-fade-out" ticks=90 claim="the decoy fades out over the last moments and then is gone; it does not vanish in one frame and leaves no rubble, corpse or fire behind"
 
 assert thing BX_DarkMirageDecoy expect=absent

@@ -11,7 +11,7 @@ spawn Thing:BX_BottledSoul at 1,0
 
 give "Bernael" resource=BX_SoulStarved value=1
 ingest "Bernael" thing=BX_BottledSoul
-assert pawn "Bernael" resource=BX_SoulStarved max=1
+assert pawn "Bernael" resource=BX_SoulStarved max=1 expect=present
 
 damage "Pirate" amount=999 by="Bernael"
-assert pawn "Bernael" resource=BX_SoulStarved max=1
+assert pawn "Bernael" resource=BX_SoulStarved max=1 expect=present

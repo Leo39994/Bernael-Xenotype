@@ -8,8 +8,8 @@ spawn Pawn:Colonist at 1,0 name="Baby" age=1
 give "Bernael" resource=BX_SoulStarved value=0.1
 
 select "Bernael"
-gizmo "Soul drain"
-target "Baby"
+gizmo "Soul drain" expect=allowed
+target "Baby" expect=allowed
 waitfor pawn "Baby" hediff=BX_Blindness expect=present ticks=300
 
 assert pawn "Baby" hediff=BX_Blindness expect=present

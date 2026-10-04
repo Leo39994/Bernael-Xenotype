@@ -5,9 +5,9 @@ requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Thing:BX_SoulLantern at 1,0
 
-assert pawn "Bernael" stat=PsychicSensitivity max=2.0
+assert pawn "Bernael" stat=PsychicSensitivity max=2.0 expect=present
 equip "Bernael" thing=BX_SoulLantern
-assert pawn "Bernael" stat=PsychicSensitivity min=1.6
+assert pawn "Bernael" stat=PsychicSensitivity min=1.6 expect=present
 
 give "Bernael" hediff=BX_ReaperEcstasy severity=50
-assert pawn "Bernael" stat=PsychicSensitivity min=5
+assert pawn "Bernael" stat=PsychicSensitivity min=5 expect=present

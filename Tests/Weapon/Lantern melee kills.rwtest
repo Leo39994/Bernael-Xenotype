@@ -13,8 +13,8 @@ damage "Pirate" amount=30
 down "Pirate"
 draft "Bernael"
 attack "Bernael" target="Pirate" melee=true
-assert pawn "Bernael" drafted
-assert pawn "Bernael" job=AttackMelee
-waitfor pawn "Pirate" dead ticks=2500
+assert pawn "Bernael" drafted expect=present
+assert pawn "Bernael" job=AttackMelee expect=present
+waitfor pawn "Pirate" dead ticks=2500 expect=present
 undraft "Bernael"
 assert log clean

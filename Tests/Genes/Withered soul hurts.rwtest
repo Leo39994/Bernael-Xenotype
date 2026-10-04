@@ -6,14 +6,14 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 assert pawn "Bernael" hediff=BX_WitheredSoulHediff expect=present
 
 give "Bernael" need=Mood value=0.1
-tick 480 reason="Hediff_SeverityBasedOnNeed reads the need every 420 ticks"
-assert pawn "Bernael" pain min=0.32 max=0.42
+tick 480 note="Hediff_SeverityBasedOnNeed reads the need every 420 ticks"
+assert pawn "Bernael" pain min=0.32 max=0.42 expect=present
 assert pawn "Bernael" hediff=BX_WitheredSoulHediff visible expect=present
 give "Bernael" need=Mood value=0.7
-tick 480 reason="same interval, one stage up"
-assert pawn "Bernael" pain min=0.12 max=0.22
+tick 480 note="same interval, one stage up"
+assert pawn "Bernael" pain min=0.12 max=0.22 expect=present
 give "Bernael" need=Mood value=0.95
-tick 480 reason="same interval, into the stage that carries no offset"
-assert pawn "Bernael" pain max=0.08
+tick 480 note="same interval, into the stage that carries no offset"
+assert pawn "Bernael" pain max=0.08 expect=present
 assert pawn "Bernael" hediff=BX_WitheredSoulHediff visible expect=present
 assert log clean

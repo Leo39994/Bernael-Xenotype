@@ -8,25 +8,25 @@ spawn Pawn:Colonist at 5,0 name="Childless" xenotype=BX_Bernael
 
 give "Bernael" resource=BX_SoulStarved value=0.1
 select "Bernael"
-gizmo "Soul drain"
-target "Baby"
+gizmo "Soul drain" expect=allowed
+target "Baby" expect=allowed
 waitfor pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present ticks=300
 assert pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present
 
 give "Baby" need=Mood value=0.1
-tick 120 reason="a situational thought is recalculated once it is 100 ticks old"
-assert pawn "Bernael" thought=BabyBondMood stage=0
-assert pawn "Bernael" thought=BabyBondMood mood min=-17 max=-13
+tick 120 note="a situational thought is recalculated once it is 100 ticks old"
+assert pawn "Bernael" thought=BabyBondMood stage=0 expect=present
+assert pawn "Bernael" thought=BabyBondMood mood min=-17 max=-13 expect=present
 
 give "Baby" need=Mood value=0.5
-tick 120 reason="same interval, two stages up"
-assert pawn "Bernael" thought=BabyBondMood stage=2
-assert pawn "Bernael" thought=BabyBondMood mood min=-2 max=2
+tick 120 note="same interval, two stages up"
+assert pawn "Bernael" thought=BabyBondMood stage=2 expect=present
+assert pawn "Bernael" thought=BabyBondMood mood min=-2 max=2 expect=present
 
 give "Baby" need=Mood value=0.95
-tick 120 reason="same interval, into the stage that pays mood back"
-assert pawn "Bernael" thought=BabyBondMood stage=4
-assert pawn "Bernael" thought=BabyBondMood mood min=10 max=14
+tick 120 note="same interval, into the stage that pays mood back"
+assert pawn "Bernael" thought=BabyBondMood stage=4 expect=present
+assert pawn "Bernael" thought=BabyBondMood mood min=10 max=14 expect=present
 
 assert pawn "Childless" thought=BabyBondMood expect=absent
 assert log clean

@@ -5,13 +5,13 @@ requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Thing:BX_SoulLantern at 2,1
 equip "Bernael" thing=BX_SoulLantern
-assert pawn "Bernael" equipment=BX_SoulLantern
+assert pawn "Bernael" equipment=BX_SoulLantern expect=present
 spawn Thing:BX_Apparel_Warlock at 3,1
 wear "Bernael" apparel=BX_Apparel_Warlock
-assert pawn "Bernael" apparel=BX_Apparel_Warlock
+assert pawn "Bernael" apparel=BX_Apparel_Warlock expect=present
 spawn Thing:BX_Headgear_Warlock at 4,1
 wear "Bernael" apparel=BX_Headgear_Warlock
-assert pawn "Bernael" apparel=BX_Headgear_Warlock
+assert pawn "Bernael" apparel=BX_Headgear_Warlock expect=present
 spawn Thing:BX_BottledSoul at 0,1 count=5
 ingest "Bernael" thing=BX_BottledSoul
 assert log clean

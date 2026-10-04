@@ -13,13 +13,13 @@ assert thing BX_DarkMirageDecoy expect=absent
 select "Bernael"
 gizmo "Dark mirage" expect=disabled
 draft "Bernael"
-gizmo "Dark mirage"
-target cell=4,0
+gizmo "Dark mirage" expect=allowed
+target cell=4,0 expect=allowed
 
-waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120 expect=present
 
-assert thing BX_DarkMirageDecoy at 4,0
-assert inspect "BX_DarkMirageDecoy" contains "Caster: Bernael"
+assert thing BX_DarkMirageDecoy at 4,0 expect=present
+assert inspect BX_DarkMirageDecoy contains "Caster: Bernael" expect=present
 
 gizmo "Dark mirage" expect=disabled
 

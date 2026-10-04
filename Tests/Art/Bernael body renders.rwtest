@@ -6,5 +6,5 @@ requires mod=Mortis.BX
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 3,0 name="Baseline"
 
-tick 30 reason="one render frame after the pawn graphics were built"
+tick 30 note="one render frame after the pawn graphics were built"
 ask "bernael-body" claim="the left pawn has the halo above the head, the wings behind the body and withered skin, all three drawn in the right layer and none of them on the plain colonist to the right"

@@ -9,15 +9,15 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 draft "Bernael"
 select "Bernael"
-gizmo "Dark mirage"
-target cell=4,0
-waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
-assert thing BX_DarkMirageDecoy at 4,0
+gizmo "Dark mirage" expect=allowed
+target cell=4,0 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120 expect=present
+assert thing BX_DarkMirageDecoy at 4,0 expect=present
 
-tick 500 reason="about 500 of the 600 ticks spent"
-assert thing BX_DarkMirageDecoy at 4,0
+tick 500 note="about 500 of the 600 ticks spent"
+assert thing BX_DarkMirageDecoy at 4,0 expect=present
 
-tick 180 reason="about 680 ticks, past the 600 of durationTicks"
+tick 180 note="about 680 ticks, past the 600 of durationTicks"
 assert thing BX_DarkMirageDecoy expect=absent
 
 undraft "Bernael"

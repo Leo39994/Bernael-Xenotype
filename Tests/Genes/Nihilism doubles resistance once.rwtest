@@ -5,8 +5,8 @@ requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Nihilist" xenotype=BX_Bernael
 prisoner "Nihilist" resistance=10
 
-tick 240 reason="the gene checks every 180 ticks"
-assert pawn "Nihilist" resistance min=20 max=20
+tick 240 note="the gene checks every 180 ticks"
+assert pawn "Nihilist" resistance min=20 max=20 expect=present
 
-tick 600 reason="and must not double again afterwards"
-assert pawn "Nihilist" resistance max=20
+tick 600 note="and must not double again afterwards"
+assert pawn "Nihilist" resistance max=20 expect=present

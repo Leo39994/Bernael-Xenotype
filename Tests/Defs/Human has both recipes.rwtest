@@ -9,6 +9,6 @@ spawn Pawn:Colonist at 2,0 name="Drinker" xenotype=BX_Bernael
 
 give "Patient" hediff=BX_SoulDrained severity=0.2
 
-bill "Patient" recipe=BX_ExtractSoul
-bill "Patient" recipe=BX_SoulTransfusion
+bill "Patient" recipe=BX_ExtractSoul expect=allowed
+bill "Patient" recipe=BX_SoulTransfusion expect=allowed
 assert log clean

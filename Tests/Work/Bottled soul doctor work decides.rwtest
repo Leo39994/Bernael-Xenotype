@@ -19,12 +19,12 @@ work "Doctor" giver=Bernael_FeedBottledSoul on="Bernael" expect=absent
 give "Bernael" resource=BX_SoulStarved value=0.1
 down "Bernael"
 bed "Bernael" medical=true
-assert pawn "Bernael" downed
-assert pawn "Bernael" job=LayDown
-assert pawn "Bernael" resource=BX_SoulStarved min=0.05 max=0.15
-work "Doctor" giver=Bernael_FeedBottledSoul on="Bernael" forced=true expect=disabled reason="Bottled Soul essence"
-work "Doctor" giver=Bernael_FeedBottledSoul on="Bernael" expect=disabled reason="Bottled Soul essence"
+assert pawn "Bernael" downed expect=present
+assert pawn "Bernael" job=LayDown expect=present
+assert pawn "Bernael" resource=BX_SoulStarved min=0.05 max=0.15 expect=present
+work "Doctor" giver=Bernael_FeedBottledSoul on="Bernael" forced=true expect=disabled reason="Bottled Soul essence" match=contains
+work "Doctor" giver=Bernael_FeedBottledSoul on="Bernael" expect=disabled reason="Bottled Soul essence" match=contains
 
 spawn Thing:BX_BottledSoul
-work "Doctor" giver=Bernael_FeedBottledSoul on="Bernael"
+work "Doctor" giver=Bernael_FeedBottledSoul on="Bernael" expect=allowed
 assert log clean

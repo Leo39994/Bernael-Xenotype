@@ -6,16 +6,16 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Thing:BX_Headgear_Warlock at 2,0
 spawn Thing:BX_Apparel_Warlock at 3,0
 
-assert pawn "Bernael" stat=PainShockThreshold min=0.78 max=0.82
-assert pawn "Bernael" stat=PsychicSensitivity max=2.0
+assert pawn "Bernael" stat=PainShockThreshold min=0.78 max=0.82 expect=present
+assert pawn "Bernael" stat=PsychicSensitivity max=2.0 expect=present
 
 wear "Bernael" apparel=BX_Headgear_Warlock
-assert pawn "Bernael" apparel=BX_Headgear_Warlock
-assert pawn "Bernael" stat=PainShockThreshold min=0.83 max=0.87
+assert pawn "Bernael" apparel=BX_Headgear_Warlock expect=present
+assert pawn "Bernael" stat=PainShockThreshold min=0.83 max=0.87 expect=present
 
 wear "Bernael" apparel=BX_Apparel_Warlock
-assert pawn "Bernael" apparel=BX_Apparel_Warlock
-assert pawn "Bernael" stat=PainShockThreshold min=0.93 max=0.97
-assert pawn "Bernael" stat=PsychicSensitivity min=2.05
+assert pawn "Bernael" apparel=BX_Apparel_Warlock expect=present
+assert pawn "Bernael" stat=PainShockThreshold min=0.93 max=0.97 expect=present
+assert pawn "Bernael" stat=PsychicSensitivity min=2.05 expect=present
 
 assert log clean

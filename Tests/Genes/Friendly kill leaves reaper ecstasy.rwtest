@@ -10,16 +10,16 @@ spawn Pawn:Pirate at 4,0 name="Pirate" faction=enemy
 pacify "Pirate"
 
 give "Bernael" resource=BX_SoulStarved value=0.1
-assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=1 max=1
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=1 max=1 expect=present
 
 damage "Victim" amount=999 by="Bernael"
-assert pawn "Victim" dead
-assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=1 max=1
-assert pawn "Bernael" resource=BX_SoulStarved min=0.05 max=0.15
+assert pawn "Victim" dead expect=present
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=1 max=1 expect=present
+assert pawn "Bernael" resource=BX_SoulStarved min=0.05 max=0.15 expect=present
 
 damage "Pirate" amount=999 by="Bernael"
-assert pawn "Pirate" dead
-assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2 max=2
-assert pawn "Bernael" resource=BX_SoulStarved min=0.15 max=0.25
+assert pawn "Pirate" dead expect=present
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2 max=2 expect=present
+assert pawn "Bernael" resource=BX_SoulStarved min=0.15 max=0.25 expect=present
 
 assert log clean

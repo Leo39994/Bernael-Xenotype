@@ -4,6 +4,6 @@ test "Low soul alert fires" project=Bernael created=2026-09-17T00:00:00
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 give "Bernael" resource=BX_SoulStarved value=0.05
-tick 660 reason="AlertsReadout suppresses every alert before game tick 600, then checks each alert once per 24 frames"
+tick 660 note="AlertsReadout suppresses every alert before game tick 600, then checks each alert once per 24 frames"
 assert alert "Alert_LowSoulEnergy" expect=present
 assert text contains "MB_Alert" expect=absent

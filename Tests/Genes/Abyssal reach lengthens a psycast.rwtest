@@ -11,8 +11,8 @@ ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 ability "Plain" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 draft "Bernael"
 draft "Plain"
-assert ability BX_DarkMirage on "Plain" range min=19.5 max=20.5
-assert ability BX_DarkMirage on "Bernael" range min=24.5 max=25.5
+assert ability "Plain" ability=BX_DarkMirage range min=19.5 max=20.5
+assert ability "Bernael" ability=BX_DarkMirage range min=24.5 max=25.5
 undraft "Bernael"
 undraft "Plain"
 assert log clean

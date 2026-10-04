@@ -8,8 +8,8 @@ spawn Pawn:Colonist at 1,0 name="Victim"
 give "Bernael" resource=BX_SoulStarved value=0.1
 
 select "Bernael"
-gizmo "Soul drain"
-target "Victim"
+gizmo "Soul drain" expect=allowed
+target "Victim" expect=allowed
 waitfor pawn "Victim" thought=BX_FedOn expect=present ticks=300
 
 assert pawn "Victim" thought=BX_FedOn expect=present

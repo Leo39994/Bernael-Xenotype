@@ -8,10 +8,10 @@ spawn Pawn:Colonist at 2,0 name="Victim"
 give "Bernael" resource=BX_SoulStarved value=0.1
 
 select "Bernael"
-gizmo "Soul drain"
-target "Victim"
+gizmo "Soul drain" expect=allowed
+target "Victim" expect=allowed
 waitfor pawn "Victim" hediff=BX_SoulDrained expect=present ticks=300
 
 assert pawn "Victim" hediff=BX_SoulDrained expect=present
-assert pawn "Victim" hediff=BX_SoulDrained severity min=0.44 max=0.46
-assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35
+assert pawn "Victim" hediff=BX_SoulDrained severity min=0.44 max=0.46 expect=present
+assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35 expect=present

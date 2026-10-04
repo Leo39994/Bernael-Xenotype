@@ -13,15 +13,15 @@ draft "Owner"
 draft "Keeper"
 
 select "Owner"
-gizmo "Dark mirage"
-target cell=4,0
-waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
+gizmo "Dark mirage" expect=allowed
+target cell=4,0 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120 expect=present
 select "Keeper"
-gizmo "Dark mirage"
-target cell=10,0
-waitfor thing BX_DarkMirageDecoy at 10,0 ticks=120
-assert thing BX_DarkMirageDecoy at 4,0
-assert thing BX_DarkMirageDecoy at 10,0
+gizmo "Dark mirage" expect=allowed
+target cell=10,0 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 10,0 ticks=120 expect=present
+assert thing BX_DarkMirageDecoy at 4,0 expect=present
+assert thing BX_DarkMirageDecoy at 10,0 expect=present
 
 speed paused
 spawn Pawn:Pirate at 5,0 name="Beside Owner" faction=enemy
@@ -30,12 +30,12 @@ pacify "Beside Owner"
 pacify "Beside Keeper"
 
 damage "Owner" amount=999
-tick 10 reason="TickInterval reads the caster every tick"
+tick 10 note="TickInterval reads the caster every tick"
 
 assert thing BX_DarkMirageDecoy at 4,0 expect=absent
 assert pawn "Beside Owner" hediff=Frostbite expect=absent
 
-assert thing BX_DarkMirageDecoy at 10,0
+assert thing BX_DarkMirageDecoy at 10,0 expect=present
 despawn Thing:BX_DarkMirageDecoy
 assert pawn "Beside Keeper" hediff=Frostbite expect=present
 

@@ -10,5 +10,5 @@ assert pawn "Child" hediff=BX_Blindness expect=present
 select "Child"
 assert text contains "Soul Saturation" expect=absent
 
-bill "Child" recipe=BX_ExtractSoul expect=disabled reason="too small"
+bill "Child" recipe=BX_ExtractSoul expect=disabled reason="too small" match=contains
 assert log clean

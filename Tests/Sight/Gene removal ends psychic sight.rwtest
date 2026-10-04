@@ -4,9 +4,9 @@ test "Gene removal ends psychic sight" project="Bernael" created=2026-09-18T00:0
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 assert pawn "Bernael" hediff=BX_Blindness expect=present
-assert pawn "Bernael" capacity=Sight min=1.25
+assert pawn "Bernael" capacity=Sight min=1.25 expect=present
 
 gene "Bernael" remove=BX_DepravedHead
 
 assert pawn "Bernael" hediff=BX_Blindness expect=absent
-assert pawn "Bernael" capacity=Sight max=1
+assert pawn "Bernael" capacity=Sight max=1 expect=present

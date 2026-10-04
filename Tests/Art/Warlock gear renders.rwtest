@@ -11,5 +11,5 @@ wear "Bernael" apparel=BX_Apparel_Warlock
 wear "Bernael" apparel=BX_Headgear_Warlock
 equip "Bernael" thing=BX_SoulLantern
 
-tick 30 reason="one render frame after the graphics were set"
+tick 30 note="one render frame after the graphics were set"
 ask "warlock-gear-south" claim="the pawn wears the warlock robe and headgear and holds the lantern; the headgear sits over the head, not under it, and nothing is cut off or stretched"

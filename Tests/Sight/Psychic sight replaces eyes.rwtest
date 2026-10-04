@@ -6,6 +6,6 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Baseline"
 
 assert pawn "Bernael" hediff=BX_Blindness expect=present
-assert pawn "Bernael" capacity=Sight min=1.25
+assert pawn "Bernael" capacity=Sight min=1.25 expect=present
 
-assert pawn "Baseline" capacity=Sight max=1
+assert pawn "Baseline" capacity=Sight max=1 expect=present

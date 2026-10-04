@@ -9,10 +9,10 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 draft "Bernael"
 select "Bernael"
-gizmo "Dark mirage"
-target cell=4,0
-waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120
-assert thing BX_DarkMirageDecoy at 4,0
+gizmo "Dark mirage" expect=allowed
+target cell=4,0 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120 expect=present
+assert thing BX_DarkMirageDecoy at 4,0 expect=present
 
 speed paused
 spawn Pawn:Pirate at 5,0 name="Near" faction=enemy

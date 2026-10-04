@@ -13,15 +13,15 @@ draft "Plain"
 select "Plain"
 assert thing BX_DarkMirageDecoy expect=absent
 
-gizmo "Dark mirage"
+gizmo "Dark mirage" expect=allowed
 target cell=22,0 expect=refused
 
-gizmo "Dark mirage"
-target cell=10,0
+gizmo "Dark mirage" expect=allowed
+target cell=10,0 expect=allowed
 
-tick 90 reason="0.6 s warmup is 36 ticks, plus the job that carries it"
+tick 90 note="0.6 s warmup is 36 ticks, plus the job that carries it"
 
-assert thing BX_DarkMirageDecoy at 10,0
+assert thing BX_DarkMirageDecoy at 10,0 expect=present
 
 undraft "Plain"
 assert log clean

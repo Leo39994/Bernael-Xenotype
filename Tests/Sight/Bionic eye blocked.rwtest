@@ -8,4 +8,4 @@ spawn Thing:BionicEye at 0,2
 spawn Thing:MedicineIndustrial at 1,2 count=2
 
 bill "Bernael" recipe=InstallBionicEye expect=absent
-bill "Baseline" recipe=InstallBionicEye
+bill "Baseline" recipe=InstallBionicEye expect=allowed

@@ -6,4 +6,4 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Thing:BX_BottledSoul at 1,0 count=2
 give "Bernael" resource=BX_SoulStarved value=0.1
 ingest "Bernael" thing=BX_BottledSoul
-assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35
+assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35 expect=present

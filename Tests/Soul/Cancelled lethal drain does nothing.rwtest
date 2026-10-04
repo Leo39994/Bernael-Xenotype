@@ -9,12 +9,12 @@ give "Bernael" resource=BX_SoulStarved value=0.1
 give "Victim" hediff=BX_SoulDrained severity=0.56
 
 select "Bernael"
-gizmo "Soul drain"
-target "Victim"
+gizmo "Soul drain" expect=allowed
+target "Victim" expect=allowed
 
 assert window Dialog_MessageBox contains "will kill" expect=present
 click "Go back"
 
-tick 180 reason="in case the cast went through anyway"
-assert pawn "Victim" hediff=BX_SoulDrained severity max=0.57
-assert pawn "Bernael" resource=BX_SoulStarved max=0.11
+tick 180 note="in case the cast went through anyway"
+assert pawn "Victim" hediff=BX_SoulDrained severity max=0.57 expect=present
+assert pawn "Bernael" resource=BX_SoulStarved max=0.11 expect=present

@@ -11,10 +11,10 @@ pacify "Pirate"
 give "Bernael" resource=BX_SoulStarved value=0.1
 damage "Pirate" amount=999 by="Bernael"
 
-assert pawn "Pirate" dead
+assert pawn "Pirate" dead expect=present
 
-assert pawn "Bernael" resource=BX_SoulStarved min=0.15 max=0.25
-assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2
+assert pawn "Bernael" resource=BX_SoulStarved min=0.15 max=0.25 expect=present
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2 expect=present
 
-tick 180 reason="decay drops 1 severity every 60 ticks"
-assert pawn "Bernael" hediff=BX_ReaperEcstasy severity max=1
+tick 180 note="decay drops 1 severity every 60 ticks"
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity max=1 expect=present

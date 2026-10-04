@@ -6,7 +6,7 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 
 select "Bernael"
 hover "Soul Saturation"
-tick 6 reason="a few frames so the tooltip is drawn"
+tick 6 note="a few frames so the tooltip is drawn"
 
 assert text contains "Soul Saturation" expect=present
 assert text contains "BX_" expect=absent

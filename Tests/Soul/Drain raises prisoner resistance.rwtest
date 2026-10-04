@@ -8,10 +8,10 @@ prisoner "Prisoner" resistance=10
 give "Bernael" resource=BX_SoulStarved value=0.1
 
 select "Bernael"
-gizmo "Soul drain"
-target "Prisoner"
+gizmo "Soul drain" expect=allowed
+target "Prisoner" expect=allowed
 waitfor pawn "Prisoner" hediff=BX_SoulDrained expect=present ticks=300
 
 assert pawn "Prisoner" hediff=BX_SoulDrained expect=present
-assert pawn "Prisoner" resistance min=11 max=11
+assert pawn "Prisoner" resistance min=11 max=11 expect=present
 assert log clean

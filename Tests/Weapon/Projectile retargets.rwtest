@@ -16,7 +16,7 @@ down "Pirate A"
 draft "Bernael"
 attack "Bernael" target="Pirate A"
 
-tick 1320 reason="four cycles of warmup 120, burst 5x20 and cooldown 120, plus flight"
+tick 1320 note="four cycles of warmup 120, burst 5x20 and cooldown 120, plus flight"
 assert pawn "Bernael" downed expect=absent
 assert pawn "Pirate B" hediff=Burn expect=present
 
