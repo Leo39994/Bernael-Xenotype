@@ -74,3 +74,7 @@ Tests/tools
 
 # Original audio masters; the game uses the WAV assets under Common/Sounds.
 /*.mp3
+
+# Local dark magic shader contact sheets.
+1.6/Source/DarkMirage/Unity/Assets/Editor/DarkMagicPreview.cs
+1.6/Source/DarkMirage/Unity/Assets/Editor/DarkMagicPreview.cs.meta
