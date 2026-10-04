@@ -29,6 +29,8 @@ namespace Bernael_Xenotype
         public static HediffDef BX_GazeCaligoBuff;
         public static HediffDef BX_GazeCaligoDebuff;
         public static HediffDef BX_PsychicOverchargeHediff;
+        public static HediffDef BX_MaliciousSeal;
+        public static DamageDef BX_CursedFlame;
         public static AbilityDef BX_SoulFeeding;
         public static ThoughtDef BX_ConsumedGraceThoughtMood;
         public static ThoughtDef BX_HeardDarkSpeech;
