@@ -12,13 +12,16 @@ namespace Bernael_Xenotype
             public readonly int Width, Height;
             public readonly Color32[] Pixels;
             public readonly Vector4 RevealBounds;
+            // Field/mesh rectangle in the original capture's UV coordinates.
+            public readonly Vector4 CanvasRect;
 
-            public Data(int width, int height, Color32[] pixels, Vector4 revealBounds)
+            public Data(int width, int height, Color32[] pixels, Vector4 revealBounds, Vector4 canvasRect)
             {
                 Width = width;
                 Height = height;
                 Pixels = pixels;
                 RevealBounds = revealBounds;
+                CanvasRect = canvasRect;
             }
         }
 
@@ -59,22 +62,36 @@ namespace Bernael_Xenotype
             }
             Vector4 revealBounds = top<bottom ? new Vector4(0,1,0,1) :
                 new Vector4((float)bottom/height,(float)(top+1)/height,(float)left/width,(float)(right+1)/width);
-            float[] outside = Transform(pixels,width,height,true);
-            float[] inside = Transform(pixels,width,height,false);
+            // Reserve space for the shader's tongues, smooth joins, stroke and
+            // glow. Keep the original pixel density and capture UVs: saved
+            // snapshots, eye anchors and world-space flame sizes stay valid.
+            int padLeft = Math.Max(0, (int)Math.Ceiling(width * 0.25f) - left);
+            int padRight = Math.Max(0, right + 1 + (int)Math.Ceiling(width * 0.25f) - width);
+            int padBottom = Math.Max(0, (int)Math.Ceiling(height * 0.125f) - bottom);
+            int padTop = Math.Max(0, top + 1 + (int)Math.Ceiling(height * 0.375f) - height);
+            int fieldWidth = width + padLeft + padRight;
+            int fieldHeight = height + padBottom + padTop;
+            var field = new Color32[fieldWidth * fieldHeight];
+            for (int y = 0; y < height; y++)
+                Array.Copy(pixels, y * width, field, (y + padBottom) * fieldWidth + padLeft, width);
+            var canvasRect = new Vector4(-(float)padLeft / width, -(float)padBottom / height,
+                (float)fieldWidth / width, (float)fieldHeight / height);
+            float[] outside = Transform(field,fieldWidth,fieldHeight,true);
+            float[] inside = Transform(field,fieldWidth,fieldHeight,false);
             float range = width * 0.125f;
-            for (int i=0; i<pixels.Length; i++)
+            for (int i=0; i<field.Length; i++)
             {
                 float distance = (float)(Math.Sqrt(outside[i])-Math.Sqrt(inside[i]));
                 byte encoded = (byte)Math.Round(Math.Max(0f, Math.Min(1f, 0.5f+distance/(2*range)))*255);
-                int x=i%width, y=i/width;
+                int x=i%fieldWidth-padLeft, y=i/fieldWidth-padBottom;
                 // R: signed distance. G/B/A: top/left/right contour anchors.
                 // Tongues grow from the captured outline, including hats and gear.
-                pixels[i] = new Color32(encoded,
-                    (byte)Math.Round(255f*columnTop[x]/height),
-                    (byte)Math.Round(255f*rowLeft[y]/width),
-                    (byte)Math.Round(255f*rowRight[y]/width));
+                field[i] = new Color32(encoded,
+                    x<0 || x>=width ? (byte)0 : (byte)Math.Round(255f*columnTop[x]/height),
+                    y<0 || y>=height ? (byte)255 : (byte)Math.Round(255f*rowLeft[y]/width),
+                    y<0 || y>=height ? (byte)0 : (byte)Math.Round(255f*rowRight[y]/width));
             }
-            return new Data(width, height, pixels, revealBounds);
+            return new Data(fieldWidth, fieldHeight, field, revealBounds, canvasRect);
         }
 
         public static Texture2D CreateTexture(Data data)

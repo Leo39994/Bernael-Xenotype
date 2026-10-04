@@ -21,6 +21,7 @@ namespace Bernael_Xenotype
         private readonly MaterialPropertyBlock properties = new MaterialPropertyBlock();
         private Vector4 eyeA;
         private Vector4 eyeB;
+        private Vector4 canvasRect;
 
         public static bool ShaderReady(ThingDef def)
         {
@@ -85,6 +86,8 @@ namespace Bernael_Xenotype
                 distanceField = MirageDistanceField.CreateTexture(data);
                 material.SetTexture("_DistanceTex", distanceField);
                 material.SetVector("_RevealBounds", data.RevealBounds);
+                canvasRect = data.CanvasRect;
+                material.SetVector("_CanvasRect", canvasRect);
                 return true;
             }
             catch (Exception error)
@@ -182,11 +185,15 @@ namespace Bernael_Xenotype
             if (material == null || opacity <= 0 || !FinishDistanceField()) return;
             position.y = AltitudeLayer.Pawn.AltitudeFor();
             position.z += Mathf.Sin(ageTicks / 60f * 2.2f) * 0.016f;
+            // The effect canvas may extend beyond the captured pawn. Offset its
+            // center with its size so the caster and eyes stay in the same place.
+            position.x += (canvasRect.x + canvasRect.z * 0.5f - 0.5f) * WorldSize;
+            position.z += (canvasRect.y + canvasRect.w * 0.5f - 0.5f) * WorldSize;
             properties.SetFloat("_Phase", ageTicks / 60f);
             properties.SetFloat("_SpawnAge", ageTicks / 60f);
             properties.SetFloat("_Opacity", opacity);
             Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(position, Quaternion.identity,
-                new Vector3(WorldSize,1f,WorldSize)), material, 0, null, 0, properties,
+                new Vector3(WorldSize*canvasRect.z,1f,WorldSize*canvasRect.w)), material, 0, null, 0, properties,
                 UnityEngine.Rendering.ShadowCastingMode.Off, false);
         }
 
@@ -195,7 +202,7 @@ namespace Bernael_Xenotype
         {
             if (material == null || !FinishDistanceField(wait: true))
                 throw new InvalidOperationException("Mirage material unavailable");
-            var target = RenderTexture.GetTemporary(CaptureSize,CaptureSize,0,RenderTextureFormat.ARGB32);
+            var target = RenderTexture.GetTemporary(distanceField.width,distanceField.height,0,RenderTextureFormat.ARGB32);
             RenderTexture previous = RenderTexture.active;
             Texture2D image = null;
             try
@@ -207,8 +214,8 @@ namespace Bernael_Xenotype
                 material.SetFloat("_Opacity", opacity);
                 Graphics.Blit(snapshot,target,material);
                 RenderTexture.active = target;
-                image = new Texture2D(CaptureSize,CaptureSize,TextureFormat.RGBA32,false);
-                image.ReadPixels(new Rect(0,0,CaptureSize,CaptureSize),0,0);
+                image = new Texture2D(target.width,target.height,TextureFormat.RGBA32,false);
+                image.ReadPixels(new Rect(0,0,target.width,target.height),0,0);
                 image.Apply();
                 System.IO.File.WriteAllBytes(path,ImageConversion.EncodeToPNG(image));
             }
