@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Psychic concussion from a Dire Orb burst; wounds like blunt force without blunt's extra stun. -->
+  <DamageDef>
+    <defName>BX_DireBlast</defName>
+    <label>dire blast</label>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been crushed by a dire orb.</deathMessage>
+    <hediff>Crush</hediff>
+    <hediffSkin>Bruise</hediffSkin>
+    <hediffSolid>Crack</hediffSolid>
+    <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>
+    <impactSoundType>Blunt</impactSoundType>
+    <armorCategory>Blunt</armorCategory>
+    <overkillPctToDestroyPart>0.4~1.0</overkillPctToDestroyPart>
+    <defaultDamage>18</defaultDamage>
+    <defaultArmorPenetration>0.35</defaultArmorPenetration>
+  </DamageDef>
+
+  <!-- Burns like vanilla Burn but never ignites the map. Malicious Seal makes its victims take more of it;
+       the Eye of Void imps are meant to deal it. -->
+  <DamageDef>
+    <defName>BX_CursedFlame</defName>
+    <label>cursed flame</label>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <externalViolence>true</externalViolence>
+    <hasForcefulImpact>false</hasForcefulImpact>
+    <makesBlood>false</makesBlood>
+    <canInterruptJobs>false</canInterruptJobs>
+    <deathMessage>{0} has been consumed by cursed flame.</deathMessage>
+    <hediff>Burn</hediff>
+    <armorCategory>Heat</armorCategory>
+    <minDamageToFragment>15</minDamageToFragment>
+    <defaultDamage>10</defaultDamage>
+    <defaultArmorPenetration>0</defaultArmorPenetration>
+    <combatLogRules>Damage_Flame</combatLogRules>
+    <canUseDeflectMetalEffect>false</canUseDeflectMetalEffect>
+  </DamageDef>
+</Defs>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Royalty psycasts; the dedicated dev actions grant them immediately. -->
+  <AbilityDef MayRequire="Ludeon.RimWorld.Royalty">
+    <defName>BX_MaliciousSeal</defName>
+    <label>malicious seal</label>
+    <description>Inscribe an ancient seal of malice on the ground. Moments later its chains lash out at every hostile mind within its circle, then its daggers pierce the skull at its heart and brand each bound creature with the seal for 30 seconds.\n\nA sealed creature cannot cast psycasts or use any other ability, and a cast it is preparing is broken. It suffers constant pain and takes 50% more damage from cursed flame. If it dies before the brand fades, the seal leaps from its corpse to up to three hostile minds nearby.\n\nTargets without psychic sensitivity cannot be sealed.</description>
+    <abilityClass>RimWorld.Psycast</abilityClass>
+    <category>Psychic</category>
+    <level>3</level>
+    <iconPath>UI/Icons/Abilities/BX_MaliciousSeal</iconPath>
+    <cooldownTicksRange>1800</cooldownTicksRange>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>true</disableGizmoWhileUndrafted>
+    <targetRequired>true</targetRequired>
+    <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
+    <warmupSound>BX_Cast1</warmupSound>
+    <statBases>
+      <Ability_PsyfocusCost>0.03</Ability_PsyfocusCost>
+      <Ability_EntropyGain>32</Ability_EntropyGain>
+      <!-- Also the radius the seal brands. -->
+      <Ability_EffectRadius>3.2</Ability_EffectRadius>
+    </statBases>
+    <verbProperties>
+      <verbClass>RimWorld.Verb_CastPsycast</verbClass>
+      <range>24.9</range>
+      <warmupTime>1.2</warmupTime>
+      <requireLineOfSight>true</requireLineOfSight>
+      <targetParams>
+        <canTargetLocations>true</canTargetLocations>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetSelf>false</canTargetSelf>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="Bernael_Xenotype.CompProperties_MaliciousSeal">
+        <durationTicks>108</durationTicks>
+        <inscribeSound>PsycastPsychicEffect</inscribeSound>
+        <brandSound>PsycastPsychicPulse</brandSound>
+      </li>
+    </comps>
+  </AbilityDef>
+
+  <AbilityDef MayRequire="Ludeon.RimWorld.Royalty">
+    <defName>BX_DireOrb</defName>
+    <label>dire orb</label>
+    <description>Fire a heavy orb of darkness wreathed in ghostly flame at a location. The orb drifts over everything in its path, then collapses on its target and bursts in a wave of pale fire that batters every hostile creature nearby and leaves them staggering. The blast is weaker toward its edge and does not pass through walls.\n\nA shield caught in the burst swallows it entirely.</description>
+    <abilityClass>RimWorld.Psycast</abilityClass>
+    <category>Psychic</category>
+    <level>3</level>
+    <iconPath>UI/Icons/Abilities/BX_DireOrb</iconPath>
+    <cooldownTicksRange>1200</cooldownTicksRange>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>true</disableGizmoWhileUndrafted>
+    <targetRequired>true</targetRequired>
+    <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
+    <warmupSound>BX_Cast1</warmupSound>
+    <statBases>
+      <Ability_PsyfocusCost>0.03</Ability_PsyfocusCost>
+      <Ability_EntropyGain>35</Ability_EntropyGain>
+    </statBases>
+    <verbProperties>
+      <verbClass>RimWorld.Verb_CastPsycast</verbClass>
+      <range>24.9</range>
+      <warmupTime>1</warmupTime>
+      <requireLineOfSight>true</requireLineOfSight>
+      <targetParams>
+        <canTargetLocations>true</canTargetLocations>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetSelf>false</canTargetSelf>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="Bernael_Xenotype.CompProperties_DireOrb">
+        <!-- The blast radius is the projectile's explosionRadius. -->
+        <projectileDef>BX_DireOrbProjectile</projectileDef>
+      </li>
+    </comps>
+  </AbilityDef>
+</Defs>

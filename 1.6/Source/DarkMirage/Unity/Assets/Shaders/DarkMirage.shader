@@ -7,6 +7,7 @@ Shader "Bernael/DarkMirage"
         _Phase ("Simulation time", Float) = 0
         _SpawnAge ("Seconds since summoning", Float) = 10
         _RevealBounds ("Captured pawn bottom/top/left/right UV", Vector) = (0.3,0.75,0.3,0.7)
+        _CanvasRect ("Effect canvas in capture UV: origin/size", Vector) = (0,0,1,1)
         _Seed ("Phase offset", Float) = 0
         _Opacity ("Lifetime opacity", Range(0,1)) = 1
         _EyeA ("Eye A: UV, enabled, scale", Vector) = (0.47,0.6,1,1)
@@ -31,6 +32,7 @@ Shader "Bernael/DarkMirage"
             float _Phase, _Seed, _Opacity;
             float _SpawnAge;
             float4 _RevealBounds;
+            float4 _CanvasRect;
             float _PreviewFireOnly;
             float4 _EyeA, _EyeB;
 
@@ -44,7 +46,8 @@ Shader "Bernael/DarkMirage"
             }
             float silhouetteDistance(float2 uv)
             {
-                return (tex2D(_DistanceTex,uv).r-0.5)*0.25;
+                float2 fieldUV = (uv-_CanvasRect.xy)/_CanvasRect.zw;
+                return (tex2D(_DistanceTex,fieldUV).r-0.5)*0.25;
             }
             float coverage(float distance)
             {
@@ -139,8 +142,13 @@ Shader "Bernael/DarkMirage"
                 float t = _Phase + _Seed;
                 // Slow only the flame flow; summoning, expiry and eyes keep their timing.
                 float flameTime = _Phase*0.70 + _Seed;
-                float2 uv = i.uv;
+                // All shape sizes and eye anchors remain in capture UV units;
+                // only the field/mesh canvas grows to contain the complete fire.
+                float2 uv = i.uv*_CanvasRect.zw+_CanvasRect.xy;
                 float4 source = tex2D(_MainTex, uv);
+                // Clamp sampling must not stretch an edge texel into the new
+                // transparent margin if a captured accessory touches an edge.
+                source *= step(0,uv.x)*step(uv.x,1)*step(0,uv.y)*step(uv.y,1);
                 float a = source.a;
                 float distance = silhouetteDistance(uv);
                 float outline = coverage(distance-0.0095);
@@ -164,7 +172,7 @@ Shader "Bernael/DarkMirage"
                 // Move the entire reveal band above the canvas once ignited.
                 // Capping it relative to the pawn keeps clipping tall flame tips
                 // and their glow long after the summoning animation has ended.
-                float fireFront = lerp(bottom-0.06,1.025,fireProgress);
+                float fireFront = lerp(bottom-0.06,_CanvasRect.y+_CanvasRect.w+0.025,fireProgress);
                 float fireIgnition = smoothstep(1.15,1.35,_SpawnAge)
                     * (1-smoothstep(fireFront-0.025,fireFront+0.025,uv.y));
 
@@ -176,7 +184,7 @@ Shader "Bernael/DarkMirage"
                 {
                     float lane=(tongue+0.5)/5.0;
                     float x=lerp(_RevealBounds.z,_RevealBounds.w,lane);
-                    float rootY=tex2D(_DistanceTex,float2(x,0.5)).g;
+                    float rootY=tex2D(_DistanceTex,float2((x-_CanvasRect.x)/_CanvasRect.z,0.5)).g;
                     float phase=tongue*2.399+_Seed;
                     float width=clamp(span*0.132,0.0275,0.0473);
                     float2 anchor=float2(x,rootY);
@@ -192,7 +200,7 @@ Shader "Bernael/DarkMirage"
                     [unroll] for(int tongue=0;tongue<2;tongue++)
                     {
                         float y=lerp(_RevealBounds.x,_RevealBounds.y,0.14+tongue*0.36);
-                        float4 contour=tex2D(_DistanceTex,float2(0.5,y));
+                        float4 contour=tex2D(_DistanceTex,float2(0.5,(y-_CanvasRect.y)/_CanvasRect.w));
                         float x=side==0?contour.b:contour.a;
                         float phase=side*4.7+tongue*2.399+_Seed;
                         // Keep newborn bases under the permanent blue sheet;
@@ -257,9 +265,9 @@ Shader "Bernael/DarkMirage"
                 float pulse = 0.94 + sin(t*2.4)*0.06;
                 rgb += (float3(1,1,1)*eyes.x + float3(0.51,0.71,0.86)*eyes.y)*pulse;
                 alpha = saturate(alpha + eyes.x*0.5 + eyes.y*0.18);
-                float border = smoothstep(0,0.025,uv.x)*smoothstep(0,0.025,1-uv.x)*
-                               smoothstep(0,0.025,uv.y)*smoothstep(0,0.025,1-uv.y);
-                return float4(rgb,alpha) * (_Opacity*border);
+                // Transparent field padding already encloses the glow. A fade
+                // at the old capture border would cut tall/wide flames again.
+                return float4(rgb,alpha) * _Opacity;
             }
             ENDCG
         }

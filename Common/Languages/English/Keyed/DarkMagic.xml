@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <BX_DarkMagicShaderMissing>Malicious Seal and Dire Orb shaders are unavailable. Check the AssetBundle installation and restart RimWorld.</BX_DarkMagicShaderMissing>
+  <BX_SealBlocked>Malicious seal needs a walkable cell.</BX_SealBlocked>
+  <BX_SealSilenced>Silenced by a malicious seal.</BX_SealSilenced>
+  <BX_SealInterrupted>Silenced</BX_SealInterrupted>
+  <BX_DarkMagicGranted>{0} granted to {1}. Draft this pawn to cast it.</BX_DarkMagicGranted>
+  <BX_CursedFlameDealt>{0} took {1} damage from 10 cursed flame.</BX_CursedFlameDealt>
+</LanguageData>

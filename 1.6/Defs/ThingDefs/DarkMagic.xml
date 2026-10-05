@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Drawn entirely by DireOrb.shader; the texture only satisfies graphic loading. -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>BX_DireOrbProjectile</defName>
+    <label>dire orb</label>
+    <thingClass>Bernael_Xenotype.Projectile_DireOrb</thingClass>
+    <graphicData>
+      <texPath>UI/Icons/Genes/BX_Hexmaster</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <!-- The orb itself deals no damage; its burst uses these values once it detonates. -->
+      <damageDef>BX_DireBlast</damageDef>
+      <damageAmountBase>22</damageAmountBase>
+      <armorPenetrationBase>0.35</armorPenetrationBase>
+      <!-- A heavy orb: about 9 cells a second, a fraction of a rifle bullet's speed. -->
+      <speed>15</speed>
+      <explosionRadius>2.6</explosionRadius>
+      <soundExplode>BX_DarkMirage_End</soundExplode>
+      <soundAmbient>BX_DarkMirage_Ambient</soundAmbient>
+    </projectile>
+  </ThingDef>
+</Defs>
