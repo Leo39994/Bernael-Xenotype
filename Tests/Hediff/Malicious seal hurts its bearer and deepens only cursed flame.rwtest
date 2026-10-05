@@ -1,0 +1,23 @@
+rwtest 1
+test "Malicious seal hurts its bearer and deepens only cursed flame" project="Bernael" created=2026-10-06T00:00:00
+
+speed paused
+spawn Pawn:Muffalo name="Unsealed"
+spawn Pawn:Muffalo name="Sealed"
+spawn Pawn:Muffalo name="Sealed burnt"
+give "Sealed" hediff=BX_MaliciousSeal
+give "Sealed burnt" hediff=BX_MaliciousSeal
+
+assert pawn "Sealed" hediff=BX_MaliciousSeal expect=present
+assert pawn "Sealed" pain min=0.15 max=0.25 expect=present
+assert pawn "Unsealed" pain max=0 expect=present
+
+damage "Unsealed" amount=8 kind=BX_CursedFlame
+damage "Sealed" amount=8 kind=BX_CursedFlame
+damage "Sealed burnt" amount=8 kind=Burn
+
+assert pawn "Unsealed" hediff=Burn severity min=7.5 max=8.5 expect=present
+assert pawn "Sealed" hediff=Burn severity min=11.5 max=12.5 expect=present
+assert pawn "Sealed burnt" hediff=Burn severity min=7.5 max=8.5 expect=present
+
+assert log clean

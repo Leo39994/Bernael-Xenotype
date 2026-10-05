@@ -1,0 +1,30 @@
+rwtest 1
+test "Malicious seal silences abilities until it fades" project="Bernael" created=2026-10-06T00:00:00
+
+requires dlc=Royalty
+
+despawn Thing:BX_DarkMirageDecoy
+spawn Pawn:Colonist at 0,0 name="Plain"
+ability "Plain" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+draft "Plain"
+select "Plain"
+
+gizmo "Dark mirage" expect=allowed
+target cell=4,0 expect=allowed
+give "Plain" hediff=BX_MaliciousSeal
+tick 120 note="0.6 s warmup is 36 ticks; twice that and the job, and the decoy would stand"
+assert thing BX_DarkMirageDecoy expect=absent
+assert casts "Plain" ability=BX_DarkMirage max=0
+
+gizmo "Dark mirage" expect=disabled reason="Silenced by a malicious seal." match=equals
+
+tick 1700 note="about 1820 of the 1800 ticks of disappearsAfterTicks"
+assert pawn "Plain" hediff=BX_MaliciousSeal expect=absent
+
+gizmo "Dark mirage" expect=allowed
+target cell=4,0 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120 expect=present
+
+despawn Thing:BX_DarkMirageDecoy
+undraft "Plain"
+assert log clean
