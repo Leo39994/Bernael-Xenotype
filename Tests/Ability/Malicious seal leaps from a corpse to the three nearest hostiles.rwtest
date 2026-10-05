@@ -1,0 +1,50 @@
+rwtest 1
+test "Malicious seal leaps from a corpse to the three nearest hostiles" project="Bernael" created=2026-10-06T00:00:00
+
+requires dlc=Biotech
+requires dlc=Royalty
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+ability "Bernael" grant=BX_MaliciousSeal psylink=3 psyfocus=1.0
+spawn Pawn:Pirate at 8,0 name="Victim" faction=enemy
+spawn Pawn:Pirate at 10,2 name="First" faction=enemy
+spawn Pawn:Pirate at 11,0 name="Second" faction=enemy
+spawn Pawn:Pirate at 8,4 name="Third" faction=enemy
+spawn Pawn:Pirate at 12,2 name="Fourth" faction=enemy
+down "Victim"
+down "First"
+down "Second"
+down "Third"
+down "Fourth"
+spawn Pawn:Colonist at 9,-2 name="Ally"
+draft "Ally"
+
+draft "Bernael"
+select "Bernael"
+gizmo "Malicious seal" expect=allowed
+target cell=6,0 expect=allowed
+speed x1
+
+waitfor pawn "Victim" hediff=BX_MaliciousSeal ticks=400 expect=present
+speed paused
+assert pawn "First" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Second" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Third" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Fourth" hediff=BX_MaliciousSeal expect=absent
+
+reload note="the brand scribes the faction that cast it, and the leap reads that faction"
+assert pawn "Victim" hediff=BX_MaliciousSeal expect=present
+
+damage "Victim" amount=999
+assert pawn "Victim" dead expect=present
+
+assert pawn "First" hediff=BX_MaliciousSeal expect=present
+assert pawn "Second" hediff=BX_MaliciousSeal expect=present
+assert pawn "Third" hediff=BX_MaliciousSeal expect=present
+assert pawn "Fourth" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Ally" hediff=BX_MaliciousSeal expect=absent
+
+undraft "Bernael"
+undraft "Ally"
+assert log clean

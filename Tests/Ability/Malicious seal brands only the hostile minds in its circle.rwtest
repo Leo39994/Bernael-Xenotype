@@ -1,0 +1,41 @@
+rwtest 1
+test "Malicious seal brands only the hostile minds in its circle" project="Bernael" created=2026-10-06T00:00:00
+
+requires dlc=Biotech
+requires dlc=Royalty
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+ability "Bernael" grant=BX_MaliciousSeal psylink=3 psyfocus=1.0
+spawn Pawn:Pirate at 9,1 name="Inside" faction=enemy
+spawn Pawn:Pirate at 8,5 name="Outside" faction=enemy
+spawn Pawn:Pirate at 7,-1 name="Deaf" faction=enemy
+give "Deaf" trait=PsychicSensitivity:-2
+down "Inside"
+down "Outside"
+down "Deaf"
+spawn Pawn:Colonist at 7,1 name="Ally"
+draft "Ally"
+
+assert pawn "Deaf" stat=PsychicSensitivity max=0 expect=present
+assert pawn "Inside" hediff=BX_MaliciousSeal expect=absent
+
+select "Bernael"
+gizmo "Malicious seal" expect=disabled
+draft "Bernael"
+gizmo "Malicious seal" expect=allowed
+target cell=8,0 expect=allowed
+speed x1
+
+waitfor pawn "Inside" hediff=BX_MaliciousSeal ticks=400 expect=present
+assert pawn "Inside" hediff=BX_MaliciousSeal expect=present
+assert casts "Bernael" ability=BX_MaliciousSeal min=1 max=1
+assert pawn "Outside" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Deaf" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Ally" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Bernael" hediff=BX_MaliciousSeal expect=absent
+gizmo "Malicious seal" expect=disabled
+
+undraft "Bernael"
+undraft "Ally"
+assert log clean
