@@ -4,7 +4,6 @@ test "Dark mirage survives a reload" project="Bernael" created=2026-09-21T00:00:
 requires dlc=Biotech
 requires dlc=Royalty
 
-despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 draft "Bernael"

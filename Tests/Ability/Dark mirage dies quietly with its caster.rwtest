@@ -4,7 +4,6 @@ test "Dark mirage dies quietly with its caster" project="Bernael" created=2026-0
 requires dlc=Biotech
 requires dlc=Royalty
 
-despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Owner" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Keeper"
 ability "Owner" grant=BX_DarkMirage psylink=2 psyfocus=1.0

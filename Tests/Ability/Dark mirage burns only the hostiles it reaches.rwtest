@@ -4,7 +4,6 @@ test "Dark mirage burns only the hostiles it reaches" project="Bernael" created=
 requires dlc=Biotech
 requires dlc=Royalty
 
-despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 draft "Bernael"
