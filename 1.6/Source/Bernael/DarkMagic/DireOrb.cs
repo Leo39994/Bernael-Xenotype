@@ -37,6 +37,7 @@ namespace Bernael_Xenotype
     }
 
     // Deals no damage itself: the burst it leaves behind implodes, then detonates.
+    [StaticConstructorOnStartup]
     public sealed class Projectile_DireOrb : Projectile
     {
         // DireOrb.shader assumes these quad sizes.

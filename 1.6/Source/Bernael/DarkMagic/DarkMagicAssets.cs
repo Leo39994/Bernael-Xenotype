@@ -6,6 +6,7 @@ using Verse;
 namespace Bernael_Xenotype
 {
     // Shared shader resources for Malicious Seal and Dire Orb, loaded once on the main thread.
+    [StaticConstructorOnStartup]
     public static class DarkMagicAssets
     {
         private static bool attemptedLoad;
