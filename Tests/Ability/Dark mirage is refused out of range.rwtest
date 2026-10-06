@@ -4,7 +4,6 @@ test "Dark mirage is refused out of range" project="Bernael" created=2026-09-21T
 requires dlc=Biotech
 requires dlc=Royalty
 
-despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Plain"
 ability "Plain" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 

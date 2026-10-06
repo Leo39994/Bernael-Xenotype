@@ -4,7 +4,6 @@ test "Dark mirage looks like its caster" project="Bernael" created=2026-09-21T00
 requires dlc=Biotech
 requires dlc=Royalty
 
-despawn Thing:BX_DarkMirageDecoy
 sky glow=0
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 5,0 name="Watcher"

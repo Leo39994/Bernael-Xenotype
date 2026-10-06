@@ -3,7 +3,6 @@ test "Malicious seal silences abilities until it fades" project="Bernael" create
 
 requires dlc=Royalty
 
-despawn Thing:BX_DarkMirageDecoy
 spawn Pawn:Colonist at 0,0 name="Plain"
 ability "Plain" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 draft "Plain"
@@ -25,6 +24,5 @@ gizmo "Dark mirage" expect=allowed
 target cell=4,0 expect=allowed
 waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120 expect=present
 
-despawn Thing:BX_DarkMirageDecoy
 undraft "Plain"
 assert log clean

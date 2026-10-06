@@ -5,7 +5,6 @@ requires dlc=Biotech
 requires mod=Mortis.BX
 
 speed paused
-despawn Thing:BX_BottledSoul
 room size=5,5 prison=true name="cell"
 room size=5,5 name="store"
 spawn Thing:Bed in="cell"

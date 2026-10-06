@@ -4,7 +4,6 @@ test "Bottled soul doctor work decides" project="Bernael" created=2026-09-18T00:
 requires dlc=Biotech
 requires mod=Mortis.BX
 
-despawn Thing:BX_BottledSoul
 room size=5,5 name="ward"
 spawn Thing:HospitalBed in="ward"
 spawn Pawn:Colonist name="Doctor"
