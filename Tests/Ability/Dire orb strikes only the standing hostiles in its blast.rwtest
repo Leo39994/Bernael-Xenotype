@@ -5,15 +5,16 @@ requires dlc=Biotech
 requires dlc=Royalty
 
 speed paused
-spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+room at 5,-2 size=7,5 door=none roof=false name="arena"
+spawn Pawn:Colonist at 6,0 name="Bernael" xenotype=BX_Bernael
 ability "Bernael" grant=BX_DireOrb psylink=3 psyfocus=1.0
-spawn Pawn:Pirate at 9,1 name="Near" faction=enemy
+spawn Pawn:Pirate at 10,1 name="Near" faction=enemy
 pacify "Near"
 spawn Pawn:Pirate at 8,7 name="Far" faction=enemy
 pacify "Far"
-spawn Pawn:Pirate at 7,2 name="Downed" faction=enemy
+spawn Pawn:Pirate at 9,-1 name="Downed" faction=enemy
 down "Downed"
-spawn Pawn:Colonist at 7,-1 name="Ally"
+spawn Pawn:Colonist at 6,1 name="Ally"
 draft "Ally"
 
 assert pawn "Near" pain max=0 expect=present
