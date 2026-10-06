@@ -16,5 +16,8 @@ assert pawn "Pirate" dead expect=present
 assert pawn "Bernael" resource=BX_SoulStarved min=0.15 max=0.25 expect=present
 assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2 expect=present
 
-tick 180 note="decay drops 1 severity every 60 ticks"
+tick 2400 note="decayTickInterval 2500 from the kill, so the stack still holds"
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2 expect=present
+
+tick 200 note="past the 2500 ticks, one severity is gone"
 assert pawn "Bernael" hediff=BX_ReaperEcstasy severity max=1 expect=present
