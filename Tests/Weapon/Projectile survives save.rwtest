@@ -17,11 +17,11 @@ tick 150 note="warmup 120, then the first projectile flies"
 speed paused
 reload note="save and load while a projectile is in the air"
 pacify "Pirate"
+requires assert=job
+assert pawn "Bernael" job=AttackStatic expect=present
 speed x1
 
 tick 900 note="two more bursts after loading"
-requires assert=job
-assert pawn "Bernael" job=AttackStatic expect=present
 assert log clean
 assert pawn "Pirate" near="Bernael" max=12 expect=present
 assert pawn "Pirate" hediff=Burn expect=present
