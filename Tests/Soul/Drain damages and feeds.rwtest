@@ -17,3 +17,4 @@ waitfor pawn "Victim" hediff=BX_SoulDrained expect=present ticks=300
 assert pawn "Victim" hediff=BX_SoulDrained expect=present
 assert pawn "Victim" hediff=BX_SoulDrained severity min=0.44 max=0.46 expect=present
 assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35 expect=present
+assert pawn "Bernael" hediff=BX_ConsumedSoulStrength expect=present

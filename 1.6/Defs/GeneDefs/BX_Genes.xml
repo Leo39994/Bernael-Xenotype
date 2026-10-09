@@ -4,15 +4,27 @@
 		<defName>BX_DepravedHead</defName>
 		<label>Depraved Head</label>
 		<labelShortAdj>wide-mouthed</labelShortAdj>
-		<geneClass>Bernael_Xenotype.Gene_DepravedHead</geneClass>
 		<description>Head</description>
 		<iconPath>UI/Icons/Genes/BX_DepravedHead</iconPath>
 		<displayOrderInCategory>0</displayOrderInCategory>
 		<displayCategory>Cosmetic</displayCategory>
-		<biostatCpx>1</biostatCpx>
+		<biostatCpx>0</biostatCpx>
 		<forcedHeadTypes>
 			<li>BX_Depraved</li>
 		</forcedHeadTypes>
+	</GeneDef>
+
+	<GeneDef>
+		<defName>BX_BernaelBlind</defName>
+		<label>Reaper’s Sight</label>
+		<labelShortAdj>reaper-sighted</labelShortAdj>
+		<description>Carriers perceive the world through psychic senses instead of ordinary vision. Their eyes remain permanently blinded, but their effective sight is enhanced and obscuring gas does not impair ranged accuracy. Artificial eyes cannot be installed while this gene is active.</description>
+		<geneClass>Bernael_Xenotype.Gene_BernaelBlind</geneClass>
+		<iconPath>UI/Icons/Genes/BX_EtherealSight</iconPath>
+		<displayOrderInCategory>1</displayOrderInCategory>
+		<displayCategory>BX_DarkEnergy</displayCategory>
+		<selectionWeight>0</selectionWeight>
+		<biostatCpx>1</biostatCpx>
 	</GeneDef>
 	
 	<GeneDef>

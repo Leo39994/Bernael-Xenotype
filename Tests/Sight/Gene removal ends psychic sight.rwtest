@@ -6,7 +6,8 @@ spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 assert pawn "Bernael" hediff=BX_Blindness expect=present
 assert pawn "Bernael" capacity=Sight min=1.25 expect=present
 
-gene "Bernael" remove=BX_DepravedHead
+gene "Bernael" remove=BX_BernaelBlind
 
 assert pawn "Bernael" hediff=BX_Blindness expect=absent
 assert pawn "Bernael" capacity=Sight max=1 expect=present
+assert pawn "Bernael" gene=BX_DepravedHead expect=present

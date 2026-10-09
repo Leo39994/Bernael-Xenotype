@@ -1,0 +1,19 @@
+rwtest 1
+test "Bottled soul auto-consumes" project="Bernael" created=2026-10-08T00:00:00
+
+requires dlc=Biotech
+requires mod=Mortis.BX
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Thing:BX_BottledSoul at 2,0 count=1
+give "Bernael" resource=BX_SoulStarved value=0.1 targetValue=0.5
+
+assert pawn "Bernael" resource=BX_SoulStarved min=0.05 max=0.15 expect=present
+speed x3
+waitfor pawn "Bernael" hediff=BX_ConsumedSoulStrength ticks=1200 expect=present
+
+assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35 expect=present
+assert pawn "Bernael" hediff=BX_ConsumedSoulStrength expect=present
+assert thing BX_BottledSoul expect=absent
+assert log clean

@@ -19,11 +19,13 @@ namespace Bernael_Xenotype
         public static GeneDef BX_DarkSpeech;
         public static GeneDef BX_AbyssalReach;
         public static GeneDef BX_DepravedHead;
+        public static GeneDef BX_BernaelBlind;
         public static TaleDef BX_ConsumedGrace;
         public static XenotypeDef BX_Bernael;
         public static HediffDef BX_Blindness;
         public static HediffDef BX_SoulDrained;
         public static HediffDef BX_SoulCraving;
+        public static HediffDef BX_ConsumedSoulStrength;
         public static HediffDef BX_BabyBond_Feeder;
         public static HediffDef BX_BabyBond_Victim;
         public static HediffDef BX_GazeCaligoBuff;
