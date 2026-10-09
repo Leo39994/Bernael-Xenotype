@@ -2,6 +2,7 @@ rwtest 1
 test "Dark speech thought lands" project="Bernael" created=2026-09-17T00:00:00
 
 requires dlc=Biotech
+speed paused
 spawn Pawn:Colonist at 0,0 name="Speaker A" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Listener"
 spawn Pawn:Colonist at 4,0 name="Speaker B" xenotype=BX_Bernael

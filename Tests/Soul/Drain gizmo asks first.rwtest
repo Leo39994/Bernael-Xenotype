@@ -2,6 +2,7 @@ rwtest 1
 test "Drain gizmo asks first" project="Bernael" created=2026-09-17T00:00:00
 
 requires dlc=Biotech
+speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Victim"
 
@@ -15,5 +16,6 @@ target "Victim" expect=allowed
 assert window Dialog_MessageBox contains "serious soul damage" expect=present
 click "Confirm"
 
+speed x1
 tick 180 note="120 ticks warmup plus slack"
 assert pawn "Victim" hediff=BX_SoulDrained expect=present

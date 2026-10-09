@@ -2,6 +2,7 @@ rwtest 1
 test "Drain damages and feeds" project="Bernael" created=2026-09-17T00:00:00
 
 requires dlc=Biotech
+speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Victim"
 
@@ -10,6 +11,7 @@ give "Bernael" resource=BX_SoulStarved value=0.1
 select "Bernael"
 gizmo "Soul drain" expect=allowed
 target "Victim" expect=allowed
+speed x1
 waitfor pawn "Victim" hediff=BX_SoulDrained expect=present ticks=300
 
 assert pawn "Victim" hediff=BX_SoulDrained expect=present

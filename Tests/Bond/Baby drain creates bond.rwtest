@@ -2,6 +2,7 @@ rwtest 1
 test "Baby drain creates bond" project="Bernael" created=2026-09-18T00:00:00
 
 requires dlc=Biotech
+speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Baby" age=1
 
@@ -10,6 +11,7 @@ give "Bernael" resource=BX_SoulStarved value=0.1
 select "Bernael"
 gizmo "Soul drain" expect=allowed
 target "Baby" expect=allowed
+speed x1
 waitfor pawn "Baby" hediff=BX_Blindness expect=present ticks=300
 
 assert pawn "Baby" hediff=BX_Blindness expect=present

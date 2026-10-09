@@ -2,6 +2,7 @@ rwtest 1
 test "Bonded baby death kills feeder" project="Bernael" created=2026-09-18T00:00:00
 
 requires dlc=Biotech
+speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,0 name="Baby" age=1
 
@@ -9,6 +10,7 @@ give "Bernael" resource=BX_SoulStarved value=0.1
 select "Bernael"
 gizmo "Soul drain" expect=allowed
 target "Baby" expect=allowed
+speed x1
 waitfor pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present ticks=300
 assert pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present
 
