@@ -45,7 +45,7 @@ namespace Bernael_Xenotype
         private const float TrailLength = 2.6f;
         private const float TrailWidth = 1.2f;
         private const float ChargeSeconds = 0.4f;
-        private static MaterialPropertyBlock properties;
+        private static readonly MaterialPropertyBlock properties = new MaterialPropertyBlock();
 
         public float Seed => thingIDNumber % 97 * 0.13f;
         public float Flight => Mathf.Max(0f, StartingTicksToImpact - ticksToImpact) / 60f;
@@ -70,7 +70,6 @@ namespace Bernael_Xenotype
         // keeps drawing it where it struck, with landed counting the seconds since, while it collapses.
         public static void DrawOrb(Vector3 at, Vector3 heading, float time, float travelled, float landed, float seed)
         {
-            if (properties == null) properties = new MaterialPropertyBlock();
             at.y = DireOrbMapComponent.Altitude;
             // Trail below the orb, so the orb's own flame sits on top of it.
             properties.Clear();

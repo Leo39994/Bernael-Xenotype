@@ -23,7 +23,7 @@ draft "Ally"
 draft "Bernael"
 select "Bernael"
 gizmo "Malicious seal" expect=allowed
-target cell=6,0 expect=allowed
+target "Victim" expect=allowed
 speed x1
 
 waitfor pawn "Victim" hediff=BX_MaliciousSeal ticks=400 expect=present

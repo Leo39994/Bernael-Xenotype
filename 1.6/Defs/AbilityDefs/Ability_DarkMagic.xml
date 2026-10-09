@@ -4,22 +4,20 @@
   <AbilityDef MayRequire="Ludeon.RimWorld.Royalty">
     <defName>BX_MaliciousSeal</defName>
     <label>malicious seal</label>
-    <description>Inscribe an ancient seal of malice on the ground. Moments later its chains lash out at every hostile mind within its circle, then its daggers pierce the skull at its heart and brand each bound creature with the seal for 30 seconds.\n\nA sealed creature cannot cast psycasts or use any other ability, and a cast it is preparing is broken. It suffers constant pain and takes 50% more damage from cursed flame. If it dies before the brand fades, the seal leaps from its corpse to up to three hostile minds nearby.\n\nTargets without psychic sensitivity cannot be sealed.</description>
+    <description>Brand an ancient seal of malice on the target's mind for 30 seconds. Every second its daggers pierce the skull at its heart.\n\nA sealed creature cannot cast psycasts or use any other ability, and a cast it is preparing is broken. It suffers constant pain and takes 50% more damage from cursed flame. If it dies before the brand fades, the seal leaps from its corpse to up to three hostile minds nearby.\n\nTargets without psychic sensitivity cannot be sealed.</description>
     <abilityClass>RimWorld.Psycast</abilityClass>
     <category>Psychic</category>
     <level>3</level>
     <iconPath>UI/Icons/Abilities/BX_MaliciousSeal</iconPath>
+    <writeCombatLog>true</writeCombatLog>
     <cooldownTicksRange>1800</cooldownTicksRange>
     <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
     <disableGizmoWhileUndrafted>true</disableGizmoWhileUndrafted>
     <targetRequired>true</targetRequired>
-    <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
     <warmupSound>BX_Cast1</warmupSound>
     <statBases>
       <Ability_PsyfocusCost>0.03</Ability_PsyfocusCost>
       <Ability_EntropyGain>32</Ability_EntropyGain>
-      <!-- Also the radius the seal brands. -->
-      <Ability_EffectRadius>3.2</Ability_EffectRadius>
     </statBases>
     <verbProperties>
       <verbClass>RimWorld.Verb_CastPsycast</verbClass>
@@ -27,16 +25,17 @@
       <warmupTime>1.2</warmupTime>
       <requireLineOfSight>true</requireLineOfSight>
       <targetParams>
-        <canTargetLocations>true</canTargetLocations>
-        <canTargetPawns>false</canTargetPawns>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetAnimals>true</canTargetAnimals>
+        <canTargetLocations>false</canTargetLocations>
         <canTargetBuildings>false</canTargetBuildings>
         <canTargetSelf>false</canTargetSelf>
       </targetParams>
     </verbProperties>
     <comps>
       <li Class="Bernael_Xenotype.CompProperties_MaliciousSeal">
-        <durationTicks>108</durationTicks>
-        <inscribeSound>PsycastPsychicEffect</inscribeSound>
+        <psychic>true</psychic>
+        <goodwillImpact>-15</goodwillImpact>
         <brandSound>PsycastPsychicPulse</brandSound>
       </li>
     </comps>
