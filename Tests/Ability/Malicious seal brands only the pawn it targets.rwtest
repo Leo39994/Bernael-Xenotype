@@ -1,0 +1,35 @@
+rwtest 1
+test "Malicious seal brands only the pawn it targets" project="Bernael" created=2026-10-09T00:00:00
+
+requires dlc=Biotech
+requires dlc=Royalty
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+ability "Bernael" grant=BX_MaliciousSeal psylink=3 psyfocus=1.0
+spawn Pawn:Pirate at 8,0 name="Target" faction=enemy
+spawn Pawn:Pirate at 9,1 name="Beside" faction=enemy
+down "Target"
+down "Beside"
+spawn Pawn:Colonist at 7,1 name="Ally"
+draft "Ally"
+
+assert pawn "Target" hediff=BX_MaliciousSeal expect=absent
+
+select "Bernael"
+gizmo "Malicious seal" expect=disabled
+draft "Bernael"
+gizmo "Malicious seal" expect=allowed
+target "Target" expect=allowed
+speed x1
+
+waitfor pawn "Target" hediff=BX_MaliciousSeal ticks=400 expect=present
+assert casts "Bernael" ability=BX_MaliciousSeal min=1 max=1
+assert pawn "Beside" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Ally" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Bernael" hediff=BX_MaliciousSeal expect=absent
+gizmo "Malicious seal" expect=disabled
+
+undraft "Bernael"
+undraft "Ally"
+assert log clean

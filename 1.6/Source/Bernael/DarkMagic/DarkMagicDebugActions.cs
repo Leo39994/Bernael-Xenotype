@@ -33,8 +33,9 @@ namespace Bernael_Xenotype
         {
             if (!pawn.RaceProps.Humanlike || pawn.abilities == null || pawn.Faction != Faction.OfPlayer) return;
             AbilityDef def = DefDatabase<AbilityDef>.GetNamed(defName);
-            int missingLevels = def.level - pawn.GetPsylinkLevel();
-            if (missingLevels > 0) pawn.ChangePsylinkLevel(missingLevels);
+            // A pawn without a psylink only gains level 1 from ChangePsylinkLevel, whatever the offset.
+            for (int i = 0; i < def.level && pawn.GetPsylinkLevel() < def.level; i++)
+                pawn.ChangePsylinkLevel(def.level - pawn.GetPsylinkLevel());
             pawn.abilities.GainAbility(def);
             pawn.psychicEntropy.OffsetPsyfocusDirectly(1f);
             Messages.Message("BX_DarkMagicGranted".Translate(def.LabelCap, pawn.LabelShortCap), pawn,
