@@ -275,7 +275,17 @@ Shader "Bernael/DireOrb"
             // One flame of the burst standing upright on the ground at foot, in cells.
             Fire standing(float2 p, float2 foot, float size, float squash, float time, float seed, float reach)
             {
-                Fire fire=flame((p-foot)/size-float2(0,squash),time,seed,reach,squash);
+                Fire fire;
+                // Once a flame has burned out its size is 0, and dividing by it would leave NaN distances, which
+                // paint() fills with solid navy.
+                if(size<1e-3)
+                {
+                    fire.flame=1e3;
+                    fire.heart=1e3;
+                    fire.height=1;
+                    return fire;
+                }
+                fire=flame((p-foot)/size-float2(0,squash),time,seed,reach,squash);
                 fire.flame*=size;
                 fire.heart*=size;
                 return fire;
