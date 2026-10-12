@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--============= Special hauling ===============-->
+
+  <JobDef>
+    <defName>BX_BogeymanKidnap</defName>
+    <driverClass>Bernael_Xenotype.JobDriver_BogeymanKidnap</driverClass>
+    <reportString>kidnapping TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <checkOverrideOnDamage>Never</checkOverrideOnDamage>
+  </JobDef>
+
+</Defs>

@@ -14,19 +14,19 @@ namespace Bernael_Xenotype
         [StaticConstructorOnStartup]
 	    private class GazeCaligoOverlay : SkyOverlay
 	    {
-	    	private static readonly Material GlowSporeOverlayWorld = MatLoader.LoadMat("Weather/GlowSporeOverlayWorld");
+	    	private static readonly Material GazeCaligoOverlayWorld = MaterialPool.MatFrom("Other/BX_GazeCaligoOverlayWorld", ShaderDatabase.MetaOverlay);
 	    	private static readonly ComplexCurve speedCurve = new ComplexCurve(new UnityEngine.Keyframe(0f, 0f), new UnityEngine.Keyframe(1f, 1f), new UnityEngine.Keyframe(2f, 1.1f), new UnityEngine.Keyframe(3f, 1.2f));
-	    	private TexturePannerSpeedCurve panner0 = new TexturePannerSpeedCurve(GlowSporeOverlayWorld, "_MainTex", speedCurve, new Vector2(-1f, -0.2f), 0.0001f);
-	    	private TexturePannerSpeedCurve panner1 = new TexturePannerSpeedCurve(GlowSporeOverlayWorld, "_MainTex2", speedCurve, new Vector2(0.35f, -1f), 5E-05f);
+	    	private TexturePannerSpeedCurve panner0 = new TexturePannerSpeedCurve(GazeCaligoOverlayWorld, "_MainTex", speedCurve, new Vector2(-1f, -0.2f), 0.0001f);
+	    	private TexturePannerSpeedCurve panner1 = new TexturePannerSpeedCurve(GazeCaligoOverlayWorld, "_MainTex2", speedCurve, new Vector2(0.35f, -1f), 5E-05f);
 
 	    	public override void SetOverlayColor(Color color)
 	    	{
-	    		GlowSporeOverlayWorld.color = color;
+	    		GazeCaligoOverlayWorld.color = color;
 	    	}
 
 	    	public override void DrawOverlay(Map map)
 	    	{
-	    		SkyOverlay.DrawWorldOverlay(map, GlowSporeOverlayWorld);
+	    		SkyOverlay.DrawWorldOverlay(map, GazeCaligoOverlayWorld);
 	    	}
 
 	    	public override void TickOverlay(Map map, float lerpFactor)
@@ -43,6 +43,7 @@ namespace Bernael_Xenotype
         private Vector3 currentPupilPos = Vector3.zero;
         private Vector3 targetPupilPos = Vector3.zero;
         private int nextPupilMoveTick = -1;
+
         private const int MoveIntervalTicks = 3000; // 50s or 1 in-game hour
         private const float MinPupilScaleLimit = 0.75f;
         private const float MoveSpeedPerTick = 0.05f;
@@ -50,16 +51,19 @@ namespace Bernael_Xenotype
 
         // or AltitudeLayer.Weather.AltitudeFor() - 0.03658537f
         private static readonly float PupilAltitude = AltitudeLayer.Weather.AltitudeFor() + 0.03658537f;
+
+        private static readonly MaterialPropertyBlock pupilPropertyBlock = new MaterialPropertyBlock();
+        private static readonly Material PupilMaterial = MaterialPool.MatFrom("Other/BX_Pupil", ShaderDatabase.Transparent);
         private static readonly MaterialPropertyBlock glowPropertyBlock = new MaterialPropertyBlock();
         private static readonly Material GlowCircleMaterial = MaterialPool.MatFrom("Other/BX_GlowCircle", ShaderDatabase.MoteGlow);
-        private static readonly MaterialPropertyBlock pupilPropertyBlock = new MaterialPropertyBlock();
-        private static readonly Material PupilMaterial = MaterialPool.MatFrom("Other/BX_Pupil", ShaderDatabase.Transparent, Color.white);
+        private Color pupilBaseColor = new Color(0f, 0f, 0f);
+        private Color glowBaseColor = new Color(0.6f, 0.8f, 1f);
 
         private int nextBlinkTick = -1;
         private int blinkEndTick = -1;
         private bool isBlinking = false;
         private IntRange BlinkIntervalTicks = new IntRange(600, 1800); // 10s ~ 30s
-        private const int BlinkHoldTicks = 60;
+        private int blinkHoldTicks = 60;
         private const int BlinkFadeOutTicks = 30;   // 0.5s
         private const int BlinkFadeInTicks = 30;    // 0.5s
 
@@ -83,8 +87,11 @@ namespace Bernael_Xenotype
         private const int CheckInterval = 3251;
         private const int HediffDuration = 3256;
 
+        // Audio & Event Flags
         private Sustainer sustainer;
         private Sustainer sustainerMoving;
+        private bool hasTriggeredOutcome = false;
+        private bool isHighResonance = false;
 
         public override void Init()
         {
@@ -93,25 +100,37 @@ namespace Bernael_Xenotype
 		    prevColorIndex = curColorIndex;
 		    curColorTransition = 1f;
 
+            blinkHoldTicks = 60;
+            pupilBaseColor = new Color(0f, 0f, 0f, 1f);
+            glowBaseColor = new Color(0.6f, 0.8f, 1f, 1f);
+
             int currentTick = Find.TickManager.TicksGame;
             nextPupilMoveTick = -1;
             ScheduleNextBlink(currentTick);
 
+            hasTriggeredOutcome = false;
             SoundDefOf.Thunder_OnMap.PlayOneShotOnCamera();
+
+            List<Map> affectedMaps = AffectedMaps;
+            if (affectedMaps != null && affectedMaps.Count > 0)
+            {
+                CenterAndZoomOutCamera(affectedMaps[0]);
+            }
         }
 
         public override void ExposeData()
         {
             base.ExposeData();
+		    Scribe_Values.Look(ref curColorIndex, "curColorIndex", 0);
+		    Scribe_Values.Look(ref prevColorIndex, "prevColorIndex", 0);
+		    Scribe_Values.Look(ref curColorTransition, "curColorTransition", 0f);
+
             Scribe_Values.Look(ref nextBlinkTick, "nextBlinkTick", -1);
             Scribe_Values.Look(ref blinkEndTick, "blinkEndTick", -1);
             Scribe_Values.Look(ref isBlinking, "isBlinking", false);
-        }
 
-        private void ScheduleNextBlink(int currentTick)
-        {
-            nextBlinkTick = currentTick + BlinkIntervalTicks.RandomInRange;
-            blinkEndTick = nextBlinkTick + BlinkHoldTicks;
+            Scribe_Values.Look(ref hasTriggeredOutcome, "hasTriggeredOutcome", false);
+            Scribe_Values.Look(ref isHighResonance, "isHighResonance", false);
         }
 
         public override void GameConditionTick()
@@ -127,17 +146,15 @@ namespace Bernael_Xenotype
 		    	curColorTransition = 0f;
 		    }
 
-            if (sustainer == null || sustainer.Ended)
+            // Update blinking state
+            if (!isBlinking && currentTick + MoveIntervalTicks >= startTick + Duration && !hasTriggeredOutcome)
             {
-                sustainer = BernaelDefOf.BX_Ambient_Gaze.TrySpawnSustainer(SoundInfo.OnCamera(MaintenanceType.PerTick));
+                blinkHoldTicks = MoveIntervalTicks / 3;
+                hasTriggeredOutcome = true;
+                isBlinking = true;
+                BernaelDefOf.BX_Gaze_Blink.PlayOneShotOnCamera();
             }
-            else
-            {
-                sustainer?.Maintain();
-            }
-
-            // Update blinking state machine
-            if (!isBlinking && currentTick >= nextBlinkTick)
+            else if (!isBlinking && currentTick >= nextBlinkTick && !hasTriggeredOutcome)
             {
                 isBlinking = true;
                 BernaelDefOf.BX_Gaze_Blink.PlayOneShotOnCamera();
@@ -146,6 +163,15 @@ namespace Bernael_Xenotype
             {
                 isBlinking = false;
                 ScheduleNextBlink(currentTick);
+            }
+
+            if (sustainer == null || sustainer.Ended)
+            {
+                sustainer = BernaelDefOf.BX_Ambient_Gaze.TrySpawnSustainer(SoundInfo.OnCamera(MaintenanceType.PerTick));
+            }
+            else
+            {
+                sustainer?.Maintain();
             }
 
             if (currentTick % CheckInterval == 0)
@@ -162,14 +188,11 @@ namespace Bernael_Xenotype
                         if (pawn.kindDef.immuneToGameConditionEffects) continue;
 
                         // Check Psylink
-                        if (pawn.health.hediffSet.HasHediff(HediffDefOf.PsychicAmplifier))
-                        {
-                            GiveOrUpdateHediff(pawn, BernaelDefOf.BX_GazeCaligoBuff);
-                        }
-                        else
-                        {
-                            GiveOrUpdateHediff(pawn, BernaelDefOf.BX_GazeCaligoDebuff);
-                        }
+                        HediffDef hediff = pawn.health.hediffSet.HasHediff(HediffDefOf.PsychicAmplifier)
+                            ? BernaelDefOf.BX_GazeCaligoBuff
+                            : BernaelDefOf.BX_GazeCaligoDebuff;
+
+                        GiveOrUpdateHediff(pawn, hediff);
                     }
                 }
             }
@@ -179,6 +202,7 @@ namespace Bernael_Xenotype
                 Map map = maps[m];
                 if (HiddenByOtherCondition(map)) continue;
 
+                gazeCaligoOverlay.SetOverlayColor(CurrentColor);
                 gazeCaligoOverlay.TickOverlay(map, 1f);
                 MovePupil(map, currentTick);
             }
@@ -198,43 +222,18 @@ namespace Bernael_Xenotype
         {
             List<Map> maps = AffectedMaps;
 
-            sustainer?.End();
-            sustainer = null;
-
             for (int m = 0; m < maps.Count; m++)
             {
                 Map map = maps[m];
-                if (map == null) continue;
-
-                IReadOnlyList<Pawn> allPawns = map?.mapPawns?.AllPawnsSpawned;
-                int psyCasterCount = 0;
-                int totalPsylinkLevel = 0;
-
-                if (allPawns != null)
-                {
-                    for (int i = 0; i < allPawns.Count; i++)
-                    {
-                        Pawn pawn = allPawns[i];
-                        if (pawn == null || pawn.Dead || !pawn.IsColonist) continue;
-
-                        // Check Psylink
-                        if (pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.PsychicAmplifier) is Hediff_Psylink psylink)
-                        {
-                            psyCasterCount++;
-                            totalPsylinkLevel += psylink.level;
-                        }
-                    }
-                }
-
-                // Defining the thresholds for high and low resonance.
-                bool isHighResonance = (psyCasterCount >= 3) || (totalPsylinkLevel >= 3);
-
                 IncidentDef selectedIncident = isHighResonance 
                     ? GetRandomHighResonanceIncident() 
                     : GetRandomLowResonanceIncident();
 
                 OutcomeIncident(selectedIncident, map);
             }
+            
+            sustainer?.End();
+            sustainer = null;
 
             SoundDefOf.Thunder_OffMap.PlayOneShotOnCamera();
             base.End();
@@ -249,13 +248,32 @@ namespace Bernael_Xenotype
 		    	return null;
 		    }
 		    Color currentColor = CurrentColor;
-            return new SkyTarget(Mathf.Max(GenCelestial.CurCelestialSunGlow(map), Glow), new SkyColorSet(currentColor * Blink() * Brightness(map), ShadowColorTint * Blink(), currentColor * Brightness(map), 1.25f), 4.5f, 0.8f);
+            return new SkyTarget(Mathf.Max(GenCelestial.CurCelestialSunGlow(map), Glow), new SkyColorSet(currentColor * GetBlinkFactor(map) * Brightness(map), ShadowColorTint * GetBlinkFactor(map), currentColor * Brightness(map), 1.25f), 4.5f, 0.8f);
         }
 
         public override List<SkyOverlay> SkyOverlays(Map map)
 	    {
 	    	return overlays;
 	    }
+
+        private void ScheduleNextBlink(int currentTick)
+        {
+            nextBlinkTick = currentTick + BlinkIntervalTicks.RandomInRange;
+            blinkEndTick = nextBlinkTick + blinkHoldTicks;
+        }
+
+        private void CenterAndZoomOutCamera(Map map)
+        {
+            if (map == null || map != Find.CurrentMap) return;
+
+            CameraDriver driver = Find.CameraDriver;
+            if (driver == null) return;
+
+            Vector3 mapCenter = map.Center.ToVector3Shifted();
+            float maxSize = driver.config.sizeRange.max;
+
+            driver.SetRootPosAndSize(mapCenter, maxSize);
+        }
 
         private int GetNewColorIndex()
 	    {
@@ -282,14 +300,20 @@ namespace Bernael_Xenotype
                 targetPupilPos = mapCenter;
                 nextPupilMoveTick = currentTick + MoveIntervalTicks / 10;
             }
-            else if (currentTick >= nextPupilMoveTick)
+            else if (currentTick + (MoveIntervalTicks * 1.2f) >= startTick + Duration)
+            {
+                targetPupilPos = mapCenter;
+                targetPupilPos.y = PupilAltitude;
+                nextPupilMoveTick = currentTick + (int)(MoveIntervalTicks * 1.2f);
+            }
+            else if (currentTick >= nextPupilMoveTick && currentTick + MoveIntervalTicks < startTick + Duration)
             {
                 targetPupilPos = NewPupilTargetPos(map, MinPupilScaleLimit);
                 targetPupilPos.y = PupilAltitude;
                 nextPupilMoveTick = currentTick + MoveIntervalTicks;
             }
 
-            // Pupil Position Step Calculation
+            // Step movement calculation
             Vector3 toTargetPos = targetPupilPos - currentPupilPos;
             toTargetPos.y = 0f;
 
@@ -323,7 +347,7 @@ namespace Bernael_Xenotype
             float pupilRadius = diameter * 0.5f;
             float maxValidRadius = Mathf.Max(0f, (minMapSize * 0.5f) - pupilRadius);
 
-            // pupil distort
+            // Pupil distortion calculation
             Vector3 offsetFromCenter = currentPupilPos - mapCenter;
             float distFromCenter = offsetFromCenter.magnitude;
             float maxOffsetRadius = Mathf.Max(0.01f, maxValidRadius);
@@ -331,7 +355,9 @@ namespace Bernael_Xenotype
             float circleArc = Mathf.Sqrt(1f - (normalizedDist * normalizedDist));
             float radialScale = Mathf.Lerp(MinPupilScaleLimit, 1f, circleArc);
 
-            float scaleX = diameter * radialScale;
+            float scaleValue = Mathf.Min(TicksPassed, TicksLeft, 60) / 60f;
+            float scaleX = diameter * radialScale * Mathf.Lerp(0.1f, 1.0f, scaleValue);
+            float scaleZ = diameter * Mathf.Lerp(0.1f, 1.0f, scaleValue);
 
             Quaternion rotation = Quaternion.identity;
             if (distFromCenter > 0.0001f)
@@ -340,9 +366,8 @@ namespace Bernael_Xenotype
                 rotation = Quaternion.AngleAxis(-angleDeg, Vector3.up); 
             }
 
-            Matrix4x4 pupilMatrix = Matrix4x4.TRS(currentPupilPos, rotation, new Vector3(scaleX, 1f, diameter));
-            Color pupilColor = new Color(1f, 1f, 1f, 1f * Blink());
-            pupilPropertyBlock.SetColor("_Color", pupilColor);
+            Matrix4x4 pupilMatrix = Matrix4x4.TRS(currentPupilPos, rotation, new Vector3(scaleX, 1f, scaleZ));
+            pupilPropertyBlock.SetColor("_Color", new Color(pupilBaseColor.r, pupilBaseColor.g, pupilBaseColor.b, 1f * GetBlinkFactor(map) * scaleValue));
             Graphics.DrawMesh(MeshPool.plane10, pupilMatrix, PupilMaterial, 0, null, 0, pupilPropertyBlock);
         }
 
@@ -350,11 +375,13 @@ namespace Bernael_Xenotype
         {
             Vector3 mapCenter = new Vector3(map.Size.x * 0.5f, PupilAltitude, map.Size.z * 0.5f);
 
-            Vector3 glowScale = new Vector3(map.Size.x, 1f, map.Size.z);
+            float scaleX = map.Size.x;
+            float scaleZ = map.Size.z * Mathf.Lerp(0.1f, 1.0f, Mathf.Min(TicksPassed, TicksLeft, 180) / 180f);
+
+            Vector3 glowScale = new Vector3(scaleX, 1f, scaleZ);
             Matrix4x4 glowMatrix = default;
             glowMatrix.SetTRS(mapCenter, Quaternion.identity, glowScale);
-            Color glowColor = new Color(0.6f, 0.8f, 1f, 1f * Blink());
-            glowPropertyBlock.SetColor("_Color", glowColor);
+            glowPropertyBlock.SetColor("_Color", new Color(glowBaseColor.r, glowBaseColor.g, glowBaseColor.b, 1f * GetBlinkFactor(map) * Mathf.Min(TicksPassed, TicksLeft, 30)/ 30f));
             Graphics.DrawMesh(MeshPool.plane10, glowMatrix, GlowCircleMaterial, 0, null, 0, glowPropertyBlock);
         }
 
@@ -382,24 +409,31 @@ namespace Bernael_Xenotype
             return newTarget;
         }
 
-        private float Blink()
+        private float GetBlinkFactor(Map map)
         {
-            if (!isBlinking)
-            {
-                return 1.0f;
-            }
+            if (!isBlinking) return 1.0f;
 
             int currentTick = Find.TickManager.TicksGame;
             int elapsed = currentTick - nextBlinkTick;
 
+            // Fade Out
             if (elapsed < BlinkFadeOutTicks)
             {
                 float progress = (float)elapsed / BlinkFadeOutTicks;
                 return Mathf.Lerp(1.0f, 0.01f, progress);
             }
 
+            // Fade In
             if (currentTick >= blinkEndTick - BlinkFadeInTicks)
             {
+                // Last Long Blink Hold & Color Transformation
+                if (currentTick + MoveIntervalTicks >= startTick + Duration)
+                {
+                    isHighResonance = CalculateResonance(map);
+                    pupilBaseColor = isHighResonance ? Color.blue : Color.red;
+                    glowBaseColor = isHighResonance ? Color.blue : Color.red;
+                }
+
                 int fadeInElapsed = currentTick - (blinkEndTick - BlinkFadeInTicks);
                 float progress = (float)fadeInElapsed / BlinkFadeInTicks;
                 return Mathf.Lerp(0.01f, 1.0f, progress);
@@ -414,6 +448,30 @@ namespace Bernael_Xenotype
 	    }
 
         // ====================== Outcome event ======================
+
+        private bool CalculateResonance(Map map)
+        {
+            IReadOnlyList<Pawn> allPawns = map.mapPawns?.AllPawnsSpawned;
+            if (allPawns == null) return false;
+
+            float baseChance = 0.25f;
+            float psyCasterCount = 0;
+            float totalPsylinkLevel = 0;
+
+            for (int i = 0; i < allPawns.Count; i++)
+            {
+                Pawn pawn = allPawns[i];
+                if (pawn == null || pawn.Dead || !pawn.IsColonist) continue;
+
+                if (pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.PsychicAmplifier) is Hediff_Psylink psylink)
+                {
+                    psyCasterCount++;
+                    totalPsylinkLevel += psylink.level;
+                }
+            }
+
+            return Rand.Chance(baseChance + psyCasterCount * 0.1f + totalPsylinkLevel * 0.05f);
+        }
 
         private IncidentDef GetRandomHighResonanceIncident()
         {

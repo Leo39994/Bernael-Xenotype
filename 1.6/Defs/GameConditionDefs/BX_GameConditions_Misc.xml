@@ -15,4 +15,15 @@ The psychic ether hums with her proximity. Those open to psychic energy experien
     <allowUnderground>false</allowUnderground>
   </GameConditionDef>
 
+  <!--=============== Bogeyman =============-->
+
+  <GameConditionDef>
+    <defName>BX_BogeymanInitial</defName>
+    <conditionClass>Bernael_Xenotype.GameCondition_BogeymanInitial</conditionClass>
+    <label>initial bogeyman conditions</label>
+    <description>.</description>
+    <displayOnUI>false</displayOnUI>
+    <allowUnderground>false</allowUnderground>
+  </GameConditionDef>
+
 </Defs>

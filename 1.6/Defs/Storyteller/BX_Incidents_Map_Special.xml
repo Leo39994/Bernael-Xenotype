@@ -6,15 +6,15 @@
   <IncidentDef>
     <defName>BX_GazeCaligo</defName>
     <label>gaze of caligo</label>
-    <category>Misc</category>
+    <category>Special</category>
     <targetTags>
-	  <li>Map_PlayerHome</li>
-	</targetTags>
+	    <li>Map_PlayerHome</li>
+	  </targetTags>
     <workerClass>IncidentWorker_MakeGameCondition</workerClass>
     <gameCondition>BX_GazeCaligo</gameCondition>
     <letterLabel>Caligo's Gaze</letterLabel>
     <letterDef>NeutralEvent</letterDef>
-    <baseChance>0</baseChance>
+    <baseChance>0.8</baseChance>
     <minRefireDays>60</minRefireDays>
     <durationDays>0.5~1.5</durationDays>
     <canOccurOnAllPlanetLayers>true</canOccurOnAllPlanetLayers>
@@ -59,7 +59,7 @@
     <targetTags>
       <li>Map_PlayerHome</li>
     </targetTags>
-    <workerClass>IncidentWorker_WandererJoin</workerClass>
+    <workerClass>Bernael_Xenotype.IncidentWorker_PsycasterPilgrimage</workerClass>
     <letterLabel>Psycaster pilgrimage</letterLabel>
     <letterText>A powerful psycaster arrives at the settlement, drawn by the light of the Gaze, and offers to join.</letterText>
     <baseChance>0</baseChance>

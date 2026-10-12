@@ -1,0 +1,36 @@
+﻿<Defs>
+
+  <!--=============== The Bogeyman =============-->
+
+  <IncidentDef>
+    <defName>BX_BogeymanInitial</defName>
+    <label>initial bogeyman conditions</label> <!-- hidden -->
+    <category>ThreatBig</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>Bernael_Xenotype.IncidentWorker_MakeInitialBogeyman</workerClass>
+    <gameCondition>BX_BogeymanInitial</gameCondition>
+    <baseChance>0.4</baseChance>
+    <minRefireDays>60</minRefireDays>
+    <canOccurOnAllPlanetLayers>true</canOccurOnAllPlanetLayers>
+    <hidden>true</hidden>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>BX_Bogeyman</defName>
+    <label>bogeyman</label>
+    <category>ThreatBig</category>
+    <targetTags>
+	    <li>Map_PlayerHome</li>
+	  </targetTags>
+    <workerClass>Bernael_Xenotype.IncidentWorker_Bogeyman</workerClass>
+    <letterLabel>The bogeyman</letterLabel>
+    <letterDef>ThreatBig</letterDef>
+    <letterText>.</letterText>
+    <baseChance>0</baseChance> <!-- Fired manually, never automatic -->
+    <minRefireDays>60</minRefireDays>
+    <canOccurOnAllPlanetLayers>true</canOccurOnAllPlanetLayers>
+  </IncidentDef>
+
+</Defs>
