@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace Bernael_Xenotype
 {
@@ -43,18 +44,27 @@ namespace Bernael_Xenotype
         public static GeneDef BX_SoulStarved;
         public static GeneDef BX_SoulFeeder;
 
+        public static ThingDef BX_WingBurstSmoke;
+        public static ThingDef BX_WingBurstFlyer;
         public static ThingDef BX_BottledSoul;
         public static ThingDef BX_LifeVanquisher;
         public static RecipeDef BX_ExtractSoul;
 
         public static JobDef BX_PrisonerSoulFeed;
+        public static JobDef BX_BogeymanKidnap;
 
+        public static DutyDef BX_Kidnap;
+
+        public static IncidentDef BX_GazeCaligo;
         public static IncidentDef BX_AstralAwakening;
         public static IncidentDef BX_EthersBlessing;
         public static IncidentDef BX_PsycasterPilgrimage;
         public static IncidentDef BX_PsychicOvercharge;
         public static IncidentDef BX_PsychicBurnout;
         public static IncidentDef BX_PsychicRupture;
+        public static IncidentDef BX_Bogeyman;
+
+        public static PawnKindDef BX_Bernael_Warlock;
 
         public static SoundDef BX_Ambient_Gaze;
         public static SoundDef BX_Gaze_Blink;

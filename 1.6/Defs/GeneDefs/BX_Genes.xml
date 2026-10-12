@@ -104,6 +104,12 @@
 		<label>Curved Wings</label>
 		<description>Carriers grow a set of curved wings</description>
 		<iconPath>UI/Icons/Genes/BX_CurvedWings</iconPath>
+		<abilities>
+			<li>BX_WingBurst</li>
+		</abilities>
+		<descriptionHyperlinks>
+			<AbilityDef>BX_WingBurst</AbilityDef>
+		</descriptionHyperlinks>
 		<displayOrderInCategory>25</displayOrderInCategory>
 		<biostatMet>0</biostatMet>
 		<biostatCpx>1</biostatCpx>

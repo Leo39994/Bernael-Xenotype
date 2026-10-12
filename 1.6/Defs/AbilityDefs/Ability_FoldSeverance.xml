@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <AbilityDef>
+    <defName>BX_FoldShift</defName>
+    <label>fold shift</label>
+    <description>.</description>
+    <iconPath>UI/Icons/Abilities/BX_FoldShift</iconPath>
+		<category>Bernael</category>
+    <cooldownTicksRange>3000</cooldownTicksRange>
+		<targetRequired>false</targetRequired>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <warmupSound>PsycastCastLoop</warmupSound>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <warmupTime>0.25</warmupTime>
+      <range>1.0</range>
+      <drawAimPie>False</drawAimPie>
+      <requireLineOfSight>false</requireLineOfSight>
+      <targetParams>
+        <canTargetSelf>true</canTargetSelf>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetAnimals>false</canTargetAnimals>
+        <canTargetHumans>false</canTargetHumans>
+        <canTargetMechs>false</canTargetMechs>
+      </targetParams>
+    </verbProperties>
+    <jobDef>CastAbilityOnThing</jobDef>
+    <comps>
+      <li Class="Bernael_Xenotype.CompProperties_AbilitySoulCost">
+        <soulCost>0.4</soulCost>
+      </li>
+      <li Class="CompProperties_AbilityGiveHediff">
+        <compClass>CompAbilityEffect_GiveHediff</compClass>
+        <hediffDef>BX_FoldShift</hediffDef>
+        <onlyBrain>True</onlyBrain>
+        <onlyApplyToSelf>True</onlyApplyToSelf>
+        <replaceExisting>true</replaceExisting>
+        <durationSecondsOverride>83.33~83.33</durationSecondsOverride>	<!-- 2 hours -->
+      </li>
+    </comps>
+  </AbilityDef>
+
+</Defs>
