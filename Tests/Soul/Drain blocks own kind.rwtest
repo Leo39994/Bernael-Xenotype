@@ -16,7 +16,7 @@ assert pawn "Stranger" gene=BX_SoulFeeder expect=absent
 select "Bernael"
 gizmo "Soul drain" expect=allowed
 target "Kin" expect=refused
-tick 60 note="in case the cast went through anyway"
+tick 300 note="4 s warmup is 240 ticks, plus the job that carries it, in case the cast went through anyway"
 assert pawn "Kin" hediff=BX_SoulDrained expect=absent
 
 gizmo "Soul drain" expect=allowed
