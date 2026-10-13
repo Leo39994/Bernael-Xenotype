@@ -17,6 +17,6 @@ assert window Dialog_MessageBox contains "will kill" expect=present
 click "Go back"
 
 speed x1
-tick 180 note="in case the cast went through anyway"
+tick 300 note="4 s warmup is 240 ticks, plus the job that carries it, in case the cast went through anyway"
 assert pawn "Victim" hediff=BX_SoulDrained severity max=0.57 expect=present
 assert pawn "Bernael" resource=BX_SoulStarved max=0.11 expect=present

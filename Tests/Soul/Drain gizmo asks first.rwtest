@@ -17,5 +17,4 @@ assert window Dialog_MessageBox contains "serious soul damage" expect=present
 click "Confirm"
 
 speed x1
-tick 180 note="120 ticks warmup plus slack"
-assert pawn "Victim" hediff=BX_SoulDrained expect=present
+waitfor pawn "Victim" hediff=BX_SoulDrained severity min=0.89 ticks=300 expect=present

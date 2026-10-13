@@ -22,8 +22,7 @@ assert inspect BX_DarkMirageDecoy contains "Caster: Bernael" expect=present
 tick 500 note="about 500 of the 600 ticks spent, counted from before the reload"
 assert thing BX_DarkMirageDecoy at 4,0 expect=present
 
-tick 180 note="about 680 ticks, past the 600 of durationTicks"
-assert thing BX_DarkMirageDecoy expect=absent
+waitfor thing BX_DarkMirageDecoy ticks=180 expect=absent
 
 undraft "Bernael"
 assert log clean

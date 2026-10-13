@@ -5,8 +5,7 @@ requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 
 give "Bernael" resource=BX_SoulStarved value=0.0005
-tick 900 note="0.0005 at 0.04 loss per day needs about 750 ticks"
-assert pawn "Bernael" hediff=BX_SoulCraving expect=present
+waitfor pawn "Bernael" hediff=BX_SoulCraving ticks=900 expect=present
 
 tick 2500 note="one game hour, severityPerHourEmpty 0.25"
 assert pawn "Bernael" hediff=BX_SoulCraving severity min=0.2 expect=present

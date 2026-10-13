@@ -19,5 +19,5 @@ assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2 expect=present
 tick 2400 note="decayTickInterval 2500 from the kill, so the stack still holds"
 assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2 expect=present
 
-tick 200 note="past the 2500 ticks, one severity is gone"
-assert pawn "Bernael" hediff=BX_ReaperEcstasy severity max=1 expect=present
+speed x1
+waitfor pawn "Bernael" hediff=BX_ReaperEcstasy severity max=1 ticks=200 expect=present

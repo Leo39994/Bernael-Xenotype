@@ -11,14 +11,13 @@ select "Plain"
 gizmo "Dark mirage" expect=allowed
 target cell=4,0 expect=allowed
 give "Plain" hediff=BX_MaliciousSeal
-tick 120 note="0.6 s warmup is 36 ticks; twice that and the job, and the decoy would stand"
+tick 150 note="1.2 s warmup is 72 ticks, plus the job; the decoy would stand by now"
 assert thing BX_DarkMirageDecoy expect=absent
 assert casts "Plain" ability=BX_DarkMirage max=0
 
 gizmo "Dark mirage" expect=disabled reason="Silenced by a malicious seal." match=equals
 
-tick 1700 note="about 1820 of the 1800 ticks of disappearsAfterTicks"
-assert pawn "Plain" hediff=BX_MaliciousSeal expect=absent
+waitfor pawn "Plain" hediff=BX_MaliciousSeal ticks=1800 expect=absent
 
 gizmo "Dark mirage" expect=allowed
 target cell=4,0 expect=allowed

@@ -8,9 +8,7 @@ spawn Thing:BX_Apparel_Warlock at 3,0
 spawn Thing:BX_SoulLantern at 4,0
 
 give "Bernael" need=Mood value=0.95
-tick 480 note="Hediff_SeverityBasedOnNeed only reads the need every 420 ticks"
-
-assert pawn "Bernael" hediff=BX_WitheredSoulHediff severity min=0.9 expect=present
+waitfor pawn "Bernael" hediff=BX_WitheredSoulHediff severity min=0.9 ticks=480 expect=present
 assert pawn "Bernael" stat=PsychicSensitivity max=2.0 expect=present
 assert pawn "Bernael" stat=PsychicEntropyRecoveryRate min=0.74 max=0.84 expect=present
 
@@ -23,8 +21,7 @@ assert pawn "Bernael" apparel=BX_Apparel_Warlock expect=present
 assert pawn "Bernael" equipment=BX_SoulLantern expect=present
 
 give "Bernael" need=Mood value=0.95
-tick 480 note="Hediff_SeverityBasedOnNeed only reads the need every 420 ticks"
-assert pawn "Bernael" hediff=BX_WitheredSoulHediff severity min=0.9 expect=present
+waitfor pawn "Bernael" hediff=BX_WitheredSoulHediff severity min=0.9 ticks=480 expect=present
 
 assert pawn "Bernael" stat=PsychicSensitivity min=2.3 expect=present
 assert pawn "Bernael" stat=PsychicEntropyRecoveryRate min=0.91 max=1.01 expect=present

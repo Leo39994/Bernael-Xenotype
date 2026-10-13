@@ -13,6 +13,5 @@ equip "Bernael" thing=BX_SoulLantern
 attack "Bernael" target="Pirate"
 assert pawn "Bernael" job=AttackStatic expect=present
 
-tick 1320 note="four cycles of warmup 120, burst 5x20 and cooldown 120, plus flight"
+waitfor pawn "Pirate" hediff=Burn ticks=1320 expect=present
 assert shots "Bernael" min=1
-assert pawn "Pirate" hediff=Burn expect=present
