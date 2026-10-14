@@ -1,0 +1,24 @@
+rwtest 1
+test "Withered soul - mood drives severity and pain" project=Bernael created=2026-09-19T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Withered" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,0 name="Aching" xenotype=BX_Bernael
+assert pawn "Withered" hediff=BX_WitheredSoulHediff expect=present
+assert pawn "Aching" hediff=BX_WitheredSoulHediff expect=present
+
+give "Withered" need=Mood value=0.1
+waitfor pawn "Withered" hediff=BX_WitheredSoulHediff severity min=0.15 max=0.25 ticks=480 expect=present
+
+give "Withered" need=Mood value=0.9
+waitfor pawn "Withered" hediff=BX_WitheredSoulHediff severity min=0.85 ticks=480 expect=present
+
+give "Aching" need=Mood value=0.1
+waitfor pawn "Aching" pain min=0.32 max=0.42 ticks=480 expect=present
+assert pawn "Aching" hediff=BX_WitheredSoulHediff visible expect=present
+give "Aching" need=Mood value=0.7
+waitfor pawn "Aching" pain min=0.12 max=0.22 ticks=480 expect=present
+give "Aching" need=Mood value=0.95
+waitfor pawn "Aching" pain max=0.08 ticks=480 expect=present
+assert pawn "Aching" hediff=BX_WitheredSoulHediff visible expect=present
+assert log clean

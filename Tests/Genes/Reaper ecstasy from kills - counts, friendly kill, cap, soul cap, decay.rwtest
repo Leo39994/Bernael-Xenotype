@@ -1,0 +1,90 @@
+rwtest 1
+test "Reaper ecstasy from kills - counts, friendly kill, cap, soul cap, decay" project="Bernael" created=2026-09-20T00:00:00
+
+requires dlc=Biotech
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Counter" xenotype=BX_Bernael
+spawn Pawn:Pirate at 4,0 name="First" faction=enemy
+pacify "First"
+spawn Pawn:Pirate at 6,0 name="Second" faction=enemy
+pacify "Second"
+
+give "Counter" resource=BX_SoulStarved value=0.1
+assert pawn "Counter" hediff=BX_ReaperEcstasy severity min=1 max=1 expect=present
+
+damage "First" amount=999 by="Counter"
+assert pawn "First" dead expect=present
+assert pawn "Counter" hediff=BX_ReaperEcstasy severity min=2 max=2 expect=present
+assert pawn "Counter" resource=BX_SoulStarved min=0.15 max=0.25 expect=present
+
+damage "Second" amount=999 by="Counter"
+assert pawn "Second" dead expect=present
+assert pawn "Counter" hediff=BX_ReaperEcstasy severity min=3 max=3 expect=present
+assert pawn "Counter" resource=BX_SoulStarved min=0.25 max=0.35 expect=present
+
+spawn Pawn:Colonist at 0,4 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,4 name="Victim"
+spawn Pawn:Pirate at 4,4 name="Pirate" faction=enemy
+pacify "Pirate"
+
+give "Bernael" resource=BX_SoulStarved value=0.1
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=1 max=1 expect=present
+
+damage "Victim" amount=999 by="Bernael"
+assert pawn "Victim" dead expect=present
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=1 max=1 expect=present
+assert pawn "Bernael" resource=BX_SoulStarved min=0.05 max=0.15 expect=present
+
+damage "Pirate" amount=999 by="Bernael"
+assert pawn "Pirate" dead expect=present
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2 max=2 expect=present
+assert pawn "Bernael" resource=BX_SoulStarved min=0.15 max=0.25 expect=present
+
+spawn Pawn:Colonist at 0,8 name="Capped" xenotype=BX_Bernael
+spawn Pawn:Pirate at 4,8 name="Cap prey" faction=enemy
+pacify "Cap prey"
+
+give "Capped" resource=BX_SoulStarved value=0.1
+give "Capped" hediff=BX_ReaperEcstasy severity=100
+assert pawn "Capped" hediff=BX_ReaperEcstasy severity min=100 max=100 expect=present
+
+damage "Cap prey" amount=999 by="Capped"
+assert pawn "Cap prey" dead expect=present
+
+assert pawn "Capped" hediff=BX_ReaperEcstasy severity min=100 max=100 expect=present
+assert pawn "Capped" resource=BX_SoulStarved min=0.15 max=0.25 expect=present
+
+spawn Pawn:Colonist at 0,12 name="Sated" xenotype=BX_Bernael
+spawn Pawn:Pirate at 4,12 name="Sated prey" faction=enemy
+pacify "Sated prey"
+speed x1
+spawn Thing:BX_BottledSoul at 1,12
+
+give "Sated" resource=BX_SoulStarved value=1
+ingest "Sated" thing=BX_BottledSoul
+assert pawn "Sated" resource=BX_SoulStarved max=1 expect=present
+
+damage "Sated prey" amount=999 by="Sated"
+assert pawn "Sated" resource=BX_SoulStarved max=1 expect=present
+
+speed paused
+spawn Pawn:Colonist at 0,16 name="Decayer" xenotype=BX_Bernael
+spawn Pawn:Pirate at 4,16 name="Decay prey" faction=enemy
+pacify "Decay prey"
+
+give "Decayer" resource=BX_SoulStarved value=0.1
+damage "Decay prey" amount=999 by="Decayer"
+
+assert pawn "Decay prey" dead expect=present
+
+assert pawn "Decayer" resource=BX_SoulStarved min=0.15 max=0.25 expect=present
+assert pawn "Decayer" hediff=BX_ReaperEcstasy severity min=2 expect=present
+
+tick 2400 note="decay block: decayTickInterval 2500 from the kill, so the stack still holds"
+assert pawn "Decayer" hediff=BX_ReaperEcstasy severity min=2 expect=present
+
+speed x1
+waitfor pawn "Decayer" hediff=BX_ReaperEcstasy severity max=1 ticks=200 expect=present
+
+assert log clean

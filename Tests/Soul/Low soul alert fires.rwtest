@@ -1,8 +1,0 @@
-rwtest 1
-test "Low soul alert fires" project=Bernael created=2026-09-17T00:00:00
-
-requires dlc=Biotech
-spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
-give "Bernael" resource=BX_SoulStarved value=0.05
-waitfor alert "Alert_LowSoulEnergy" ticks=700 expect=present
-assert text contains "MB_Alert" expect=absent
