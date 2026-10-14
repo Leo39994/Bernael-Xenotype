@@ -1,0 +1,99 @@
+rwtest 1
+test "Malicious seal cast - refusals, brands only its target, leaps from a corpse" project="Bernael" created=2026-10-06T00:00:00
+
+requires dlc=Biotech
+requires dlc=Royalty
+
+spawn Pawn:Colonist at 0,0 name="Sealer" xenotype=BX_Bernael
+ability "Sealer" grant=BX_MaliciousSeal psylink=3 psyfocus=1.0
+spawn Pawn:Pirate at 6,0 name="Deaf" faction=enemy
+give "Deaf" trait=PsychicSensitivity:-2
+down "Deaf"
+spawn Pawn:Pirate at 6,2 name="Hearer" faction=enemy
+down "Hearer"
+draft "Sealer"
+select "Sealer"
+
+assert pawn "Deaf" stat=PsychicSensitivity max=0 expect=present
+
+gizmo "Malicious seal" expect=allowed
+target cell=4,0 expect=refused
+gizmo "Malicious seal" expect=allowed
+target "Deaf" expect=refused
+tick 150 note="refusal block: 1.2 s warmup is 72 ticks, plus the job that carries it, in case either cast went through anyway"
+assert casts "Sealer" ability=BX_MaliciousSeal max=0
+assert pawn "Deaf" hediff=BX_MaliciousSeal expect=absent
+
+gizmo "Malicious seal" expect=allowed
+target "Hearer" expect=allowed
+waitfor pawn "Hearer" hediff=BX_MaliciousSeal ticks=400 expect=present
+assert casts "Sealer" ability=BX_MaliciousSeal min=1 max=1
+
+speed paused
+spawn Pawn:Colonist at 0,10 name="Brander" xenotype=BX_Bernael
+ability "Brander" grant=BX_MaliciousSeal psylink=3 psyfocus=1.0
+spawn Pawn:Pirate at 8,10 name="Target" faction=enemy
+spawn Pawn:Pirate at 9,11 name="Beside" faction=enemy
+down "Target"
+down "Beside"
+spawn Pawn:Colonist at 7,11 name="Ally"
+draft "Ally"
+
+assert pawn "Target" hediff=BX_MaliciousSeal expect=absent
+
+select "Brander"
+gizmo "Malicious seal" expect=disabled
+draft "Brander"
+gizmo "Malicious seal" expect=allowed
+target "Target" expect=allowed
+speed x1
+
+waitfor pawn "Target" hediff=BX_MaliciousSeal ticks=400 expect=present
+assert casts "Brander" ability=BX_MaliciousSeal min=1 max=1
+assert pawn "Beside" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Ally" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Brander" hediff=BX_MaliciousSeal expect=absent
+gizmo "Malicious seal" expect=disabled
+
+speed paused
+spawn Pawn:Colonist at 0,20 name="Leaper" xenotype=BX_Bernael
+ability "Leaper" grant=BX_MaliciousSeal psylink=3 psyfocus=1.0
+spawn Pawn:Pirate at 8,20 name="Victim" faction=enemy
+spawn Pawn:Pirate at 10,22 name="First" faction=enemy
+spawn Pawn:Pirate at 11,20 name="Second" faction=enemy
+spawn Pawn:Pirate at 8,24 name="Third" faction=enemy
+spawn Pawn:Pirate at 12,22 name="Fourth" faction=enemy
+down "Victim"
+down "First"
+down "Second"
+down "Third"
+down "Fourth"
+spawn Pawn:Colonist at 9,18 name="Bystander"
+draft "Bystander"
+
+draft "Leaper"
+select "Leaper"
+gizmo "Malicious seal" expect=allowed
+target "Victim" expect=allowed
+speed x1
+
+waitfor pawn "Victim" hediff=BX_MaliciousSeal ticks=400 expect=present
+speed paused
+assert pawn "First" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Second" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Third" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Fourth" hediff=BX_MaliciousSeal expect=absent
+
+reload note="leap block: the brand scribes the faction that cast it, and the leap reads that faction"
+assert pawn "Victim" hediff=BX_MaliciousSeal expect=present
+
+damage "Victim" amount=999
+assert pawn "Victim" dead expect=present
+
+assert pawn "First" hediff=BX_MaliciousSeal expect=present
+assert pawn "Second" hediff=BX_MaliciousSeal expect=present
+assert pawn "Third" hediff=BX_MaliciousSeal expect=present
+assert pawn "Fourth" hediff=BX_MaliciousSeal expect=absent
+assert pawn "Bystander" hediff=BX_MaliciousSeal expect=absent
+
+assert log clean

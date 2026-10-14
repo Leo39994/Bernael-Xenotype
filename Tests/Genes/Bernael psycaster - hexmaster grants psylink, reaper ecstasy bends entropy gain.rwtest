@@ -1,9 +1,11 @@
 rwtest 1
-test "Reaper ecstasy bends entropy" project="Bernael" created=2026-09-19T00:00:00
+test "Bernael psycaster - hexmaster grants psylink, reaper ecstasy bends entropy gain" project="Bernael" created=2026-09-19T00:00:00
 
 requires dlc=Biotech
 requires dlc=Royalty
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+
+assert pawn "Bernael" hediff=PsychicAmplifier expect=present
 
 assert pawn "Bernael" stat=PsychicEntropyGain min=0.98 max=1.02 expect=present
 

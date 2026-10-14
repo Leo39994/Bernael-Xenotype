@@ -1,0 +1,96 @@
+rwtest 1
+test "Dark mirage decoy - expiry, reload, burst on hostiles, caster death" project="Bernael" created=2026-09-21T00:00:00
+
+requires dlc=Biotech
+requires dlc=Royalty
+
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+draft "Bernael"
+select "Bernael"
+gizmo "Dark mirage" expect=allowed
+target cell=4,0 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120 expect=present
+assert thing BX_DarkMirageDecoy at 4,0 expect=present
+tick 500 note="expiry block: about 500 of the 600 ticks spent"
+assert thing BX_DarkMirageDecoy at 4,0 expect=present
+waitfor thing BX_DarkMirageDecoy ticks=180 expect=absent
+
+spawn Pawn:Colonist at 0,20 name="Reloader" xenotype=BX_Bernael
+ability "Reloader" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+draft "Reloader"
+select "Reloader"
+gizmo "Dark mirage" expect=allowed
+target cell=4,20 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 4,20 ticks=120 expect=present
+assert thing BX_DarkMirageDecoy at 4,20 expect=present
+assert inspect BX_DarkMirageDecoy contains "Caster: Reloader" expect=present
+reload note="reload block: the decoy scribes its caster, its created tick and its expiry"
+assert thing BX_DarkMirageDecoy at 4,20 expect=present
+assert inspect BX_DarkMirageDecoy contains "Caster: Reloader" expect=present
+tick 500 note="reload block: about 500 of the 600 ticks spent, counted from before the reload"
+assert thing BX_DarkMirageDecoy at 4,20 expect=present
+waitfor thing BX_DarkMirageDecoy ticks=180 expect=absent
+
+speed x1
+spawn Pawn:Colonist at 0,6 name="Burner" xenotype=BX_Bernael
+ability "Burner" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+draft "Burner"
+select "Burner"
+gizmo "Dark mirage" expect=allowed
+target cell=4,6 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 4,6 ticks=120 expect=present
+assert thing BX_DarkMirageDecoy at 4,6 expect=present
+
+speed paused
+spawn Pawn:Pirate at 5,6 name="Near" faction=enemy
+pacify "Near"
+spawn Pawn:Pirate at 4,10 name="Far" faction=enemy
+pacify "Far"
+spawn Pawn:Colonist at 3,6 name="Ally"
+
+assert pawn "Near" hediff=Frostbite expect=absent
+assert pawn "Far" hediff=Frostbite expect=absent
+assert pawn "Ally" hediff=Frostbite expect=absent
+
+despawn Thing:BX_DarkMirageDecoy at 4,6
+
+assert pawn "Near" hediff=Frostbite expect=present
+assert pawn "Far" hediff=Frostbite expect=absent
+assert pawn "Ally" hediff=Frostbite expect=absent
+
+speed x1
+spawn Pawn:Colonist at 0,14 name="Owner" xenotype=BX_Bernael
+spawn Pawn:Colonist at 1,14 name="Keeper"
+ability "Owner" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+ability "Keeper" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+draft "Owner"
+draft "Keeper"
+select "Owner"
+gizmo "Dark mirage" expect=allowed
+target cell=4,14 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 4,14 ticks=120 expect=present
+select "Keeper"
+gizmo "Dark mirage" expect=allowed
+target cell=10,14 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 10,14 ticks=120 expect=present
+assert thing BX_DarkMirageDecoy at 4,14 expect=present
+assert thing BX_DarkMirageDecoy at 10,14 expect=present
+
+speed paused
+spawn Pawn:Pirate at 5,14 name="Beside Owner" faction=enemy
+spawn Pawn:Pirate at 11,14 name="Beside Keeper" faction=enemy
+pacify "Beside Owner"
+pacify "Beside Keeper"
+
+damage "Owner" amount=999
+tick 10 note="caster death block: TickInterval reads the caster every tick"
+
+assert thing BX_DarkMirageDecoy at 4,14 expect=absent
+assert pawn "Beside Owner" hediff=Frostbite expect=absent
+
+assert thing BX_DarkMirageDecoy at 10,14 expect=present
+despawn Thing:BX_DarkMirageDecoy at 10,14
+assert pawn "Beside Keeper" hediff=Frostbite expect=present
+
+assert log clean

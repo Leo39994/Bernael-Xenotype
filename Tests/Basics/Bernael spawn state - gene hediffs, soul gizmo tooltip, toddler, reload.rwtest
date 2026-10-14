@@ -1,0 +1,40 @@
+rwtest 1
+test "Bernael spawn state - gene hediffs, soul gizmo tooltip, toddler, reload" project="Bernael" created=2026-09-17T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 4,0 name="Child" xenotype=BX_Bernael age=2
+
+assert pawn "Bernael" hediff=BX_Blindness expect=present
+
+assert pawn "Bernael" hediff=BX_ReaperEcstasy expect=present
+assert pawn "Bernael" hediff=BX_WitheredSoulHediff expect=present
+
+select "Bernael"
+assert text contains "Soul Saturation" expect=present
+
+hover "Soul Saturation"
+tick 6 note="tooltip block: a few frames so the tooltip is drawn"
+assert text contains "Soul Saturation" expect=present
+assert text contains "BX_" expect=absent
+assert text contains "MB_" expect=absent
+
+assert pawn "Child" hediff=BX_Blindness expect=present
+
+select "Child"
+assert text contains "Soul Saturation" expect=absent
+
+bill "Child" recipe=BX_ExtractSoul expect=disabled reason="too small" match=contains
+
+spawn Pawn:Colonist at 6,0 name="Saved" xenotype=BX_Bernael
+spawn Thing:BX_SoulLantern at 7,0
+equip "Saved" thing=BX_SoulLantern
+give "Saved" resource=BX_SoulStarved value=0.42
+
+reload note="reload block: save, load, everything has to still be there"
+
+assert pawn "Saved" hediff=BX_Blindness expect=present
+assert pawn "Saved" resource=BX_SoulStarved min=0.41 max=0.43 expect=present
+assert pawn "Saved" capacity=Sight min=1.25 expect=present
+assert pawn "Saved" equipment=BX_SoulLantern expect=present
+assert log clean

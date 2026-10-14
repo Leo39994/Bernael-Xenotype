@@ -1,5 +1,5 @@
 rwtest 1
-test "Extract soul yields fragment" project=Bernael created=2026-09-18T00:00:00
+test "Bottled soul - extraction, transfusion, drinking refills soul and food" project=Bernael created=2026-09-18T00:00:00
 
 requires dlc=Biotech
 speed paused
@@ -21,4 +21,20 @@ assert pawn "Prisoner" hediff=BX_SoulDrained severity min=0.94 max=0.96 expect=p
 assert thing BX_BottledSoul expect=present
 surgery "Prisoner" recipe=BX_ExtractSoul by="Doctor"
 assert pawn "Prisoner" hediff=BX_SoulDrained severity max=0.96 expect=present
+
+spawn Pawn:Colonist in="ward" name="Patient"
+spawn Thing:BX_BottledSoul in="ward"
+give "Patient" hediff=BX_SoulDrained severity=0.6
+surgery "Patient" recipe=BX_SoulTransfusion by="Doctor"
+assert pawn "Patient" hediff=BX_SoulDrained expect=present
+
+speed x1
+spawn Thing:BX_BottledSoul in="ward"
+give "Bernael" need=Food value=0.3
+assert pawn "Bernael" need=Food min=0.28 max=0.32 expect=present
+give "Bernael" resource=BX_SoulStarved value=0.1
+
+ingest "Bernael" thing=BX_BottledSoul
+assert pawn "Bernael" need=Food min=0.56 max=0.62 expect=present
+assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35 expect=present
 assert log clean

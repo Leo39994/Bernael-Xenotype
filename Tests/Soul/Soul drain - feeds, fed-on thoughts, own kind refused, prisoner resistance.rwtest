@@ -1,0 +1,61 @@
+rwtest 1
+test "Soul drain - feeds, fed-on thoughts, own kind refused, prisoner resistance" project="Bernael" created=2026-09-17T00:00:00
+
+requires dlc=Biotech
+speed paused
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,0 name="Victim"
+
+give "Bernael" resource=BX_SoulStarved value=0.1
+
+select "Bernael"
+gizmo "Soul drain" expect=allowed
+target "Victim" expect=allowed
+speed x1
+waitfor pawn "Victim" hediff=BX_SoulDrained expect=present ticks=300
+
+assert pawn "Victim" hediff=BX_SoulDrained expect=present
+assert pawn "Victim" hediff=BX_SoulDrained severity min=0.44 max=0.46 expect=present
+assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35 expect=present
+
+waitfor pawn "Victim" thought=BX_FedOn expect=present ticks=300
+assert pawn "Victim" thought=BX_FedOn expect=present
+assert pawn "Victim" thought=BX_FedOn_Social expect=present
+assert opinion "Victim" of="Bernael" thought=BX_FedOn_Social min=-25 max=-15
+
+spawn Pawn:Colonist at 0,6 name="Hungry" xenotype=BX_Bernael
+spawn Pawn:Colonist at 1,6 name="Kin" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,6 name="Stranger"
+give "Hungry" resource=BX_SoulStarved value=0.1
+give "Kin" resource=BX_SoulStarved value=0.5
+
+assert pawn "Kin" gene=BX_SoulStarved expect=present
+assert pawn "Stranger" gene=BX_SoulStarved expect=absent
+assert pawn "Stranger" gene=BX_SoulFeeder expect=absent
+
+select "Hungry"
+gizmo "Soul drain" expect=allowed
+target "Kin" expect=refused
+tick 300 note="own kind block: 4 s warmup is 240 ticks, plus the job that carries it, in case the cast went through anyway"
+assert pawn "Kin" hediff=BX_SoulDrained expect=absent
+
+gizmo "Soul drain" expect=allowed
+target "Stranger" expect=allowed
+waitfor pawn "Stranger" hediff=BX_SoulDrained expect=present ticks=300
+assert pawn "Kin" hediff=BX_SoulDrained expect=absent
+
+speed paused
+spawn Pawn:Colonist at 0,12 name="Jailer" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,12 name="Prisoner"
+prisoner "Prisoner" resistance=10
+give "Jailer" resource=BX_SoulStarved value=0.1
+
+select "Jailer"
+gizmo "Soul drain" expect=allowed
+target "Prisoner" expect=allowed
+speed x1
+waitfor pawn "Prisoner" hediff=BX_SoulDrained expect=present ticks=300
+
+assert pawn "Prisoner" hediff=BX_SoulDrained expect=present
+assert pawn "Prisoner" resistance min=11 max=11 expect=present
+assert log clean
