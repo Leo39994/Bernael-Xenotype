@@ -1,0 +1,71 @@
+rwtest 1
+test "Soul hunger and baby bond - alert, craving, empty soul, bond mood, death" project="Bernael" created=2026-09-20T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Low" xenotype=BX_Bernael
+give "Low" resource=BX_SoulStarved value=0.05
+waitfor alert "Alert_LowSoulEnergy" ticks=700 expect=present
+assert text contains "MB_Alert" expect=absent
+
+spawn Pawn:Colonist at 2,0 name="Craver" xenotype=BX_Bernael
+give "Craver" resource=BX_SoulStarved value=0.5
+
+assert pawn "Craver" thought=BX_SoulEnergyCraving expect=absent
+
+give "Craver" hediff=BX_SoulCraving severity=0.1
+waitfor pawn "Craver" thought=BX_SoulEnergyCraving stage=0 ticks=120 expect=present
+assert pawn "Craver" thought=BX_SoulEnergyCraving mood min=-12 max=-8 expect=present
+
+give "Craver" hediff=BX_SoulCraving severity=0.5
+waitfor pawn "Craver" thought=BX_SoulEnergyCraving stage=1 ticks=120 expect=present
+assert pawn "Craver" thought=BX_SoulEnergyCraving mood min=-17 max=-13 expect=present
+
+give "Craver" hediff=BX_SoulCraving severity=0.8
+waitfor pawn "Craver" thought=BX_SoulEnergyCraving stage=2 ticks=120 expect=present
+assert pawn "Craver" thought=BX_SoulEnergyCraving mood min=-22 max=-18 expect=present
+
+spawn Pawn:Colonist at 4,0 name="Empty" xenotype=BX_Bernael
+give "Empty" resource=BX_SoulStarved value=0.0005
+waitfor pawn "Empty" hediff=BX_SoulCraving ticks=900 expect=present
+
+tick 2500 note="empty soul block: one game hour, severityPerHourEmpty 0.25"
+assert pawn "Empty" hediff=BX_SoulCraving severity min=0.2 expect=present
+assert log clean
+
+speed paused
+spawn Pawn:Colonist at 0,6 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 1,6 name="Baby" age=1
+spawn Pawn:Colonist at 5,6 name="Childless" xenotype=BX_Bernael
+
+give "Bernael" resource=BX_SoulStarved value=0.1
+select "Bernael"
+gizmo "Soul drain" expect=allowed
+target "Baby" expect=allowed
+speed x1
+waitfor pawn "Baby" hediff=BX_Blindness expect=present ticks=300
+waitfor pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present ticks=300
+
+assert pawn "Baby" hediff=BX_Blindness expect=present
+assert pawn "Baby" hediff=BX_SoulDrained expect=absent
+assert pawn "Bernael" hediff=BX_BabyBond_Feeder expect=present
+assert pawn "Baby" hediff=BX_BabyBond_Victim expect=present
+
+give "Baby" need=Mood value=0.1
+waitfor pawn "Bernael" thought=BabyBondMood stage=0 ticks=120 expect=present
+assert pawn "Bernael" thought=BabyBondMood mood min=-17 max=-13 expect=present
+
+give "Baby" need=Mood value=0.5
+waitfor pawn "Bernael" thought=BabyBondMood stage=2 ticks=120 expect=present
+assert pawn "Bernael" thought=BabyBondMood mood min=-2 max=2 expect=present
+
+give "Baby" need=Mood value=0.95
+waitfor pawn "Bernael" thought=BabyBondMood stage=4 ticks=120 expect=present
+assert pawn "Bernael" thought=BabyBondMood mood min=10 max=14 expect=present
+
+assert pawn "Childless" thought=BabyBondMood expect=absent
+assert log clean
+
+damage "Baby" amount=9999
+assert pawn "Baby" dead expect=present
+assert pawn "Bernael" dead expect=present

@@ -1,6 +1,7 @@
 rwtest 1
-test "Malicious seal cast - refusals, brands only its target, leaps from a corpse" project="Bernael" created=2026-10-06T00:00:00
+test "Malicious seal - refusals, brands its target, corpse leap, silences casts" project="Bernael" created=2026-10-06T00:00:00
 
+requires mod=Mortis.BX
 requires dlc=Biotech
 requires dlc=Royalty
 
@@ -95,5 +96,27 @@ assert pawn "Second" hediff=BX_MaliciousSeal expect=present
 assert pawn "Third" hediff=BX_MaliciousSeal expect=present
 assert pawn "Fourth" hediff=BX_MaliciousSeal expect=absent
 assert pawn "Bystander" hediff=BX_MaliciousSeal expect=absent
+assert log clean
 
+spawn Pawn:Colonist at 0,30 name="Plain"
+ability "Plain" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+draft "Plain"
+select "Plain"
+
+gizmo "Dark mirage" expect=allowed
+target cell=4,30 expect=allowed
+give "Plain" hediff=BX_MaliciousSeal
+tick 150 note="silence block: 1.2 s warmup is 72 ticks, plus the job; the decoy would stand by now"
+assert thing BX_DarkMirageDecoy expect=absent
+assert casts "Plain" ability=BX_DarkMirage max=0
+
+gizmo "Dark mirage" expect=disabled reason="Silenced by a malicious seal." match=equals
+
+waitfor pawn "Plain" hediff=BX_MaliciousSeal ticks=1800 expect=absent
+
+gizmo "Dark mirage" expect=allowed
+target cell=4,30 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 4,30 ticks=120 expect=present
+
+undraft "Plain"
 assert log clean

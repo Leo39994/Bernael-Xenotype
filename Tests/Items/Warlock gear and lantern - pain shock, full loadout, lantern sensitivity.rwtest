@@ -1,6 +1,7 @@
 rwtest 1
 test "Warlock gear and lantern - pain shock, full loadout, lantern sensitivity" project="Bernael" created=2026-09-19T00:00:00
 
+requires mod=Mortis.BX
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Robed" xenotype=BX_Bernael
 spawn Pawn:Colonist at 0,4 name="Warlock" xenotype=BX_Bernael

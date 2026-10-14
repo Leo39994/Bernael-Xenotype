@@ -1,0 +1,79 @@
+rwtest 1
+test "Bernael genes - spawn state, psychic sight, dark speech, nihilism, reload" project="Bernael" created=2026-09-17T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 4,0 name="Child" xenotype=BX_Bernael age=2
+
+assert pawn "Bernael" hediff=BX_Blindness expect=present
+
+assert pawn "Bernael" hediff=BX_ReaperEcstasy expect=present
+assert pawn "Bernael" hediff=BX_WitheredSoulHediff expect=present
+
+select "Bernael"
+assert text contains "Soul Saturation" expect=present
+
+hover "Soul Saturation"
+tick 6 note="tooltip block: a few frames so the tooltip is drawn"
+assert text contains "Soul Saturation" expect=present
+assert text contains "BX_" expect=absent
+assert text contains "MB_" expect=absent
+
+assert pawn "Child" hediff=BX_Blindness expect=present
+
+select "Child"
+assert text contains "Soul Saturation" expect=absent
+
+bill "Child" recipe=BX_ExtractSoul expect=disabled reason="too small" match=contains
+
+spawn Pawn:Colonist at 2,0 name="Baseline"
+assert pawn "Bernael" capacity=Sight min=1.25 expect=present
+
+assert pawn "Baseline" capacity=Sight max=1 expect=present
+
+spawn Thing:BionicEye at 0,2
+spawn Thing:MedicineIndustrial at 1,2 count=2
+
+bill "Bernael" recipe=InstallBionicEye expect=absent
+bill "Baseline" recipe=InstallBionicEye expect=allowed
+
+gene "Bernael" remove=BX_DepravedHead
+
+assert pawn "Bernael" hediff=BX_Blindness expect=absent
+assert pawn "Bernael" capacity=Sight max=1 expect=present
+
+spawn Pawn:Colonist at 0,8 name="Nihilist" xenotype=BX_Bernael
+prisoner "Nihilist" resistance=10
+
+waitfor pawn "Nihilist" resistance min=20 max=20 ticks=240 expect=present
+
+tick 600 note="nihilism block: and must not double again afterwards"
+assert pawn "Nihilist" resistance max=20 expect=present
+
+speed paused
+spawn Pawn:Colonist at 0,12 name="Speaker A" xenotype=BX_Bernael
+spawn Pawn:Colonist at 1,12 name="Listener"
+spawn Pawn:Colonist at 4,12 name="Speaker B" xenotype=BX_Bernael
+spawn Pawn:Colonist at 5,12 name="Kin" xenotype=BX_Bernael
+
+interact "Speaker A" with="Listener" kind=Chitchat
+assert pawn "Listener" thought=BX_HeardDarkSpeech expect=present
+
+interact "Speaker B" with="Kin" kind=Chitchat
+assert pawn "Kin" thought=BX_HeardDarkSpeech expect=absent
+
+assert log clean
+
+spawn Pawn:Colonist at 6,0 name="Saved" xenotype=BX_Bernael
+spawn Thing:BX_SoulLantern at 7,0
+equip "Saved" thing=BX_SoulLantern
+give "Saved" resource=BX_SoulStarved value=0.42
+
+reload note="reload block: save, load, everything has to still be there"
+
+assert pawn "Saved" hediff=BX_Blindness expect=present
+assert pawn "Saved" resource=BX_SoulStarved min=0.41 max=0.43 expect=present
+assert pawn "Saved" capacity=Sight min=1.25 expect=present
+assert pawn "Saved" equipment=BX_SoulLantern expect=present
+assert log clean

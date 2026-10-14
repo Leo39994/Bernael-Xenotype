@@ -1,0 +1,134 @@
+rwtest 1
+test "Bottled soul - recipes, extraction, transfusion, drink, doctor and warden work" project=Bernael created=2026-09-18T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+speed paused
+
+room size=5,5 prison=true name="cell"
+room size=5,5 name="ward"
+room size=5,5 name="store"
+spawn Thing:Bed in="cell"
+spawn Thing:Bed in="cell"
+spawn Thing:HospitalBed in="ward"
+spawn Thing:HospitalBed in="ward" name="transfusion bed"
+spawn Pawn:Colonist in="ward" name="Doctor"
+
+spawn Pawn:Colonist in="ward" name="Patient"
+spawn Thing:BX_BottledSoul in="ward"
+give "Patient" hediff=BX_SoulDrained severity=0.6
+bed "Patient" thing="transfusion bed" medical=true
+assert pawn "Patient" hediff=BX_SoulDrained severity min=0.59 max=0.61 expect=present
+bill "Patient" recipe=BX_SoulTransfusion expect=allowed
+job "Doctor" giver=DoBillsMedicalHumanOperation on="Patient" until=done ticks=4000
+assert pawn "Patient" hediff=BX_SoulDrained expect=present
+assert pawn "Patient" hediff=BX_SoulDrained severity min=0.24 max=0.26 expect=present
+assert thing BX_BottledSoul expect=absent
+
+spawn Pawn:Colonist in="cell" name="Prisoner"
+prisoner "Prisoner" resistance=10
+assert pawn "Prisoner" room=PrisonCell expect=present
+
+bill "Prisoner" recipe=BX_ExtractSoul expect=absent
+spawn Pawn:Colonist in="ward" name="Bernael" xenotype=BX_Bernael
+bill "Prisoner" recipe=BX_ExtractSoul expect=allowed
+surgery "Prisoner" recipe=BX_ExtractSoul by="Doctor"
+assert pawn "Prisoner" hediff=BX_SoulDrained severity min=0.94 max=0.96 expect=present
+assert thing BX_BottledSoul expect=present
+surgery "Prisoner" recipe=BX_ExtractSoul by="Doctor"
+assert pawn "Prisoner" hediff=BX_SoulDrained severity max=0.96 expect=present
+
+speed x1
+spawn Thing:BX_BottledSoul in="ward"
+give "Bernael" need=Food value=0.3
+assert pawn "Bernael" need=Food min=0.28 max=0.32 expect=present
+give "Bernael" resource=BX_SoulStarved value=0.1
+
+ingest "Bernael" thing=BX_BottledSoul
+assert pawn "Bernael" need=Food min=0.56 max=0.62 expect=present
+assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35 expect=present
+assert log clean
+
+speed paused
+despawn Thing:BX_BottledSoul
+spawn Pawn:Colonist name="Bedridden" xenotype=BX_Bernael
+spawn Pawn:Colonist name="Baseline"
+
+work "Doctor" giver=Bernael_FeedBottledSoul on="Baseline" expect=absent
+
+give "Bedridden" resource=BX_SoulStarved value=0.5
+work "Doctor" giver=Bernael_FeedBottledSoul on="Bedridden" expect=absent
+
+give "Bedridden" resource=BX_SoulStarved value=0.1
+down "Bedridden"
+bed "Bedridden" medical=true
+assert pawn "Bedridden" downed expect=present
+assert pawn "Bedridden" job=LayDown expect=present
+assert pawn "Bedridden" resource=BX_SoulStarved min=0.05 max=0.15 expect=present
+work "Doctor" giver=Bernael_FeedBottledSoul on="Bedridden" forced=true expect=disabled reason="Bottled Soul essence" match=contains
+work "Doctor" giver=Bernael_FeedBottledSoul on="Bedridden" expect=disabled reason="Bottled Soul essence" match=contains
+
+spawn Thing:BX_BottledSoul
+work "Doctor" giver=Bernael_FeedBottledSoul on="Bedridden" expect=allowed
+assert log clean
+
+despawn Thing:BX_BottledSoul
+spawn Pawn:Colonist in="store" name="Warden"
+spawn Pawn:Colonist in="store" name="Free Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist in="store" name="Captive"
+spawn Pawn:Colonist in="store" name="Wounded"
+spawn Pawn:Colonist in="cell" name="Caged"
+spawn Pawn:Colonist in="cell" name="Starved" xenotype=BX_Bernael
+give "Free Bernael" resource=BX_SoulStarved value=0.1
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Free Bernael" expect=absent
+prisoner "Captive" resistance=10 mode=Execution
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Captive" expect=disabled reason="not set to be brought food" match=contains
+prisoner "Captive" mode=MaintainOnly
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Captive" expect=disabled reason="not in a prison cell" match=contains
+prisoner "Wounded"
+down "Wounded"
+bed "Wounded"
+assert pawn "Wounded" room=PrisonCell expect=present
+assert pawn "Wounded" job=LayDown expect=present
+assert pawn "Wounded" downed expect=present
+assert reach "Warden" to="Wounded" pathEndMode=OnCell expect=present
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Wounded" expect=disabled reason="needs food before a bottled soul" match=contains
+prisoner "Caged"
+assert prisoner "Caged" secure by="Warden" expect=present
+assert pawn "Caged" room=PrisonCell expect=present
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Caged" expect=absent
+prisoner "Starved"
+assert prisoner "Starved" secure by="Warden" expect=present
+assert pawn "Starved" room=PrisonCell expect=present
+give "Starved" resource=BX_SoulStarved value=0.6 targetValue=0.5
+assert pawn "Starved" gene=BX_SoulStarved expect=present
+assert pawn "Starved" resource=BX_SoulStarved min=0.55 max=0.65 expect=present
+assert reach "Warden" to="Starved" pathEndMode=OnCell expect=present
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="does not want a bottled soul yet" match=contains
+give "Starved" resource=BX_SoulStarved value=0.1
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="Bottled Soul essence" match=contains
+pack "Starved" thing=BX_BottledSoul
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="can already reach a bottled soul" match=contains
+despawn Thing:BX_BottledSoul
+carry "Starved" thing=BX_BottledSoul
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="can already reach a bottled soul" match=contains
+despawn Thing:BX_BottledSoul
+spawn Thing:BX_BottledSoul in="cell"
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="can already reach a bottled soul" match=contains
+despawn Thing:BX_BottledSoul
+spawn Thing:BX_BottledSoul in="store"
+work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=allowed
+job "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" until=done ticks=4000
+assert log clean
+
+spawn Pawn:Colonist name="Offered"
+spawn Thing:BX_BottledSoul
+spawn Thing:MedicineIndustrial count=2
+
+spawn Pawn:Colonist name="Drinker" xenotype=BX_Bernael
+
+give "Offered" hediff=BX_SoulDrained severity=0.2
+
+bill "Offered" recipe=BX_ExtractSoul expect=allowed
+bill "Offered" recipe=BX_SoulTransfusion expect=allowed
+assert log clean

@@ -1,0 +1,87 @@
+rwtest 1
+test "Psycasting - hexmaster psylink, entropy, dire orb blast, mirage looks" project="Bernael" created=2026-10-06T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+requires dlc=Royalty
+
+spawn Pawn:Colonist at 0,-8 name="Hexmaster" xenotype=BX_Bernael
+
+assert pawn "Hexmaster" hediff=PsychicAmplifier expect=present
+
+assert pawn "Hexmaster" stat=PsychicEntropyGain min=0.98 max=1.02 expect=present
+
+give "Hexmaster" hediff=BX_ReaperEcstasy severity=50
+assert pawn "Hexmaster" hediff=BX_ReaperEcstasy expect=present
+assert pawn "Hexmaster" stat=PsychicEntropyGain min=0.50 max=0.61 expect=present
+
+give "Hexmaster" hediff=BX_ReaperEcstasy severity=100
+assert pawn "Hexmaster" stat=PsychicEntropyGain min=0.08 max=0.12 expect=present
+
+assert log clean
+
+speed paused
+room at 5,8 size=7,5 door=none roof=false name="arena"
+spawn Pawn:Colonist at 6,10 name="Orbcaster" xenotype=BX_Bernael
+ability "Orbcaster" grant=BX_DireOrb psylink=3 psyfocus=1.0
+spawn Pawn:Pirate at 10,11 name="Near" faction=enemy
+pacify "Near"
+spawn Pawn:Pirate at 8,17 name="Far" faction=enemy
+pacify "Far"
+spawn Pawn:Pirate at 9,9 name="Downed" faction=enemy
+down "Downed"
+spawn Pawn:Colonist at 6,11 name="Ally"
+draft "Ally"
+
+assert pawn "Near" pain max=0 expect=present
+
+draft "Orbcaster"
+select "Orbcaster"
+gizmo "Dire orb" expect=allowed
+target cell=8,10 expect=allowed
+speed x1
+
+waitfor casts "Orbcaster" ability=BX_DireOrb min=1 ticks=150
+waitfor hit "Near" by="Orbcaster" min=1 ticks=300
+assert hit "Near" by="Orbcaster" min=1 max=1
+assert pawn "Near" pain min=0.01 expect=present
+assert casts "Orbcaster" ability=BX_DireOrb min=1 max=1
+assert hit "Far" by="Orbcaster" max=0
+assert hit "Downed" by="Orbcaster" max=0
+assert hit "Ally" by="Orbcaster" max=0
+gizmo "Dire orb" expect=disabled
+
+undraft "Orbcaster"
+undraft "Ally"
+assert log clean
+
+sky glow=0
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 5,0 name="Watcher"
+ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
+
+ask "mirage-dark-before" claim="with the sky pinned dark, the ground around Watcher is visibly dark before the cast"
+
+draft "Bernael"
+select "Bernael"
+gizmo "Dark mirage" expect=allowed
+target cell=4,0 expect=allowed
+waitfor thing BX_DarkMirageDecoy at 4,0 ticks=120 expect=present
+assert thing BX_DarkMirageDecoy at 4,0 expect=present
+deselect
+ask "mirage-glow-after" claim="the decoy casts visible light onto the ground around it while the pinned sky remains dark"
+
+ask "mirage-caster-body" claim="the decoy at the target cell shows this caster's own body and apparel, facing the way the caster faces, and is not a generic silhouette"
+ask "mirage-outline-eyes" claim="the decoy is drawn with a dark outline and two glowing eyes, and is clearly not a second ordinary pawn"
+ask "mirage-flames" ticks=180 claim="blue-black flames rise off the decoy and keep moving; the decoy itself does not walk, turn or slide off its cell"
+
+select BX_DarkMirageDecoy
+ask "mirage-burst-ring" claim="selecting the decoy draws one ring around it, about two and a half cells wide - the area its burst would reach"
+deselect
+
+tick 364 note="mirage fade block: to about 544 of 600, just short of the 36-tick fade-out window"
+ask "mirage-fade-out" ticks=90 claim="the decoy fades out over the last moments and then is gone; it does not vanish in one frame and leaves no rubble, corpse or fire behind"
+
+assert thing BX_DarkMirageDecoy expect=absent
+undraft "Bernael"
+assert log clean

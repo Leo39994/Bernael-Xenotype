@@ -1,6 +1,8 @@
 rwtest 1
 test "Malicious seal hurts its bearer and deepens only cursed flame" project="Bernael" created=2026-10-06T00:00:00
 
+requires mod=Mortis.BX
+
 speed paused
 spawn Pawn:Muffalo name="Unsealed"
 spawn Pawn:Muffalo name="Sealed"

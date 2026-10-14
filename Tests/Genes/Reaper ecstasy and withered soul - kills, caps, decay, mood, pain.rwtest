@@ -1,7 +1,29 @@
 rwtest 1
-test "Reaper ecstasy from kills - counts, friendly kill, cap, soul cap, decay" project="Bernael" created=2026-09-20T00:00:00
+test "Reaper ecstasy and withered soul - kills, caps, decay, mood, pain" project="Bernael" created=2026-09-20T00:00:00
 
+requires mod=Mortis.BX
 requires dlc=Biotech
+
+spawn Pawn:Colonist at 0,-8 name="Withered" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,-8 name="Aching" xenotype=BX_Bernael
+assert pawn "Withered" hediff=BX_WitheredSoulHediff expect=present
+assert pawn "Aching" hediff=BX_WitheredSoulHediff expect=present
+
+give "Withered" need=Mood value=0.1
+waitfor pawn "Withered" hediff=BX_WitheredSoulHediff severity min=0.15 max=0.25 ticks=480 expect=present
+
+give "Withered" need=Mood value=0.9
+waitfor pawn "Withered" hediff=BX_WitheredSoulHediff severity min=0.85 ticks=480 expect=present
+
+give "Aching" need=Mood value=0.1
+waitfor pawn "Aching" pain min=0.32 max=0.42 ticks=480 expect=present
+assert pawn "Aching" hediff=BX_WitheredSoulHediff visible expect=present
+give "Aching" need=Mood value=0.7
+waitfor pawn "Aching" pain min=0.12 max=0.22 ticks=480 expect=present
+give "Aching" need=Mood value=0.95
+waitfor pawn "Aching" pain max=0.08 ticks=480 expect=present
+assert pawn "Aching" hediff=BX_WitheredSoulHediff visible expect=present
+assert log clean
 
 speed paused
 spawn Pawn:Colonist at 0,0 name="Counter" xenotype=BX_Bernael

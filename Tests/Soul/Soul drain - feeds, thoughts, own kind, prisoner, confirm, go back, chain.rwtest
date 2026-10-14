@@ -1,0 +1,126 @@
+rwtest 1
+test "Soul drain - feeds, thoughts, own kind, prisoner, confirm, go back, chain" project="Bernael" created=2026-09-17T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+speed paused
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,0 name="Victim"
+
+give "Bernael" resource=BX_SoulStarved value=0.1
+
+select "Bernael"
+gizmo "Soul drain" expect=allowed
+target "Victim" expect=allowed
+speed x1
+waitfor pawn "Victim" hediff=BX_SoulDrained expect=present ticks=300
+
+assert pawn "Victim" hediff=BX_SoulDrained expect=present
+assert pawn "Victim" hediff=BX_SoulDrained severity min=0.44 max=0.46 expect=present
+assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35 expect=present
+
+waitfor pawn "Victim" thought=BX_FedOn expect=present ticks=300
+assert pawn "Victim" thought=BX_FedOn expect=present
+assert pawn "Victim" thought=BX_FedOn_Social expect=present
+assert opinion "Victim" of="Bernael" thought=BX_FedOn_Social min=-25 max=-15
+
+spawn Pawn:Colonist at 0,6 name="Hungry" xenotype=BX_Bernael
+spawn Pawn:Colonist at 1,6 name="Kin" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,6 name="Stranger"
+give "Hungry" resource=BX_SoulStarved value=0.1
+give "Kin" resource=BX_SoulStarved value=0.5
+
+assert pawn "Kin" gene=BX_SoulStarved expect=present
+assert pawn "Stranger" gene=BX_SoulStarved expect=absent
+assert pawn "Stranger" gene=BX_SoulFeeder expect=absent
+
+select "Hungry"
+gizmo "Soul drain" expect=allowed
+target "Kin" expect=refused
+tick 300 note="own kind block: 4 s warmup is 240 ticks, plus the job that carries it, in case the cast went through anyway"
+assert pawn "Kin" hediff=BX_SoulDrained expect=absent
+
+gizmo "Soul drain" expect=allowed
+target "Stranger" expect=allowed
+waitfor pawn "Stranger" hediff=BX_SoulDrained expect=present ticks=300
+assert pawn "Kin" hediff=BX_SoulDrained expect=absent
+
+speed paused
+spawn Pawn:Colonist at 0,12 name="Jailer" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,12 name="Prisoner"
+prisoner "Prisoner" resistance=10
+give "Jailer" resource=BX_SoulStarved value=0.1
+
+select "Jailer"
+gizmo "Soul drain" expect=allowed
+target "Prisoner" expect=allowed
+speed x1
+waitfor pawn "Prisoner" hediff=BX_SoulDrained expect=present ticks=300
+
+assert pawn "Prisoner" hediff=BX_SoulDrained expect=present
+assert pawn "Prisoner" resistance min=11 max=11 expect=present
+assert log clean
+
+speed paused
+spawn Pawn:Colonist at 0,18 name="Asker" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,18 name="Asked"
+
+give "Asker" resource=BX_SoulStarved value=0.1
+give "Asked" hediff=BX_SoulDrained severity=0.5
+
+select "Asker"
+gizmo "Soul drain" expect=allowed
+target "Asked" expect=allowed
+
+assert window Dialog_MessageBox contains "serious soul damage" expect=present
+click "Confirm"
+
+speed x1
+waitfor pawn "Asked" hediff=BX_SoulDrained severity min=0.89 ticks=300 expect=present
+
+speed paused
+spawn Pawn:Colonist at 0,24 name="Hesitant" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,24 name="Spared"
+
+give "Hesitant" resource=BX_SoulStarved value=0.1
+give "Spared" hediff=BX_SoulDrained severity=0.56
+
+select "Hesitant"
+gizmo "Soul drain" expect=allowed
+target "Spared" expect=allowed
+
+assert window Dialog_MessageBox contains "will kill" expect=present
+click "Go back"
+
+speed x1
+tick 300 note="go back block: 4 s warmup is 240 ticks, plus the job that carries it, in case the cast went through anyway"
+assert pawn "Spared" hediff=BX_SoulDrained severity max=0.57 expect=present
+assert pawn "Hesitant" resource=BX_SoulStarved max=0.11 expect=present
+
+speed paused
+spawn Pawn:Colonist at 0,30 name="Chainer" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,30 name="Chained"
+give "Chainer" resource=BX_SoulStarved value=0.1
+
+select "Chainer"
+gizmo "Soul drain" expect=allowed
+target "Chained" expect=allowed
+speed x1
+waitfor pawn "Chained" hediff=BX_SoulDrained severity min=0.44 ticks=300 expect=present
+waitfor pawn "Chainer" job=CastAbilityOnThing ticks=60 expect=absent
+
+speed paused
+gizmo "Soul drain" expect=allowed
+target "Chained" expect=allowed
+click "Confirm"
+waitfor pawn "Chained" hediff=BX_SoulDrained severity min=0.89 ticks=300 expect=present
+waitfor pawn "Chainer" job=CastAbilityOnThing ticks=60 expect=absent
+
+speed paused
+gizmo "Soul drain" expect=allowed
+target "Chained" expect=allowed
+click "Confirm"
+waitfor pawn "Chained" dead ticks=600 expect=present
+
+assert pawn "Chained" dead expect=present
+assert pawn "Chainer" hediff=BX_ReaperEcstasy severity max=1 expect=present

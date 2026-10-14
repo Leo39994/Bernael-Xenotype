@@ -1,0 +1,82 @@
+rwtest 1
+test "Soul lantern - melee kill, shot burns, retarget, projectile survives save" project="Bernael" created=2026-09-17T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+speed paused
+spawn Pawn:Colonist at 0,6 name="Brawler" xenotype=BX_Bernael
+spawn Pawn:Pirate at 1,6 name="Brawled" faction=enemy
+pacify "Brawled"
+speed x1
+spawn Thing:BX_SoulLantern at 0,7 name="lantern"
+equip "Brawler" thing="lantern"
+damage "Brawled" amount=30
+down "Brawled"
+draft "Brawler"
+attack "Brawler" target="Brawled" melee=true
+assert pawn "Brawler" drafted expect=present
+assert pawn "Brawler" job=AttackMelee expect=present
+waitfor pawn "Brawled" dead ticks=2500 expect=present
+undraft "Brawler"
+assert log clean
+
+speed paused
+despawn Pawn:Pirate
+spawn Pawn:Colonist at 0,10 name="Gunner" xenotype=BX_Bernael
+spawn Pawn:Pirate at 6,10 name="Shot target" faction=enemy
+pacify "Shot target"
+speed x1
+spawn Thing:BX_SoulLantern at 1,10
+equip "Gunner" thing=BX_SoulLantern
+
+attack "Gunner" target="Shot target"
+assert pawn "Gunner" job=AttackStatic expect=present
+
+waitfor pawn "Shot target" hediff=Burn ticks=1320 expect=present
+assert shots "Gunner" min=1
+
+speed paused
+despawn Pawn:Pirate
+tick 60 note="retarget block: in-flight shots of the last block land while no hostile is left to jump to"
+spawn Pawn:Colonist at 0,14 name="Retargeter" xenotype=BX_Bernael
+spawn Pawn:Pirate at 8,14 name="Pirate A" faction=enemy
+spawn Pawn:Pirate at 8,17 name="Pirate B" faction=enemy
+pacify "Pirate A"
+pacify "Pirate B"
+speed x1
+spawn Thing:BX_SoulLantern at 1,14
+equip "Retargeter" thing=BX_SoulLantern
+
+down "Pirate A"
+draft "Retargeter"
+attack "Retargeter" target="Pirate A"
+
+waitfor pawn "Pirate B" hediff=Burn ticks=1320 expect=present
+assert pawn "Retargeter" downed expect=absent
+
+undraft "Retargeter"
+
+speed paused
+despawn Pawn:Pirate
+tick 60 note="save block: in-flight shots of the last block land while no hostile is left to jump to"
+room at -1,-2 size=15,5 door=none name="range"
+spawn Pawn:Colonist at 0,0 name="Saver" xenotype=BX_Bernael
+spawn Pawn:Pirate at 12,0 name="Range target" faction=enemy
+pacify "Range target"
+speed x1
+spawn Thing:BX_SoulLantern at 1,0
+equip "Saver" thing=BX_SoulLantern
+
+attack "Saver" target="Range target"
+tick 150 note="save block: warmup 120, then the first projectile flies"
+
+speed paused
+reload note="save and load while a projectile is in the air"
+pacify "Range target"
+assert pawn "Saver" job=AttackStatic expect=present
+speed x1
+
+tick 900 note="two more bursts after loading"
+assert log clean
+assert pawn "Range target" near="Saver" max=12 expect=present
+assert pawn "Range target" hediff=Burn expect=present
