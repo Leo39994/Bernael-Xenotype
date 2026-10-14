@@ -1,6 +1,7 @@
 rwtest 1
 test "Nephilim carries pendulum gene" project="Bernael" created=2026-09-18T00:00:00
 
+requires mod=Mortis.BX
 requires dlc=Biotech
 requires mod=Sov.Nephilim
 spawn Pawn:Colonist at 0,0 name="Neph" xenotype=GS_Nephilim
