@@ -84,7 +84,7 @@ namespace Bernael_Xenotype
             {
                 return null;
             }
-            if (pawn.IsBloodfeeder())
+            if (pawn.genes?.HasActiveGene(BernaelDefOf.BX_SoulFeeder) == true)
             {
                 Pawn prisoner = GetPrisoner(pawn);
                 if (prisoner != null)

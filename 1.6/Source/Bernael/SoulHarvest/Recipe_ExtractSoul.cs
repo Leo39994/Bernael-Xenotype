@@ -88,9 +88,16 @@ namespace Bernael_Xenotype
 
 		protected override void OnSurgerySuccess(Pawn pawn, BodyPartRecord part, Pawn billDoer, List<Thing> ingredients, Bill bill)
 		{
-			if (!GenPlace.TryPlaceThing(ThingMaker.MakeThing(BernaelDefOf.BX_BottledSoul), pawn.PositionHeld, pawn.MapHeld, ThingPlaceMode.Near))
+			int remaining = System.Math.Max(1, GenMath.RoundRandom(pawn.BodySize));
+			while (remaining > 0)
 			{
-				Log.Error("Could not drop hemogen pack near " + pawn.PositionHeld.ToString());
+				Thing bottledSoul = ThingMaker.MakeThing(BernaelDefOf.BX_BottledSoul);
+				bottledSoul.stackCount = System.Math.Min(remaining, bottledSoul.def.stackLimit);
+				remaining -= bottledSoul.stackCount;
+				if (!GenPlace.TryPlaceThing(bottledSoul, pawn.PositionHeld, pawn.MapHeld, ThingPlaceMode.Near))
+				{
+					Log.Error("Could not drop bottled soul essence near " + pawn.PositionHeld.ToString());
+				}
 			}
 		}
 

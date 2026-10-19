@@ -1,5 +1,5 @@
 {
-  "TextureModID": "bx.lifevanquisher",
+  "TextureModID": "mortis.bx",
   "ItemDefName": "BX_LifeVanquisher",
   "ItemType": "ThingDef",
   "ItemTypeNamespace": "Verse",

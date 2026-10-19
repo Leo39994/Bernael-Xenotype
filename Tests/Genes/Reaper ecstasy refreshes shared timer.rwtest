@@ -1,0 +1,33 @@
+rwtest 1
+test "Reaper ecstasy refreshes shared timer" project="Bernael" created=2026-09-27T00:00:00
+
+# Every qualifying hostile kill resets one timer for the complete Reaper's
+# Ecstasy stack. The first kill's original deadline passes during the second
+# 600-tick step, but the refreshed stack must remain unchanged until a complete
+# 2500 ticks have elapsed after the second kill.
+
+requires dlc=Biotech
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+spawn Pawn:Pirate at 4,0 name="First" faction=enemy
+spawn Pawn:Pirate at 6,0 name="Second" faction=enemy
+
+damage "First" amount=999 by="Bernael"
+assert pawn "First" dead
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2 max=2
+
+tick 2000 reason="approach the first kill's original decay deadline"
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2 max=2
+
+damage "Second" amount=999 by="Bernael"
+assert pawn "Second" dead
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=3 max=3
+
+tick 600 reason="pass the first deadline but remain inside the refreshed hour"
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=3 max=3
+
+tick 1901 reason="pass one full hour after the second kill"
+assert pawn "Bernael" hediff=BX_ReaperEcstasy severity min=2 max=2
+
+assert log clean

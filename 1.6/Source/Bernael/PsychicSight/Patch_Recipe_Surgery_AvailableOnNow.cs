@@ -10,7 +10,7 @@ namespace Bernael_Xenotype
         public static void Postfix(Thing thing, BodyPartRecord part, ref bool __result)
         {
             Pawn pawn = thing as Pawn;
-            if (pawn == null || pawn.genes?.GetGene(BernaelDefOf.BX_DepravedHead) == null || part?.def != BodyPartDefOf.Eye) return;
+            if (pawn == null || pawn.genes?.HasActiveGene(BernaelDefOf.BX_BernaelBlind) != true || part?.def != BodyPartDefOf.Eye) return;
             __result = false;
         }
     }

@@ -1,0 +1,15 @@
+rwtest 1
+test "Head gene removal keeps psychic sight" project="Bernael" created=2026-10-09T00:00:00
+
+requires dlc=Biotech
+spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
+assert pawn "Bernael" gene=BX_BernaelBlind expect=present
+assert pawn "Bernael" hediff=BX_Blindness expect=present
+assert pawn "Bernael" capacity=Sight min=1.25 expect=present
+
+gene "Bernael" remove=BX_DepravedHead
+
+assert pawn "Bernael" gene=BX_DepravedHead expect=absent
+assert pawn "Bernael" gene=BX_BernaelBlind expect=present
+assert pawn "Bernael" hediff=BX_Blindness expect=present
+assert pawn "Bernael" capacity=Sight min=1.25 expect=present

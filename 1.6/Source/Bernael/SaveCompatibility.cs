@@ -19,6 +19,12 @@ namespace Bernael_Xenotype
             foreach (XmlNode node in root.SelectNodes(".//*[@Class='Bernael.DarkMirageDemo.DarkMirage']"))
                 node.Attributes["Class"].Value = typeof(DarkMirage).FullName;
 
+            // BX_DepravedHead became a cosmetic-only Verse.Gene when psychic sight moved to
+            // BX_BernaelBlind. Older saves still name its former custom class, which must be
+            // rewritten before Scribe attempts to instantiate the saved gene node.
+            foreach (XmlNode node in root.SelectNodes(".//*[@Class='Bernael_Xenotype.Gene_DepravedHead']"))
+                node.Attributes["Class"].Value = typeof(Gene).FullName;
+
             var removedGenes = new HashSet<string>();
             var removedNodes = new List<XmlNode>();
             foreach (XmlNode node in root.SelectNodes(
@@ -34,6 +40,22 @@ namespace Bernael_Xenotype
             if (removedGenes.Count == 0) return;
             foreach (XmlNode node in root.SelectNodes(".//overriddenByGene"))
                 if (removedGenes.Contains(node.InnerText)) node.InnerText = "null";
+        }
+    }
+
+    // Psychic sight originally lived on the cosmetic BX_DepravedHead gene. Preserve that
+    // behavior in existing saves by adding the new dedicated gene once, with the same gene type.
+    [HarmonyPatch(typeof(Pawn_GeneTracker), nameof(Pawn_GeneTracker.ExposeData))]
+    public static class Patch_Pawn_GeneTracker_ExposeData
+    {
+        public static void Postfix(Pawn_GeneTracker __instance)
+        {
+            if (Scribe.mode != LoadSaveMode.PostLoadInit || __instance.GetGene(BernaelDefOf.BX_BernaelBlind) != null) return;
+
+            Gene depravedHead = __instance.GetGene(BernaelDefOf.BX_DepravedHead);
+            if (depravedHead == null) return;
+
+            __instance.AddGene(BernaelDefOf.BX_BernaelBlind, __instance.IsXenogene(depravedHead));
         }
     }
 

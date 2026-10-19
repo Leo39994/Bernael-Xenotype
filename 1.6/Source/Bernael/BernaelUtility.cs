@@ -10,6 +10,8 @@ namespace Bernael_Xenotype
     {
 
         private static HediffDef _soulDrainedHediff;
+        private static Game cachedPsychicSightGame;
+        private static Gamecomponent_PsychicSight cachedPsychicSightComp;
 
         public static HediffDef cachedSoulDrainedHediff
         {
@@ -68,13 +70,24 @@ namespace Bernael_Xenotype
 
         public static Gamecomponent_PsychicSight GetGamePsychicSightComp(this Game game)
         {
-            var comp = game.GetComponent<Gamecomponent_PsychicSight>();
+            if (game == null)
+            {
+                return null;
+            }
+            if (ReferenceEquals(game, cachedPsychicSightGame) && cachedPsychicSightComp != null)
+            {
+                return cachedPsychicSightComp;
+            }
 
+            Gamecomponent_PsychicSight comp = game.GetComponent<Gamecomponent_PsychicSight>();
             if (comp == null)
             {
                 comp = new Gamecomponent_PsychicSight(game);
                 game.components.Add(comp);
             }
+
+            cachedPsychicSightGame = game;
+            cachedPsychicSightComp = comp;
             return comp;
         }
     }

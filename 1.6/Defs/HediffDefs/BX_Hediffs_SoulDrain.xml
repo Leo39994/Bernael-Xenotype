@@ -55,8 +55,8 @@
     <HediffDef>
         <defName>BX_SoulDrained</defName>
         <label>soul drained</label>
-        <description>A reduction in the normal blood volume. Minor blood loss has relatively mild effects, but when blood loss becomes severe, oxygen transport becomes badly impaired and the victim loses the ability to move. Extreme blood loss leads to death.
-            \nBlood loss naturally recovers over time as the body slowly regenerates its blood supply.</description>
+        <description>A portion of this creature's soul has been torn away. Minor soul loss causes weakness and disorientation, while severe depletion suppresses consciousness and can leave the victim unable to move. Complete depletion is fatal.
+            \nLost soul essence does not return on its own, but it can be restored through a soul transfusion.</description>
         <lethalSeverity>1</lethalSeverity>
         <stages>
             <li>

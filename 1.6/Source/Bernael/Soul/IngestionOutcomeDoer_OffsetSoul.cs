@@ -9,6 +9,10 @@ namespace Bernael_Xenotype
         protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested, int ingestedCount)
         {
             SoulUtility.OffsetSoul(pawn, offset * ingestedCount);
+            if (ingested.def == BernaelDefOf.BX_BottledSoul)
+            {
+                SoulUtility.ApplySoulAbsorption(pawn);
+            }
         }
 
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats(ThingDef parentDef)
