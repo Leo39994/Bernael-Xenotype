@@ -6,6 +6,24 @@ namespace Bernael_Xenotype
 {
     public static class SoulUtility
     {
+        public static void ApplySoulAbsorption(Pawn pawn)
+        {
+            if (pawn?.health == null || pawn.genes?.GetGene(BernaelDefOf.BX_SoulStarved)?.Active != true)
+            {
+                return;
+            }
+
+            Hediff effect = pawn.health.hediffSet.GetFirstHediffOfDef(BernaelDefOf.BX_ConsumedSoulStrength);
+            if (effect == null)
+            {
+                pawn.health.AddHediff(BernaelDefOf.BX_ConsumedSoulStrength);
+                return;
+            }
+
+            effect.Severity = 1f;
+            (effect as HediffWithComps)?.GetComp<HediffComp_Disappears>()?.ResetElapsedTicks();
+        }
+
         public static void TickResourceDrainInterval(IGeneResourceDrain drain, int delta)
         {
             if (drain.CanOffset && drain.Resource != null)
@@ -95,6 +113,7 @@ namespace Bernael_Xenotype
             hediffToGiveTarget ??= HediffDefOf.BloodLoss;
             float num2 = targetSoulGain * victim.BodySize;
             OffsetSoul(biter, num2);
+            ApplySoulAbsorption(biter);
             OffsetSoul(victim, -num2);
             Pawn_NeedsTracker needs = biter.needs;
             if (thoughtDefToGiveTarget != null)
