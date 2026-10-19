@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <AbilityDef>
+    <defName>BX_WingBurst</defName>
+    <label>wing burst</label>
+    <description>.</description>
+    <iconPath>UI/Icons/Abilities/BX_WingBurst</iconPath>
+		<category>Bernael</category>
+    <cooldownTicksRange>600</cooldownTicksRange>
+    <hostile>false</hostile>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <verbProperties>
+      <verbClass>Bernael_Xenotype.Verb_CastAbilityWingBurst</verbClass>
+      <label>wing burst</label>
+      <violent>false</violent>
+      <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+      <warmupTime>0.5</warmupTime>
+      <range>19.9</range>
+      <requireLineOfSight>true</requireLineOfSight>
+      <soundCast>Longjump_Jump</soundCast>
+      <soundLanding>Longjump_Land</soundLanding>
+      <targetParams>
+        <canTargetLocations>true</canTargetLocations>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetBuildings>false</canTargetBuildings>
+      </targetParams>
+    </verbProperties>
+    <jobDef>CastJump</jobDef>
+  </AbilityDef>
+
+  <ThingDef ParentName="PawnFlyerBase">
+    <defName>BX_WingBurstFlyer</defName>
+    <label>wing-burst flyer</label>
+    <thingClass>Bernael_Xenotype.PawnFlyer_WingBurst</thingClass>
+  </ThingDef>
+
+</Defs>

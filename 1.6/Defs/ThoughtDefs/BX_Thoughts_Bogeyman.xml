@@ -1,0 +1,18 @@
+<Defs>
+
+  <ThoughtDef>
+    <defName>BX_Bogeyman</defName>
+    <workerClass>ThoughtWorker_GameCondition</workerClass>
+    <gameCondition>BX_BogeymanInitial</gameCondition>
+    <validWhileDespawned>true</validWhileDespawned>
+    <developmentalStageFilter>Baby, Child</developmentalStageFilter>
+    <stages>
+      <li>
+        <label>someone unfamiliar is nearby...</label>
+        <description>Someone unfamiliar is nearby...</description>
+        <baseMoodEffect>-40</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

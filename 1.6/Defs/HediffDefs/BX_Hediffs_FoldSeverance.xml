@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <HediffDef>
+    <defName>BX_FoldShift</defName>
+    <label>fold shift</label>
+    <description>.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+		<defaultLabelColor>(0.8, 0, 0.7)</defaultLabelColor>
+    <comps>
+      <li Class="Bernael_Xenotype.HediffCompProperties_NoPathCost"/>
+
+      <li Class="Bernael_Xenotype.HediffCompProperties_GiveHediffOnLoss">
+        <hediffDef>XenogermLossShock</hediffDef>
+        <hediffSeverity>1</hediffSeverity>
+      </li>
+
+      <li Class="Bernael_Xenotype.HediffCompProperties_FoldShiftVisual">
+        <visualColor>(0.5, 0.8, 1.0, 0.75)</visualColor>
+      </li>
+
+      <li Class="Bernael_Xenotype.HediffCompProperties_ImmuneWithoutWeakDamage">
+        <weakDamageDef>EMP</weakDamageDef>
+      </li>
+
+      <li Class="Bernael_Xenotype.HediffCompProperties_DisappearsAndStunOnWeakDamage">
+        <weakDamageDef>EMP</weakDamageDef>
+        <stunTicks>1500</stunTicks>
+      </li>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>10000~10000</disappearsAfterTicks>		<!-- 2 hours -->
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+      <li Class="HediffCompProperties_DisappearsOnDeath"/>
+    </comps>
+    <stages>
+      <li>
+        <disabledWorkTags>Violent</disabledWorkTags>
+        <statFactors>
+          <MoveSpeed>0.2</MoveSpeed>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

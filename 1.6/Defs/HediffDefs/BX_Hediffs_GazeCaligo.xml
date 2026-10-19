@@ -6,6 +6,7 @@
     <label>gaze caligo buff</label>
     <description>.</description>
     <scenarioCanAdd>false</scenarioCanAdd>
+    <defaultLabelColor>(0.51, 0.71, 0.86)</defaultLabelColor>
     <stages>
       <li>
         <capMods>
@@ -23,8 +24,9 @@
     <defName>BX_GazeCaligoDebuff</defName>
     <label>gaze caligo debuff</label>
     <description>.</description>
-    <scenarioCanAdd>false</scenarioCanAdd>
     <isBad>true</isBad>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <defaultLabelColor>(0.51, 0.71, 0.86)</defaultLabelColor>
     <stages>
       <li>
         <capMods>
@@ -43,6 +45,7 @@
     <label>psychic overcharge</label>
     <description>.</description>
     <scenarioCanAdd>false</scenarioCanAdd>
+    <defaultLabelColor>(0.51, 0.71, 0.86)</defaultLabelColor>
     <stages>
       <li>
         <statFactors>
