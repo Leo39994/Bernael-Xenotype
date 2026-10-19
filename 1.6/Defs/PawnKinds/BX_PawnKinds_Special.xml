@@ -1,6 +1,66 @@
 <Defs>
 
   <PawnKindDef>
+    <defName>BX_Bernael_Warlock</defName>
+    <label>bernael warlock</label>
+    <race>Human</race>
+    <defaultFactionDef>Empire</defaultFactionDef>
+    <factionHostileOnDeath>true</factionHostileOnDeath>
+    <combatPower>50</combatPower>
+    <minGenerationAge>20</minGenerationAge>
+    <maxGenerationAge>80</maxGenerationAge>
+    <backstoryFiltersOverride>
+      <li>
+        <categories>
+          <li>ImperialRoyal</li>
+        </categories>
+      </li>
+    </backstoryFiltersOverride>
+    <requiredWorkTags>
+      <li>Violent</li>
+    </requiredWorkTags>
+    <itemQuality>Excellent</itemQuality>
+    <weaponMoney>99999</weaponMoney>
+    <weaponTags Inherit="False">
+      <li>EltexStaff</li>
+    </weaponTags>
+    <specificApparelRequirements>
+      <li>
+        <bodyPartGroup>Torso</bodyPartGroup>
+        <requiredTag>RoyalRobe</requiredTag>
+      </li>
+      <li>
+        <bodyPartGroup>UpperHead</bodyPartGroup>
+        <requiredTag>BestowerHood</requiredTag>
+      </li>
+      <li>
+        <bodyPartGroup>Torso</bodyPartGroup>
+        <apparelLayer>OnSkin</apparelLayer>
+        <requiredTag>RoyalTier2</requiredTag>
+      </li>
+      <li>
+        <bodyPartGroup>Legs</bodyPartGroup>
+        <stuff>Hyperweave</stuff>
+      </li>
+    </specificApparelRequirements>
+    <techHediffsMoney>1000~4000</techHediffsMoney>
+    <apparelColor>(114,12,12)</apparelColor>
+    <ignoreIdeoApparelColors>true</ignoreIdeoApparelColors>
+    <xenotypeSet>
+      <xenotypeChances>
+        <BX_Bernael>1</BX_Bernael>
+      </xenotypeChances>
+    </xenotypeSet>
+    <techHediffsRequired>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">VacskinGland</li>
+    </techHediffsRequired>
+    <techHediffsMaxAmount>3</techHediffsMaxAmount>
+    <initialWillRange>6~8</initialWillRange>
+    <initialResistanceRange>30~46</initialResistanceRange>
+    <humanPregnancyChance>0</humanPregnancyChance>
+  </PawnKindDef>
+
+  <PawnKindDef>
     <defName>BX_PsycasterPilgrimage</defName>
     <label>psycaster pilgrimage</label>
     <race>Human</race>
@@ -53,6 +113,9 @@
     <apparelColor>(0.2, 0.2, 0.2)</apparelColor> <!-- Matches favoriteColor -->
     <ignoreIdeoApparelColors>true</ignoreIdeoApparelColors>
     <favoriteColor MayRequire="Ludeon.RimWorld.Ideology">Black</favoriteColor>
+    <techHediffsRequired>
+      <li>PsychicAmplifier</li>
+    </techHediffsRequired>
     <initialWillRange>0~0</initialWillRange>
     <initialResistanceRange>0~2</initialResistanceRange>
     <humanPregnancyChance>0</humanPregnancyChance>
@@ -62,9 +125,6 @@
         <range>8~16</range>
       </li>
     </skills>
-    <techHediffsRequired>
-      <li>PsychicAmplifier</li>
-    </techHediffsRequired>
   </PawnKindDef>
 
 </Defs>

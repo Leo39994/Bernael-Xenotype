@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThingDef>
+    <defName>BX_WingBurstSmoke</defName>
+		<label>wing burst smoke</label>
+    <thingClass>Bernael_Xenotype.Gas_WingBurst</thingClass>
+    <category>Gas</category>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Gas</altitudeLayer>
+    <useHitPoints>false</useHitPoints>
+    <graphicData>
+      <graphicClass>Graphic_Gas</graphicClass>
+      <drawSize>2.0</drawSize>
+      <texPath>Things/Gas/GasCloudThickA</texPath>
+      <shaderType>TransparentPostLight</shaderType>
+      <color>(51, 51, 102, 255)</color>
+    </graphicData>
+    <gas>
+      <expireSeconds>60~70</expireSeconds>
+      <rotationSpeed>20</rotationSpeed>
+    </gas>
+  </ThingDef>
+
+</Defs>
