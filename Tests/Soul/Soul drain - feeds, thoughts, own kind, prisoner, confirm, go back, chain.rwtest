@@ -7,7 +7,7 @@ speed paused
 spawn Pawn:Colonist at 0,0 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Victim"
 
-give "Bernael" resource=BX_SoulStarved value=0.1
+give "Bernael" resource=BX_EssenceHarvest value=0.1
 
 select "Bernael"
 gizmo "Soul drain" expect=allowed
@@ -17,7 +17,7 @@ waitfor pawn "Victim" hediff=BX_SoulDrained expect=present ticks=300
 
 assert pawn "Victim" hediff=BX_SoulDrained expect=present
 assert pawn "Victim" hediff=BX_SoulDrained severity min=0.44 max=0.46 expect=present
-assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35 expect=present
+assert pawn "Bernael" resource=BX_EssenceHarvest min=0.25 max=0.35 expect=present
 
 waitfor pawn "Victim" thought=BX_FedOn expect=present ticks=300
 assert pawn "Victim" thought=BX_FedOn expect=present
@@ -27,12 +27,12 @@ assert opinion "Victim" of="Bernael" thought=BX_FedOn_Social min=-25 max=-15
 spawn Pawn:Colonist at 0,6 name="Hungry" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,6 name="Kin" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,6 name="Stranger"
-give "Hungry" resource=BX_SoulStarved value=0.1
-give "Kin" resource=BX_SoulStarved value=0.5
+give "Hungry" resource=BX_EssenceHarvest value=0.1
+give "Kin" resource=BX_EssenceHarvest value=0.5
 
-assert pawn "Kin" gene=BX_SoulStarved expect=present
-assert pawn "Stranger" gene=BX_SoulStarved expect=absent
-assert pawn "Stranger" gene=BX_SoulFeeder expect=absent
+assert pawn "Kin" gene=BX_EssenceHarvest expect=present
+assert pawn "Stranger" gene=BX_EssenceHarvest expect=absent
+assert pawn "Stranger" gene=BX_EssenceHarvest expect=absent
 
 select "Hungry"
 gizmo "Soul drain" expect=allowed
@@ -49,7 +49,7 @@ speed paused
 spawn Pawn:Colonist at 0,12 name="Jailer" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,12 name="Prisoner"
 prisoner "Prisoner" resistance=10
-give "Jailer" resource=BX_SoulStarved value=0.1
+give "Jailer" resource=BX_EssenceHarvest value=0.1
 
 select "Jailer"
 gizmo "Soul drain" expect=allowed
@@ -65,7 +65,7 @@ speed paused
 spawn Pawn:Colonist at 0,18 name="Asker" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,18 name="Asked"
 
-give "Asker" resource=BX_SoulStarved value=0.1
+give "Asker" resource=BX_EssenceHarvest value=0.1
 give "Asked" hediff=BX_SoulDrained severity=0.5
 
 select "Asker"
@@ -82,7 +82,7 @@ speed paused
 spawn Pawn:Colonist at 0,24 name="Hesitant" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,24 name="Spared"
 
-give "Hesitant" resource=BX_SoulStarved value=0.1
+give "Hesitant" resource=BX_EssenceHarvest value=0.1
 give "Spared" hediff=BX_SoulDrained severity=0.56
 
 select "Hesitant"
@@ -95,12 +95,12 @@ click "Go back"
 speed x1
 tick 300 note="go back block: 4 s warmup is 240 ticks, plus the job that carries it, in case the cast went through anyway"
 assert pawn "Spared" hediff=BX_SoulDrained severity max=0.57 expect=present
-assert pawn "Hesitant" resource=BX_SoulStarved max=0.11 expect=present
+assert pawn "Hesitant" resource=BX_EssenceHarvest max=0.11 expect=present
 
 speed paused
 spawn Pawn:Colonist at 0,30 name="Chainer" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,30 name="Chained"
-give "Chainer" resource=BX_SoulStarved value=0.1
+give "Chainer" resource=BX_EssenceHarvest value=0.1
 
 select "Chainer"
 gizmo "Soul drain" expect=allowed

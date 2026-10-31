@@ -15,7 +15,7 @@ namespace Bernael_Xenotype
                 return null;
             }
 
-            Ability ability = pawn.abilities?.GetAbility(BernaelDefOf.BX_SoulFeeding);
+            Ability ability = pawn.abilities?.GetAbility(BernaelDefOf.BX_LifeDrain);
             if (ability == null || !ability.CanCast)
             {
                 return null;

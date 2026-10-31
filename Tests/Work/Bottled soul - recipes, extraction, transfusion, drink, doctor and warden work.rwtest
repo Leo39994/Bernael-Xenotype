@@ -42,11 +42,11 @@ speed x1
 spawn Thing:BX_BottledSoul in="ward"
 give "Bernael" need=Food value=0.3
 assert pawn "Bernael" need=Food min=0.28 max=0.32 expect=present
-give "Bernael" resource=BX_SoulStarved value=0.1
+give "Bernael" resource=BX_EssenceHarvest value=0.1
 
 ingest "Bernael" thing=BX_BottledSoul
 assert pawn "Bernael" need=Food min=0.56 max=0.62 expect=present
-assert pawn "Bernael" resource=BX_SoulStarved min=0.25 max=0.35 expect=present
+assert pawn "Bernael" resource=BX_EssenceHarvest min=0.25 max=0.35 expect=present
 assert log clean
 
 speed paused
@@ -56,15 +56,15 @@ spawn Pawn:Colonist name="Baseline"
 
 work "Doctor" giver=Bernael_FeedBottledSoul on="Baseline" expect=absent
 
-give "Bedridden" resource=BX_SoulStarved value=0.5
+give "Bedridden" resource=BX_EssenceHarvest value=0.5
 work "Doctor" giver=Bernael_FeedBottledSoul on="Bedridden" expect=absent
 
-give "Bedridden" resource=BX_SoulStarved value=0.1
+give "Bedridden" resource=BX_EssenceHarvest value=0.1
 down "Bedridden"
 bed "Bedridden" medical=true
 assert pawn "Bedridden" downed expect=present
 assert pawn "Bedridden" job=LayDown expect=present
-assert pawn "Bedridden" resource=BX_SoulStarved min=0.05 max=0.15 expect=present
+assert pawn "Bedridden" resource=BX_EssenceHarvest min=0.05 max=0.15 expect=present
 work "Doctor" giver=Bernael_FeedBottledSoul on="Bedridden" forced=true expect=disabled reason="Bottled Soul essence" match=contains
 work "Doctor" giver=Bernael_FeedBottledSoul on="Bedridden" expect=disabled reason="Bottled Soul essence" match=contains
 
@@ -79,7 +79,7 @@ spawn Pawn:Colonist in="store" name="Captive"
 spawn Pawn:Colonist in="store" name="Wounded"
 spawn Pawn:Colonist in="cell" name="Caged"
 spawn Pawn:Colonist in="cell" name="Starved" xenotype=BX_Bernael
-give "Free Bernael" resource=BX_SoulStarved value=0.1
+give "Free Bernael" resource=BX_EssenceHarvest value=0.1
 work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Free Bernael" expect=absent
 prisoner "Captive" resistance=10 mode=Execution
 work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Captive" expect=disabled reason="not set to be brought food" match=contains
@@ -100,12 +100,12 @@ work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Caged" expect=absen
 prisoner "Starved"
 assert prisoner "Starved" secure by="Warden" expect=present
 assert pawn "Starved" room=PrisonCell expect=present
-give "Starved" resource=BX_SoulStarved value=0.6 targetValue=0.5
-assert pawn "Starved" gene=BX_SoulStarved expect=present
-assert pawn "Starved" resource=BX_SoulStarved min=0.55 max=0.65 expect=present
+give "Starved" resource=BX_EssenceHarvest value=0.6 targetValue=0.5
+assert pawn "Starved" gene=BX_EssenceHarvest expect=present
+assert pawn "Starved" resource=BX_EssenceHarvest min=0.55 max=0.65 expect=present
 assert reach "Warden" to="Starved" pathEndMode=OnCell expect=present
 work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="does not want a bottled soul yet" match=contains
-give "Starved" resource=BX_SoulStarved value=0.1
+give "Starved" resource=BX_EssenceHarvest value=0.1
 work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="Bottled Soul essence" match=contains
 pack "Starved" thing=BX_BottledSoul
 work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Starved" expect=disabled reason="can already reach a bottled soul" match=contains

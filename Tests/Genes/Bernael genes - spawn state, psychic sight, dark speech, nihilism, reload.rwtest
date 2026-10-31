@@ -68,12 +68,12 @@ assert log clean
 spawn Pawn:Colonist at 6,0 name="Saved" xenotype=BX_Bernael
 spawn Thing:BX_SoulLantern at 7,0
 equip "Saved" thing=BX_SoulLantern
-give "Saved" resource=BX_SoulStarved value=0.42
+give "Saved" resource=BX_EssenceHarvest value=0.42
 
 reload note="reload block: save, load, everything has to still be there"
 
 assert pawn "Saved" hediff=BX_Blindness expect=present
-assert pawn "Saved" resource=BX_SoulStarved min=0.41 max=0.43 expect=present
+assert pawn "Saved" resource=BX_EssenceHarvest min=0.41 max=0.43 expect=present
 assert pawn "Saved" capacity=Sight min=1.25 expect=present
 assert pawn "Saved" equipment=BX_SoulLantern expect=present
 assert log clean

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 	<GeneDef>
-		<defName>BX_SoulStarved</defName>
+		<defName>BX_SoulEater</defName>
 		<label>soul eater</label>
 		<description>Carriers of this gene have a reserve of dark magical strength powered by souls. dark arcana can be gained by consuming the souls of the unfortunate and spent in various ways, all of which are unlocked by other genes.\n\nCarriers lose 2 dark arcana per day from magical entropy.</description>
 		<geneClass>Bernael_Xenotype.Gene_Soul</geneClass>
@@ -18,7 +18,7 @@
 		<iconPath>UI/Icons/Genes/BX_SoulEater</iconPath>
 		<selectionWeight>0</selectionWeight>
 		<displayCategory>BX_DarkEnergy</displayCategory>
-		<displayOrderInCategory>-2</displayOrderInCategory>
+		<displayOrderInCategory>-99</displayOrderInCategory>
 		<customEffectDescriptions>
 			<li>Gives dark arcana supply.</li>
 		</customEffectDescriptions>
@@ -31,10 +31,11 @@
 		</symbolPack>
 		<minAgeActive>3</minAgeActive>
 		<resourceLossPerDay>0.04</resourceLossPerDay>
-		<biostatCpx>1</biostatCpx>
-		<biostatMet>1</biostatMet>
+		<biostatCpx>3</biostatCpx>
+		<biostatMet>0</biostatMet>
+		<biostatArc>1</biostatArc>
 		<exclusionTags>
-			<li>BX_SoulStarved</li>
+			<li>BX_SoulEater</li>
 		</exclusionTags>
 		<modExtensions>
 			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">

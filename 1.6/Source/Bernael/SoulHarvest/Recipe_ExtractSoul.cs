@@ -23,7 +23,7 @@ namespace Bernael_Xenotype
 			}
 			foreach (Pawn colonist in pawn.Map.mapPawns.FreeColonists)
 			{
-				if (colonist.genes.HasActiveGene(BernaelDefOf.BX_SoulStarved))
+				if (colonist.genes.HasActiveGene(BernaelDefOf.BX_SoulEater))
 				{
 					return base.AvailableOnNow(thing, part);
 				}
@@ -53,7 +53,7 @@ namespace Bernael_Xenotype
 		public override void CheckForWarnings(Pawn medPawn)
 		{
 			base.CheckForWarnings(medPawn);
-			if (medPawn?.genes == null || medPawn.genes.HasActiveGene(BernaelDefOf.BX_SoulStarved))
+			if (medPawn?.genes == null || medPawn.genes.HasActiveGene(BernaelDefOf.BX_SoulEater))
 			{
 				Messages.Message("MessageCannotStartHemogenExtraction".Translate(medPawn.Named("PAWN")), medPawn, MessageTypeDefOf.NeutralEvent, historical: false);
 			}

@@ -20,7 +20,7 @@ namespace Bernael_Xenotype
                 node.Attributes["Class"].Value = typeof(DarkMirage).FullName;
 
             // BX_DepravedHead became a cosmetic-only Verse.Gene when psychic sight moved to
-            // BX_BernaelBlind. Older saves still name its former custom class, which must be
+            // BX_EtherealSight. Older saves still name its former custom class, which must be
             // rewritten before Scribe attempts to instantiate the saved gene node.
             foreach (XmlNode node in root.SelectNodes(".//*[@Class='Bernael_Xenotype.Gene_DepravedHead']"))
                 node.Attributes["Class"].Value = typeof(Gene).FullName;
@@ -50,16 +50,16 @@ namespace Bernael_Xenotype
     {
         public static void Postfix(Pawn_GeneTracker __instance)
         {
-            if (Scribe.mode != LoadSaveMode.PostLoadInit || __instance.GetGene(BernaelDefOf.BX_BernaelBlind) != null) return;
+            if (Scribe.mode != LoadSaveMode.PostLoadInit || __instance.GetGene(BernaelDefOf.BX_EtherealSight) != null) return;
 
             Gene depravedHead = __instance.GetGene(BernaelDefOf.BX_DepravedHead);
             if (depravedHead == null) return;
 
-            __instance.AddGene(BernaelDefOf.BX_BernaelBlind, __instance.IsXenogene(depravedHead));
+            __instance.AddGene(BernaelDefOf.BX_EtherealSight, __instance.IsXenogene(depravedHead));
         }
     }
 
-    // BX_SoulFeeding moved from Verb_CastAbilityTouch to Verb_CastAbility. On load VerbTracker
+    // BX_LifeDrain moved from Verb_CastAbilityTouch to Verb_CastAbility. On load VerbTracker
     // drops a saved verb whose class no longer matches and creates a fresh one, but nothing
     // hands that fresh verb its Ability, so every targeting frame throws on ability.def.
     [HarmonyPatch(typeof(Ability), nameof(Ability.ExposeData))]

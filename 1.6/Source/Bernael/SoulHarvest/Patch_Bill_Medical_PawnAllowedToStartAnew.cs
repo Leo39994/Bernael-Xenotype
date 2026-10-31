@@ -12,7 +12,7 @@ namespace Bernael_Xenotype
             if (!__result) return;
             if (__instance.recipe == BernaelDefOf.BX_ExtractSoul)
             {
-                __result = pawn.genes?.HasActiveGene(BernaelDefOf.BX_SoulStarved) ?? false;
+                __result = pawn.genes?.HasActiveGene(BernaelDefOf.BX_SoulEater) ?? false;
             }
         }
     }

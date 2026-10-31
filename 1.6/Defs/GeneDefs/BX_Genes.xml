@@ -4,7 +4,7 @@
 		<defName>BX_DepravedHead</defName>
 		<label>Depraved Head</label>
 		<labelShortAdj>wide-mouthed</labelShortAdj>
-		<description>Head</description>
+		<description>Carriers of this gene develop unnaturally hollow facial contours, sunken. Their unsettling visage seems to radiate desperation and depravity. </description>
 		<iconPath>UI/Icons/Genes/BX_DepravedHead</iconPath>
 		<displayOrderInCategory>0</displayOrderInCategory>
 		<displayCategory>Cosmetic</displayCategory>
@@ -15,23 +15,32 @@
 	</GeneDef>
 
 	<GeneDef>
-		<defName>BX_BernaelBlind</defName>
-		<label>Reaper’s Sight</label>
-		<labelShortAdj>reaper-sighted</labelShortAdj>
-		<description>Carriers perceive the world through psychic senses instead of ordinary vision. Their eyes remain permanently blinded, but their effective sight is enhanced and obscuring gas does not impair ranged accuracy. Artificial eyes cannot be installed while this gene is active.</description>
+		<defName>BX_EtherealSight</defName>
+		<label>Ethereal Sight</label>
+		<labelShortAdj>ethereal-sighted</labelShortAdj>
+		<description>A gene that enhances the carrier's pineal gland for psychic perception, rendering conventional eyesight obsolete.</description>
 		<geneClass>Bernael_Xenotype.Gene_BernaelBlind</geneClass>
 		<iconPath>UI/Icons/Genes/BX_EtherealSight</iconPath>
 		<displayOrderInCategory>1</displayOrderInCategory>
 		<displayCategory>BX_DarkEnergy</displayCategory>
 		<selectionWeight>0</selectionWeight>
 		<biostatCpx>1</biostatCpx>
+		<biostatMet>-1</biostatMet>
+		<prerequisite>BX_SoulEater</prerequisite>
+		<modExtensions>
+			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
+				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>
+				<backgroundPathEndogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathEndogenes>
+				<backgroundPathArchite>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathArchite>
+			</li>
+		</modExtensions>
 	</GeneDef>
 	
 	<GeneDef>
 		<defName>BX_CravedBody</defName>
 		<label>Craved Body</label>
 		<labelShortAdj>craved</labelShortAdj>
-		<description>Carriers of this gene have a pinched, Craved appearance in their body.</description>
+		<description>Carriers of this gene have a Craved-shaped bodies. A person can have more than one body type gene; one body type will be chosen among those that are allowed. This form is an uncomfortable sight to see, it's anorexic, sickly, it's a body that says desperation in every inch.</description>
 		<biostatCpx>0</biostatCpx>
 		<selectionWeight>0</selectionWeight>
 		<displayOrderInCategory>437</displayOrderInCategory>
@@ -65,7 +74,7 @@
 	<GeneDef Name="HaloBase">
 		<defName>BX_Profane_Halo</defName>
 		<label>Top halo</label>
-		<description>Carriers of this gene emanate a dark halo</description>
+		<description>Carriers of this gene manifest a jagged halo of dark, crimson radiance above their heads, an outward manifestation of their twisted psychic presence. Its sinister glow perverts the symbolism of the angelic aureole, turning a sign of holiness into an unsettling emblem of profaned transcendence. </description>
 		<iconPath>UI/Icons/Genes/BX_ProfaneHalo</iconPath>
 		<displayOrderInCategory>14</displayOrderInCategory>
 		<biostatCpx>1</biostatCpx>
@@ -114,7 +123,7 @@
 	<GeneDef Name="WingsBase">
 		<defName>BX_CurvedWings</defName>
 		<label>Curved Wings</label>
-		<description>Carriers grow a set of curved wings</description>
+		<description>Carriers of this gene develop a pair of curved, partially atrophied black wings incapable of true flight. Their muscles can unleash a sudden evasive burst, propelling the carrier a short distance while scattering accumulated powdery residue into a dense, dark cloud that blinds enemies, obscures their movements, and extinguishes fires.</description>
 		<iconPath>UI/Icons/Genes/BX_CurvedWings</iconPath>
 		<abilities>
 			<li>BX_WingBurst</li>
@@ -123,7 +132,7 @@
 			<AbilityDef>BX_WingBurst</AbilityDef>
 		</descriptionHyperlinks>
 		<displayOrderInCategory>25</displayOrderInCategory>
-		<biostatMet>0</biostatMet>
+		<biostatMet>-3</biostatMet>
 		<biostatCpx>1</biostatCpx>
 		<renderNodeProperties>
 			<li>
@@ -171,9 +180,9 @@
 		<defName>BX_WitheredSoul</defName>
 		<label>Withered Soul</label>
 		<labelShortAdj>withered</labelShortAdj>
-		<description>gene that cause a person to experience pain if they are in an bad mood.</description>
+		<description>This gene causes the carrier to experience physical pain when in a negative mood. Sadness, despair, and other unpleasant emotional states become sources of torment.</description>
 		<biostatCpx>1</biostatCpx>
-		<biostatMet>2</biostatMet>
+		<biostatMet>3</biostatMet>
 		<displayOrderInCategory>438</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_WitheredSoul</iconPath>
 		<geneClass>Bernael_Xenotype.Gene_Hediff</geneClass>
@@ -189,10 +198,10 @@
 	<GeneDef>
 		<defName>BX_Warlockracy</defName>
 		<label>warlockracy</label>
-		<labelShortAdj>withered</labelShortAdj>
-		<description>Carriers of this gene strictly measure a creature's worth by their psionic prowess. They feel strong contempt toward non-psionic beings, but hold high reverence for powerful psioticians.</description>
+		<labelShortAdj>warlockracy</labelShortAdj>
+		<description>The carrier perceives the psychic aura of others, developing intense affinity for those with powerful psychic sensitivity and profound contempt for those with weak or absent psychic sensitivity, regardless of their social standing or usefulness.</description>
 		<biostatCpx>1</biostatCpx>
-		<biostatMet>-1</biostatMet>
+		<biostatMet>3</biostatMet>
 		<displayOrderInCategory>439</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_Warlockracy</iconPath>
 		<symbolPack>
@@ -203,12 +212,24 @@
 		</symbolPack>
 	</GeneDef>
 	
+	<GeneDef>
+		<defName>BX_DarkSpeech</defName>
+		<label>Dark Speech</label>
+		<description>This gene twists the carrier's speech into something deeply unsettling. Their words grate on the ears and leave a knot in the stomach, making every conversation memorable for the wrong reasons. Listeners find themselves irritated and uneasy, making negotiation difficult.</description>
+		<geneClass>Gene</geneClass>
+		<biostatCpx>1</biostatCpx>
+		<biostatMet>1</biostatMet>
+		<displayCategory>BX_DarkEnergy</displayCategory>
+		<displayOrderInCategory>63</displayOrderInCategory>
+		<iconPath>UI/Icons/Genes/BX_DarkSpeech</iconPath>
+	</GeneDef>
+
 <!-- Moved withered soul hediff to the hediff file -->
 	
 	<GeneDef>
 		<defName>BX_Nihilism</defName>
 		<label>Nihilism</label>
-		<description>Carriers of this gene are much less likely to be recruited and change their ideology.</description>
+		<description>This gene makes its carriers exceptionally resistant to recruitment and ideological conversion. Their convictions are difficult to sway, and attempts to change their allegiance or beliefs are rarely successful.</description>
 		<geneClass>Bernael_Xenotype.Gene_Nihilism</geneClass>
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>2</biostatMet>
@@ -224,10 +245,10 @@
 	<GeneDef>
 		<defName>BX_ReaperEcstasy</defName>
 		<label>Reaper’s Ecstasy</label>
-		<description>Enemy kills improve psycaster abilities (reduce neural heat, increase psychic sensitivity, etc.). Each hostile kill refreshes the shared decay timer. After one in-game hour without another kill, the effect loses one level per hour. When a Bernael kills a living creature, they automatically harvest a fragment of its soul upon its passing. This allows the player to sustain their Bernael through active combat and hunting rather than just imprisonment.</description>
+		<description>This gene allows the carrier to drain psychic essence from creatures it kills, replenishing its neural heat reserves and sustaining its psychic faculties through combat rather than prolonged feeding.</description>
 		<geneClass>Bernael_Xenotype.Gene_Hediff</geneClass>
 		<biostatCpx>1</biostatCpx>
-		<biostatMet>2</biostatMet>
+		<biostatMet>3</biostatMet>
 				<displayCategory>BX_DarkEnergy</displayCategory>
 		<displayOrderInCategory>60</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_ReapersEcstasy</iconPath>
@@ -248,13 +269,14 @@
 	<GeneDef MayRequire="Sov.Nephilim">
 		<defName>BX_Grace_Galling</defName>
 		<label>Grace Galling</label>
-		<description>Carriers of this gene hate people who have used Grace.</description>
+		<description>This gene causes its carriers to develop an intense aversion to individuals who have used Grace. The mere presence of a Grace user provokes deep hostility, overriding personal loyalties and social bonds.</description>
 		<geneClass>Gene</geneClass>
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>1</biostatMet>
 				<displayCategory>BX_DarkEnergy</displayCategory>
 		<displayOrderInCategory>61</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_GraceGalling</iconPath>
+		<prerequisite>BX_SoulEater</prerequisite>
 		<modExtensions>
 			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
 				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>
@@ -262,6 +284,28 @@
 				<backgroundPathArchite>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathArchite>
 			</li>
 		</modExtensions>
+	</GeneDef>
+	
+	<GeneDef MayRequire="Sov.Nephilim">
+		<defName>BX_SoulPendulum</defName>
+		<label>Pendulum of Soul</label>
+		<description>Carriers of this gene that transforms an angel into a fallen one (and vice versa) when they are deprived of Grace and suffering from a mental break.</description>
+		<geneClass>Bernael_Xenotype.Gene_Pendulum</geneClass>
+		<biostatCpx>1</biostatCpx>
+		<biostatMet>-1</biostatMet>
+				<displayCategory>BX_DarkEnergy</displayCategory>
+		<displayOrderInCategory>62</displayOrderInCategory>
+		<iconPath>UI/Icons/Genes/BX_PendulumOfSoul</iconPath>
+		<prerequisite>BX_SoulEater</prerequisite>
+		<modExtensions>
+			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
+				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>
+				<backgroundPathEndogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathEndogenes>
+				<backgroundPathArchite>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathArchite>
+			</li>
+		</modExtensions>
+		<mentalBreakMtbDays>0.1</mentalBreakMtbDays>
+		<mentalBreakDef>BX_SoulFeedingFrenzy</mentalBreakDef>
 	</GeneDef>
 	
 	<GeneDef MayRequire="Sov.Nephilim">
@@ -274,6 +318,7 @@
 				<displayCategory>BX_DarkEnergy</displayCategory>
 		<displayOrderInCategory>62</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_PendulumOfGrace</iconPath>
+		<prerequisite>BX_SoulEater</prerequisite>
 		<modExtensions>
 			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
 				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>
@@ -284,52 +329,76 @@
 		<mentalBreakMtbDays>0.1</mentalBreakMtbDays>
 		<mentalBreakDef>BX_SoulFeedingFrenzy</mentalBreakDef>
 	</GeneDef>
-	
+
+
+		<!-- ====Archo==== -->
+
+
 	<GeneDef>
-		<defName>BX_DarkSpeech</defName>
-		<label>Dark Speech</label>
-		<description>Carriers of this gene speak in a dark, ancient language. Creatures without this gene will feel uneasy when interacted with.</description>
-		<geneClass>Gene</geneClass>
-		<biostatCpx>1</biostatCpx>
-		<biostatMet>1</biostatMet>
+		<defName>BX_EssenceReservoir</defName>
+		<label>Essence Reservoir</label>
+		<description>Carriers of this gene possess a volatile spiritual reservoir within their desiccated bodies capable of violently purging stored soul essence. When activated, the organism ruptures its internal vessel, converting trapped souls into an agonizing burst of homing projectiles. Grants the Rancor of Souls ability.</description>
+		<geneClass>Bernael_Xenotype.Gene_Hexmaster</geneClass>
+		<biostatCpx>5</biostatCpx>
+		<biostatMet>0</biostatMet>
+		<biostatArc>1</biostatArc>
 		<displayCategory>BX_DarkEnergy</displayCategory>
-		<displayOrderInCategory>63</displayOrderInCategory>
-		<iconPath>UI/Icons/Genes/BX_DarkSpeech</iconPath>
-		<modExtensions>
-			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
-				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>
-				<backgroundPathEndogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathEndogenes>
-				<backgroundPathArchite>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathArchite>
-			</li>
+		<displayOrderInCategory>-98</displayOrderInCategory>
+		<iconPath>UI/Icons/Genes/BX_EssenceReservoir</iconPath>
+		<prerequisite>BX_SoulEater</prerequisite>
+			<modExtensions>
+		<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
+			<backgroundPathXenogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathXenogenes>
+			<backgroundPathEndogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathEndogenes>
+			<backgroundPathArchite>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathArchite>
+		</li>
+		</modExtensions>
+	</GeneDef>
+
+	<GeneDef>
+		<defName>BX_FoldSeverance</defName>
+		<label>Fold Severance</label>
+		<description>This gene allows the carrier to briefly slip out of phase with physical reality, becoming immune to physical damage and able to traverse solid barriers.</description>
+		<geneClass>Bernael_Xenotype.Gene_Hexmaster</geneClass>
+		<biostatCpx>4</biostatCpx>
+		<biostatMet>0</biostatMet>
+		<biostatArc>1</biostatArc>
+		<displayCategory>BX_DarkEnergy</displayCategory>
+		<abilities>
+			<li>BX_FoldShift</li>
+		</abilities>
+		<descriptionHyperlinks>
+			<AbilityDef>BX_FoldShift</AbilityDef>
+		</descriptionHyperlinks>
+		<displayOrderInCategory>-97</displayOrderInCategory>
+		<iconPath>UI/Icons/Genes/BX_FoldSeverance</iconPath>
+		<prerequisite>BX_SoulEater</prerequisite>
+			<modExtensions>
+		<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
+			<backgroundPathXenogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathXenogenes>
+			<backgroundPathEndogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathEndogenes>
+			<backgroundPathArchite>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathArchite>
+		</li>
 		</modExtensions>
 	</GeneDef>
 	
-	<!-- ====Archo==== -->
-	
 	<GeneDef>
-		<defName>BX_AbyssalReach</defName>
-		<label>Abyssal Reach</label>
-		<description>Carriers of this gene can project their psychic influence farther, increasing the range of all psycast abilities by 25%.</description>
+		<defName>BX_PsychicReach</defName>
+		<label>Psychic Reach</label>
+		<description>This gene extends the reach of the carrier's psychic abilities, allowing them to affect targets from 25% farther away.</description>
 		<geneClass>Gene</geneClass>
 		<biostatCpx>2</biostatCpx>
 		<biostatMet>0</biostatMet>
 		<biostatArc>1</biostatArc>
 		<displayCategory>BX_DarkEnergy</displayCategory>
 		<displayOrderInCategory>-5</displayOrderInCategory>
-		<iconPath>UI/Icons/Genes/Gene_EnhancedPsychicAbility</iconPath>
-		<modExtensions>
-			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
-				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>
-				<backgroundPathEndogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathEndogenes>
-				<backgroundPathArchite>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathArchite>
-			</li>
-		</modExtensions>
+		<iconPath>UI/Icons/Genes/BX_PsychicReach</iconPath>
 	</GeneDef>
 	
 	<GeneDef>
 		<defName>BX_Mastermind</defName>
 		<label>Mastermind</label>
-		<description>Enhance all psycaster stats</description>
+		<description>This gene enhances the carrier's psychic faculties, increasing psychic sensitivity, meditation efficiency, neural heat capacity, and neural heat recovery. Carriers can draw more power from their psycasts while enduring greater psychic strain and recovering from it more rapidly.</description>
 		<geneClass>Gene</geneClass>
 		<statFactors>
 			<MeditationFocusGain>1.3</MeditationFocusGain>
@@ -345,7 +414,7 @@
 		</exclusionTags>
 		<biostatCpx>4</biostatCpx>
 		<biostatMet>0</biostatMet>
-		<biostatArc>1</biostatArc>
+		<biostatArc>2</biostatArc>
 		<displayCategory>BX_DarkEnergy</displayCategory>
 		<displayOrderInCategory>-3</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_Mastermind</iconPath>
@@ -368,7 +437,7 @@
 	<GeneDef>
 		<defName>BX_Hexmaster</defName>
 		<label>Hexmaster</label>
-		<description>The carrier of this gene has possessed Psylink since its appearance and has a second level in the branch of dark magic.</description>
+		<description>This gene grants the carrier a psylink from birth and an additional level in the dark magic branch, marking them as a natural practitioner of forbidden psychic arts.</description>
 		<geneClass>Bernael_Xenotype.Gene_Hexmaster</geneClass>
 		<biostatCpx>4</biostatCpx>
 		<biostatMet>0</biostatMet>
@@ -377,4 +446,6 @@
 		<displayOrderInCategory>-4</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_Hexmaster</iconPath>
 	</GeneDef>
+
+
 </Defs>

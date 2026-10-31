@@ -33,7 +33,7 @@ namespace Bernael_Xenotype
                 return null;
             }
             Pawn_GeneTracker genes = prisoner.genes;
-            Gene_Soul gene_Soul = ((genes != null) ? genes.GetGene(BernaelDefOf.BX_SoulStarved) : null) as Gene_Soul;
+            Gene_Soul gene_Soul = ((genes != null) ? genes.GetGene(BernaelDefOf.BX_SoulEater) : null) as Gene_Soul;
             if (gene_Soul == null)
             {
                 return null;

@@ -18,9 +18,9 @@ namespace Bernael_Xenotype
         }
 
         public static GeneDef BX_DarkSpeech;
-        public static GeneDef BX_AbyssalReach;
+        public static GeneDef BX_PsychicReach;
         public static GeneDef BX_DepravedHead;
-        public static GeneDef BX_BernaelBlind;
+        public static GeneDef BX_EtherealSight;
         public static GeneDef BX_Warlockracy;
         public static TaleDef BX_ConsumedGrace;
         public static XenotypeDef BX_Bernael;
@@ -35,7 +35,7 @@ namespace Bernael_Xenotype
         public static HediffDef BX_PsychicOverchargeHediff;
         public static HediffDef BX_MaliciousSeal;
         public static DamageDef BX_CursedFlame;
-        public static AbilityDef BX_SoulFeeding;
+        public static AbilityDef BX_LifeDrain;
         public static ThoughtDef BX_ConsumedGraceThoughtMood;
         public static ThoughtDef BX_HeardDarkSpeech;
         public static ThoughtDef BX_FedOn;
@@ -44,8 +44,8 @@ namespace Bernael_Xenotype
         public static HistoryEventDef BX_ExtractedSoul;
 
         public static StatDef BX_SoulGainFactor;
-        public static GeneDef BX_SoulStarved;
-        public static GeneDef BX_SoulFeeder;
+        public static GeneDef BX_SoulEater;
+        public static GeneDef BX_EssenceHarvest;
 
         public static ThingDef BX_WingBurstSmoke;
         public static ThingDef BX_WingBurstFlyer;

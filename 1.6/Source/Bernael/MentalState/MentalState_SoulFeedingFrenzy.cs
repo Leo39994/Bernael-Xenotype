@@ -19,9 +19,9 @@ namespace Bernael_Xenotype
         {
             if (pawn?.abilities != null)
             {
-                if (pawn.abilities.GetAbility(BernaelDefOf.BX_SoulFeeding) == null)
+                if (pawn.abilities.GetAbility(BernaelDefOf.BX_LifeDrain) == null)
                 {
-                    pawn.abilities.GainAbility(BernaelDefOf.BX_SoulFeeding);
+                    pawn.abilities.GainAbility(BernaelDefOf.BX_LifeDrain);
                 }
             }
         }
@@ -31,10 +31,10 @@ namespace Bernael_Xenotype
             base.PostEnd();
             if (pawn?.abilities != null)
             {
-                Ability ability = pawn.abilities.GetAbility(BernaelDefOf.BX_SoulFeeding);
-                if (ability != null && !pawn.genes.HasActiveGene(BernaelDefOf.BX_SoulStarved))
+                Ability ability = pawn.abilities.GetAbility(BernaelDefOf.BX_LifeDrain);
+                if (ability != null && !pawn.genes.HasActiveGene(BernaelDefOf.BX_SoulEater))
                 {
-                    pawn.abilities.RemoveAbility(BernaelDefOf.BX_SoulFeeding);
+                    pawn.abilities.RemoveAbility(BernaelDefOf.BX_LifeDrain);
                 }
             }
         }

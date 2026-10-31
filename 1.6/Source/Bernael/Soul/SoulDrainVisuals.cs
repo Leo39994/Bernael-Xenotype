@@ -234,7 +234,7 @@ namespace Bernael_Xenotype
             if (attemptedLoad) return false;
             attemptedLoad = true;
             Shader shader = null;
-            AbilityDef def = DefDatabase<AbilityDef>.GetNamed("BX_SoulFeeding");
+            AbilityDef def = DefDatabase<AbilityDef>.GetNamed("BX_LifeDrain");
             foreach (AssetBundle bundle in def.modContentPack.assetBundles.loadedAssetBundles)
             {
                 shader = bundle.LoadAsset<Shader>("Assets/Shaders/SoulDrain.shader");

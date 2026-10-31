@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 	<GeneDef>
-		<defName>BX_SoulFeeder</defName>
-		<label>souldrainer</label>
-		<description>PLACEHOLDER</description>
-		<iconPath>UI/Icons/Genes/BX_LifeDrain</iconPath>
+		<defName>BX_EssenceHarvest</defName>
+		<label>essence harvest</label>
+		<description>The carrier can feed upon the psychic essence of living beings, drawing out their life force to nourish and empower itself. The extent of each feeding determines the consequences for the victim: light feeding leaves them weakened but recoverable, moderate feeding permanently impairs their psychic faculties, while extreme feeding can strip away their remaining consciousness, leaving them Hollowed. The essence consumed strengthens the carrier, at the expense of its prey. </description>
+		<iconPath>UI/Icons/Genes/BX_EssenceHarvest</iconPath>
 		<geneClass>Gene_Bloodfeeder</geneClass>
-		<prerequisite>BX_SoulStarved</prerequisite>
+		<prerequisite>BX_SoulEater</prerequisite>
 		<displayCategory>BX_DarkEnergy</displayCategory>
 		<deathHistoryEvent>BloodfeederDied</deathHistoryEvent>
+		<displayOrderInCategory>-2</displayOrderInCategory>
 		<abilities>
-			<li>BX_SoulFeeding</li>
+			<li>BX_LifeDrain</li>
 		</abilities>
 		<descriptionHyperlinks>
-			<AbilityDef>BX_SoulFeeding</AbilityDef>
+			<AbilityDef>BX_LifeDrain</AbilityDef>
 		</descriptionHyperlinks>
-		<biostatMet>-1</biostatMet>
+		<biostatMet>-2</biostatMet>
+		<biostatCpx>1</biostatCpx>
 		<minAgeActive>3</minAgeActive>
-	<modExtensions>
-		<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
-			<backgroundPathXenogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathXenogenes>
-			<backgroundPathEndogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathEndogenes>
-			<backgroundPathArchite>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathArchite>
-		</li>
-	</modExtensions>
+		<modExtensions>
+			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
+				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>
+				<backgroundPathEndogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathEndogenes>
+				<backgroundPathArchite>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathArchite>
+			</li>
+		</modExtensions>
 	</GeneDef>
 </Defs>

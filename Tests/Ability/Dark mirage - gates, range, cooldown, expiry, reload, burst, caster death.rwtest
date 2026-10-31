@@ -11,8 +11,8 @@ ability "Bernael" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 ability "Plain" grant=BX_DarkMirage psylink=2 psyfocus=1.0
 
 assert thing BX_DarkMirageDecoy expect=absent
-assert pawn "Bernael" gene=BX_AbyssalReach expect=present
-assert pawn "Plain" gene=BX_AbyssalReach expect=absent
+assert pawn "Bernael" gene=BX_PsychicReach expect=present
+assert pawn "Plain" gene=BX_PsychicReach expect=absent
 
 select "Bernael"
 gizmo "Dark mirage" expect=disabled

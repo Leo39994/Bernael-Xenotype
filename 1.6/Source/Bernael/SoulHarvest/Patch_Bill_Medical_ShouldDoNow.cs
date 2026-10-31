@@ -14,7 +14,7 @@ namespace Bernael_Xenotype
             {
                 foreach (Pawn colonist in __instance.GiverPawn.Map.mapPawns.FreeColonistsSpawned)
                 {
-                    if (colonist.genes?.HasActiveGene(BernaelDefOf.BX_SoulStarved) == true && colonist.workSettings?.WorkIsActive(WorkTypeDefOf.Doctor) == true && !colonist.Downed)
+                    if (colonist.genes?.HasActiveGene(BernaelDefOf.BX_SoulEater) == true && colonist.workSettings?.WorkIsActive(WorkTypeDefOf.Doctor) == true && !colonist.Downed)
                     {
                         __result = true;
                     }

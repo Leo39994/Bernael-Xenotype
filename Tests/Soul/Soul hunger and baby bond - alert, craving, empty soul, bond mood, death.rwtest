@@ -4,12 +4,12 @@ test "Soul hunger and baby bond - alert, craving, empty soul, bond mood, death" 
 requires mod=Mortis.BX
 requires dlc=Biotech
 spawn Pawn:Colonist at 0,0 name="Low" xenotype=BX_Bernael
-give "Low" resource=BX_SoulStarved value=0.05
+give "Low" resource=BX_EssenceHarvest value=0.05
 waitfor alert "Alert_LowSoulEnergy" ticks=700 expect=present
 assert text contains "MB_Alert" expect=absent
 
 spawn Pawn:Colonist at 2,0 name="Craver" xenotype=BX_Bernael
-give "Craver" resource=BX_SoulStarved value=0.5
+give "Craver" resource=BX_EssenceHarvest value=0.5
 
 assert pawn "Craver" thought=BX_SoulEnergyCraving expect=absent
 
@@ -26,7 +26,7 @@ waitfor pawn "Craver" thought=BX_SoulEnergyCraving stage=2 ticks=120 expect=pres
 assert pawn "Craver" thought=BX_SoulEnergyCraving mood min=-22 max=-18 expect=present
 
 spawn Pawn:Colonist at 4,0 name="Empty" xenotype=BX_Bernael
-give "Empty" resource=BX_SoulStarved value=0.0005
+give "Empty" resource=BX_EssenceHarvest value=0.0005
 waitfor pawn "Empty" hediff=BX_SoulCraving ticks=900 expect=present
 
 tick 2500 note="empty soul block: one game hour, severityPerHourEmpty 0.25"
@@ -38,7 +38,7 @@ spawn Pawn:Colonist at 0,6 name="Bernael" xenotype=BX_Bernael
 spawn Pawn:Colonist at 1,6 name="Baby" age=1
 spawn Pawn:Colonist at 5,6 name="Childless" xenotype=BX_Bernael
 
-give "Bernael" resource=BX_SoulStarved value=0.1
+give "Bernael" resource=BX_EssenceHarvest value=0.1
 select "Bernael"
 gizmo "Soul drain" expect=allowed
 target "Baby" expect=allowed
