@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <ThoughtDef>
+        <defName>BX_AbsorbedCorruptedBottledSoul</defName>
+        <thoughtClass>Thought_Memory</thoughtClass>
+        <durationDays>5</durationDays>
+        <stackLimit>5</stackLimit>
+
+        <stages>
+            <li>
+                <label>absorbed soul</label>
+                <description>I absorbed a soul. It felt exhilarating and rejuvenated my soul.</description>
+                <baseMoodEffect>5</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>BX_SoulEnergyCraving</defName>
+        <workerClass>ThoughtWorker_Hediff</workerClass>
+        <hediff>BX_SoulCraving</hediff>
+        <stages>
+            <li>
+                <label>soul energy craving</label>
+                <description>I feel an intense yearning for soul essence.</description>
+                <baseMoodEffect>-10</baseMoodEffect>
+            </li>
+            <li>
+                <label>soul energy craving</label>
+                <description>I find myself irresistibly drawn to the life force of others, my desperation driving me to increasingly risky behavior in pursuit of satisfaction.</description>
+                <baseMoodEffect>-15</baseMoodEffect>
+            </li>
+            <li>
+                <label>soul energy craving</label>
+                <description>I'm consumed by an insatiable hunger, my essence withering in its absence.</description>
+                <baseMoodEffect>-20</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>BX_FedOn</defName>
+        <thoughtClass>Thought_Memory</thoughtClass>
+        <durationDays>5</durationDays>
+        <nullifyingTraits>
+            <li>Masochist</li>
+        </nullifyingTraits>
+        <nullifyingPrecepts>
+            <li>Bloodfeeders_Revered</li>
+        </nullifyingPrecepts>
+        <stages>
+            <li>
+                <label>drained by {0}</label>
+                <description>I was violated by a soul sucker like some kind of livestock.</description>
+                <baseMoodEffect>-5</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>BX_FedOn_Social</defName>
+        <thoughtClass>Thought_MemorySocial</thoughtClass>
+        <durationDays>60</durationDays>
+        <stackLimit>50</stackLimit>
+        <stackLimitForSameOtherPawn>10</stackLimitForSameOtherPawn>
+        <nullifyingTraits>
+            <li>Masochist</li>
+        </nullifyingTraits>
+        <nullifyingPrecepts>
+            <li>Bloodfeeders_Revered</li>
+        </nullifyingPrecepts>
+        <stages>
+            <li>
+                <label>drained on</label>
+                <baseOpinionOffset>-20</baseOpinionOffset>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+  <!-- Dark speech -->
+    <ThoughtDef>
+    <defName>BX_HeardDarkSpeech</defName>
+    <durationDays>1</durationDays>
+    <developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter>
+    <stages>
+      <li>
+        <label>Dark Speech</label>
+        <description>What did it say? Why is this thing here?</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>BabyBondMood</defName>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <workerClass>Bernael_Xenotype.ThoughtWorker_BabyBond_Mood</workerClass>
+    <validWhileDespawned>false</validWhileDespawned>
+    <stages>
+      <li>
+        <label>bonded child is miserable</label>
+        <description>The child I converted is suffering terribly. Their pain echoes through the bond.</description>
+        <baseMoodEffect>-15</baseMoodEffect>
+      </li>
+      <li>
+        <label>bonded child is sad</label>
+        <description>My bonded child is unhappy. I feel their distress.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+      <li>
+        <label>bonded child is content</label>
+        <description>My bonded child feels neither joy nor sorrow. The bond is quiet.</description>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+      <li>
+        <label>bonded child is happy</label>
+        <description>My bonded child is doing well. Their warmth reaches me through the bond.</description>
+        <baseMoodEffect>5</baseMoodEffect>
+      </li>
+      <li>
+        <label>bonded child is joyful</label>
+        <description>My bonded child radiates joy. The bond fills me with a reflected happiness.</description>
+        <baseMoodEffect>12</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

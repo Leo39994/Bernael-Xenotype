@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <AbilityCategoryDef>
+		<defName>Bernael</defName>
+		<displayOrder>1000</displayOrder>
+	</AbilityCategoryDef>
+
+	<AbilityDef ParentName="AbilityTouchBase">
+		<defName>BX_SoulFeeding</defName>
+		<label>Soul drain</label>
+		<description>Draw out a nearby person's life essence. Red-black smoke surrounds a cyan soul in the target's own shape, pulling it directly from their body into the caster's eyes. The target gradually loses color and temporarily turns charcoal gray. Soul drain weakens the target and repeated feeding can be fatal.\n\nCan only target non-soulstarved humans. Soul gain is affected by the target's body size.</description>
+		<iconPath>UI/Icons/Genes/BX_LifeDrain</iconPath>
+		<category>Bernael</category>
+		<displayOrder>100</displayOrder>
+		<jobDef>CastAbilityOnThing</jobDef>
+		<warmupStartSound>BX_SoulDrain</warmupStartSound>
+		<hostile>false</hostile>
+		<casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+		<verbProperties>
+			<verbClass>Verb_CastAbility</verbClass>
+			<drawAimPie>false</drawAimPie>
+			<range>3.9</range>
+			<warmupTime>4</warmupTime>
+			<targetParams>
+				<canTargetSelf>false</canTargetSelf>
+				<canTargetBuildings>false</canTargetBuildings>
+				<canTargetMechs>false</canTargetMechs>
+				<canTargetBloodfeeders>false</canTargetBloodfeeders>
+			</targetParams>
+		</verbProperties>
+		<comps>
+			<li Class="Bernael_Xenotype.CompProperties_AbilitySoulDrain">
+				<soulGain>0.2</soulGain>
+				<thoughtDefToGiveTarget>BX_FedOn</thoughtDefToGiveTarget>
+				<opinionThoughtDefToGiveTarget>BX_FedOn_Social</opinionThoughtDefToGiveTarget>
+				<resistanceGain>1</resistanceGain>
+				<hediffToGiveTarget>BX_SoulDrained</hediffToGiveTarget>
+				<hediffSeverity>0.4499</hediffSeverity>
+			</li>
+			<li Class="CompProperties_AbilityRequiresCapacity">
+				<capacity>Manipulation</capacity>
+			</li>
+		</comps>
+	</AbilityDef>
+
+	<AbilityDef>
+		<defName>BX_RancorOfSouls</defName>
+		<label>Rancor of Souls</label>
+		<description>Rupture the internal reservoir, purging all stored Soul Saturation as tormented fragments that home in on nearby enemies. One soul projectile is released for every 5% Soul Saturation, up to 20 projectiles at a full reservoir.</description>
+		<abilityClass>Bernael_Xenotype.Ability_RancorOfSouls</abilityClass>
+		<iconPath>UI/Icons/Genes/BX_SoulEater</iconPath>
+		<category>Bernael</category>
+		<displayOrder>110</displayOrder>
+		<jobDef>CastAbilityOnThingWithoutWeapon</jobDef>
+		<cooldownTicksRange>2500</cooldownTicksRange>
+		<hostile>true</hostile>
+		<targetRequired>false</targetRequired>
+		<aiCanUse>false</aiCanUse>
+		<displayGizmoWhileUndrafted>false</displayGizmoWhileUndrafted>
+		<disableGizmoWhileUndrafted>true</disableGizmoWhileUndrafted>
+		<showCastingProgressBar>true</showCastingProgressBar>
+		<warmupStartSound>BX_SoulDrain</warmupStartSound>
+		<statBases>
+			<Ability_EffectRadius>29.5</Ability_EffectRadius>
+		</statBases>
+		<verbProperties>
+			<verbClass>Verb_CastAbility</verbClass>
+			<range>29.5</range>
+			<warmupTime>1</warmupTime>
+			<requireLineOfSight>false</requireLineOfSight>
+			<soundCast>BX_Lantern_Cast</soundCast>
+			<targetParams>
+				<canTargetSelf>true</canTargetSelf>
+			</targetParams>
+		</verbProperties>
+		<comps>
+			<li Class="Bernael_Xenotype.CompProperties_RancorOfSouls">
+				<projectileDef>BX_SoulProj</projectileDef>
+				<resourcePerProjectile>0.05</resourcePerProjectile>
+				<maximumProjectiles>20</maximumProjectiles>
+				<searchRadius>29.5</searchRadius>
+				<ticksBetweenProjectiles>2</ticksBetweenProjectiles>
+			</li>
+		</comps>
+	</AbilityDef>
+
+</Defs>

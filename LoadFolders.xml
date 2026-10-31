@@ -5,4 +5,10 @@
 	<!-- Nephilim Support -->
     <li IfModActive="Sov.Nephilim">1.6/Nephilim</li>
   </v1.6>
+  <v1.7>
+    <li>Common</li>
+    <li>1.7</li>
+	<!-- Nephilim Support -->
+    <li IfModActive="Sov.Nephilim">1.7/Nephilim</li>
+  </v1.7>
 </loadFolders>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <PrisonerInteractionModeDef>
+        <defName>BX_Soulfeed</defName>
+        <label>soul feeding</label>
+        <listOrder>27</listOrder>
+        <description>When a soul eater's soul saturation is low, they may drain this prisoner. Other prisoners who are soul eaters can also feed on this prisoner, if they are in the same cell.</description>
+        <hideIfNoBloodfeeders>true</hideIfNoBloodfeeders>
+        <hideOnHemogenicPawns>true</hideOnHemogenicPawns>
+        <mustBeAwake>false</mustBeAwake>
+        <isNonExclusiveInteraction>true</isNonExclusiveInteraction>
+    </PrisonerInteractionModeDef>
+
+    <PrisonerInteractionModeDef>
+        <defName>BX_Soulfarm</defName>
+        <label>soul farm</label>
+        <listOrder>28</listOrder>
+        <description>The operation to extract a soul fragment will be automatically queued on this prisoner whenever it can be done without killing them. The operation will be carried out by a doctor.</description>
+        <hideOnHemogenicPawns>true</hideOnHemogenicPawns>
+        <mustBeAwake>false</mustBeAwake>
+        <isNonExclusiveInteraction>true</isNonExclusiveInteraction>
+    </PrisonerInteractionModeDef>
+
+</Defs>

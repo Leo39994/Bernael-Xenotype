@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <StatDef>
+        <defName>BX_SoulGainFactor</defName>
+        <label>dark arcana gain multiplier</label>
+        <description>A multiplier on the amount of dark arcana gained.</description>
+        <category>BasicsPawn</category>
+        <toStringStyle>PercentZero</toStringStyle>
+        <defaultBaseValue>1</defaultBaseValue>
+        <hideAtValue>1</hideAtValue>
+    </StatDef>
+
+    <SoundDef>
+        <defName>BX_Lantern_Cast</defName>
+        <context>MapOnly</context>
+        <maxSimultaneous>1</maxSimultaneous>
+        <subSounds>
+            <li>
+                <grains>
+                    <li Class="AudioGrain_Clip">
+                        <clipPath>Lantern_Cast</clipPath>
+                    </li>
+                </grains>
+                <volumeRange>42</volumeRange>
+                <distRange>20~50</distRange>
+            </li>
+        </subSounds>
+    </SoundDef>
+
+</Defs>

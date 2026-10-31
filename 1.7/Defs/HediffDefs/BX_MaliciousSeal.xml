@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Branded by a Malicious Seal. Harmony patches in Bernael/DarkMagic silence every ability while it lasts. -->
+  <HediffDef>
+    <defName>BX_MaliciousSeal</defName>
+    <label>malicious seal</label>
+    <description>An ancient seal of malice has been branded on this creature's mind, and every second its daggers pierce the skull at its heart. While it lasts the creature cannot cast psycasts or use any other ability, it suffers constant pain, and cursed flame sears it far deeper than normal.\n\nIf the sealed creature dies before the brand fades, the seal leaps from its corpse to the nearest hostile minds.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.51, 0.71, 0.86)</defaultLabelColor>
+    <isBad>true</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>1800</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+      <li Class="Bernael_Xenotype.HediffCompProperties_MaliciousSeal">
+        <spreadRadius>4.9</spreadRadius>
+        <maxSpread>3</maxSpread>
+        <spreadSound>PsycastPsychicEffect</spreadSound>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <painOffset>0.2</painOffset>
+        <damageFactors>
+          <BX_CursedFlame>1.5</BX_CursedFlame>
+        </damageFactors>
+      </li>
+    </stages>
+  </HediffDef>
+</Defs>

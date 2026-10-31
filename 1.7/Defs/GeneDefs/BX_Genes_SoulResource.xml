@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<GeneDef>
+		<defName>BX_SoulStarved</defName>
+		<label>soul eater</label>
+		<description>Carriers of this gene have a reserve of dark magical strength powered by souls. dark arcana can be gained by consuming the souls of the unfortunate and spent in various ways, all of which are unlocked by other genes.\n\nCarriers lose 2 dark arcana per day from magical entropy.</description>
+		<geneClass>Bernael_Xenotype.Gene_Soul</geneClass>
+		<resourceGizmoType>Bernael_Xenotype.GeneGizmo_ResourceSoulStarve</resourceGizmoType>
+		<resourceLabel>Soul Saturation</resourceLabel>
+		<resourceGizmoThresholds>
+			<li>0.25</li>
+			<li>0.5</li>
+			<li>0.75</li>
+		</resourceGizmoThresholds>
+		<showGizmoOnWorldView>true</showGizmoOnWorldView>
+		<showGizmoWhenDrafted>true</showGizmoWhenDrafted>
+		<resourceDescription>A reserve of dark magical strength which can be gained and spent in a variety of ways.\n\nHemogen can be increased by consuming souls from a human or consuming soul-trapped objects. You can obtain dark arcana using the 'extract soul' operation on a non-undead human.\n\nIf dark arcana reaches zero, {PAWN_nameDef} will become very unhappy.</resourceDescription>
+		<iconPath>UI/Icons/Genes/BX_SoulEater</iconPath>
+		<selectionWeight>0</selectionWeight>
+		<displayCategory>BX_DarkEnergy</displayCategory>
+		<displayOrderInCategory>-2</displayOrderInCategory>
+		<customEffectDescriptions>
+			<li>Gives dark arcana supply.</li>
+		</customEffectDescriptions>
+		<symbolPack>
+			<prefixSymbols>
+				<li>
+					<symbol>undead</symbol>
+				</li>
+			</prefixSymbols>
+		</symbolPack>
+		<minAgeActive>3</minAgeActive>
+		<resourceLossPerDay>0.04</resourceLossPerDay>
+		<biostatCpx>1</biostatCpx>
+		<biostatMet>1</biostatMet>
+		<exclusionTags>
+			<li>BX_SoulStarved</li>
+		</exclusionTags>
+		<modExtensions>
+			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
+				<backgroundPathXenogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathXenogenes>
+				<backgroundPathEndogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathEndogenes>
+				<backgroundPathArchite>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathArchite>
+			</li>
+		</modExtensions>
+	</GeneDef>
+
+	<GeneDef>
+		<defName>BX_UnstableEssenceReservoir</defName>
+		<label>Unstable Essence Reservoir</label>
+		<labelShortAdj>unstable</labelShortAdj>
+		<description>An archite gene that allows the carrier's desiccated body to accumulate and contain psychic essence. Its volatile reservoir can be ruptured to violently purge stored souls as an agonizing burst of homing projectiles. Grants the Rancor of Souls ability.</description>
+		<geneClass>Gene</geneClass>
+		<prerequisite>BX_SoulStarved</prerequisite>
+		<abilities>
+			<li>BX_RancorOfSouls</li>
+		</abilities>
+		<descriptionHyperlinks>
+			<AbilityDef>BX_RancorOfSouls</AbilityDef>
+		</descriptionHyperlinks>
+		<iconPath>UI/Icons/Genes/BX_SoulEater</iconPath>
+		<selectionWeight>0</selectionWeight>
+		<displayCategory>BX_DarkEnergy</displayCategory>
+		<displayOrderInCategory>-1</displayOrderInCategory>
+		<biostatCpx>3</biostatCpx>
+		<biostatMet>0</biostatMet>
+		<biostatArc>1</biostatArc>
+		<modExtensions>
+			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
+				<backgroundPathXenogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathXenogenes>
+				<backgroundPathEndogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathEndogenes>
+				<backgroundPathArchite>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathArchite>
+			</li>
+		</modExtensions>
+	</GeneDef>
+</Defs>

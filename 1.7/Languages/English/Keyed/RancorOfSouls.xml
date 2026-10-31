@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+	<BX_RancorRequiresSoul>{0} needs at least 5% Soul Saturation to use Rancor of Souls.</BX_RancorRequiresSoul>
+	<BX_RancorNoTargets>No standing hostile target is within range and line of sight.</BX_RancorNoTargets>
+</LanguageData>
