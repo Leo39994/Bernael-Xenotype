@@ -50,7 +50,7 @@ namespace Bernael_Xenotype
             base.Notify_KilledPawn(victim, dinfo);
             ReaperModExt reaperModExt = ModExt;
             if (reaperModExt == null) return;
-            if (pawn?.genes?.GetGene(BernaelDefOf.BX_SoulStarved) is not Gene_Soul gene_Soul) return;
+            if (pawn?.genes?.GetGene(BernaelDefOf.BX_SoulEater) is not Gene_Soul gene_Soul) return;
 
             gene_Soul.Value += reaperModExt.killRefillPct / 100f * gene_Soul.Max;
             if (!victim.HostileTo(pawn.Faction)) return;

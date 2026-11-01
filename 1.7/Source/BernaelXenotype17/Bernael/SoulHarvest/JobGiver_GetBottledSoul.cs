@@ -84,7 +84,7 @@ namespace Bernael_Xenotype
             {
                 return null;
             }
-            if (pawn.genes?.HasActiveGene(BernaelDefOf.BX_SoulFeeder) == true)
+            if (pawn.genes?.HasActiveGene(BernaelDefOf.BX_EssenceHarvest) == true)
             {
                 Pawn prisoner = GetPrisoner(pawn);
                 if (prisoner != null)

@@ -10,7 +10,7 @@ namespace Bernael_Xenotype
     [DefOf]
     public static class BernaelSoulDefOf
     {
-        public static GeneDef BX_SoulStarved;
+        public static GeneDef BX_SoulEater;
 
         static BernaelSoulDefOf()
         {
@@ -142,7 +142,7 @@ namespace Bernael_Xenotype
 
         private bool TryGetResource(out Gene_Resource resource)
         {
-            Gene gene = parent.pawn.genes?.GetGene(BernaelSoulDefOf.BX_SoulStarved);
+            Gene gene = parent.pawn.genes?.GetGene(BernaelSoulDefOf.BX_SoulEater);
             resource = gene as Gene_Resource;
             return resource != null && gene.Active;
         }

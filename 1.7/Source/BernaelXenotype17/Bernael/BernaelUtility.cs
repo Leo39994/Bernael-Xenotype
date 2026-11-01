@@ -19,7 +19,7 @@ namespace Bernael_Xenotype
             {
                 if (_soulDrainedHediff == null)
                 {
-                    AbilityDef abilityDef = BernaelDefOf.BX_SoulFeeding;
+                    AbilityDef abilityDef = BernaelDefOf.BX_LifeDrain;
                     if (abilityDef != null)
                     {
                         foreach (AbilityCompProperties comp in abilityDef.comps)

@@ -8,7 +8,7 @@ namespace Bernael_Xenotype
 
         public static bool HasActiveGene(Pawn pawn)
         {
-            Gene gene = pawn?.genes?.GetGene(BernaelDefOf.BX_AbyssalReach);
+            Gene gene = pawn?.genes?.GetGene(BernaelDefOf.BX_PsychicReach);
             return gene != null && gene.Active;
         }
     }

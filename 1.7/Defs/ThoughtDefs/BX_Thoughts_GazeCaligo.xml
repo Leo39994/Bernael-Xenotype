@@ -1,0 +1,33 @@
+<Defs>
+
+  <ThoughtDef>
+    <defName>BX_GazeCaligoBuff</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>BX_GazeCaligoBuff</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter>
+    <stages>
+      <li>
+        <label>gaze caligo buff</label>
+        <description>.</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>BX_GazeCaligoDebuff</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>BX_GazeCaligoDebuff</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter>
+    <stages>
+      <li>
+        <label>gaze caligo debuff</label>
+        <description>.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

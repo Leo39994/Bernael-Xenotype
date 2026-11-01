@@ -8,7 +8,7 @@ namespace Bernael_Xenotype
     {
         public static void ApplySoulAbsorption(Pawn pawn)
         {
-            if (pawn?.health == null || pawn.genes?.GetGene(BernaelDefOf.BX_SoulStarved)?.Active != true)
+            if (pawn?.health == null || pawn.genes?.GetGene(BernaelDefOf.BX_SoulEater)?.Active != true)
             {
                 return;
             }
@@ -80,7 +80,7 @@ namespace Bernael_Xenotype
         // Vanilla keeps sanguophages off each other through
         // TargetingParameters.canTargetBloodfeeders, but that flag only asks
         // GeneUtility.IsBloodfeeder, which looks for GeneDefOf.Bloodfeeder alone.
-        // BX_SoulFeeder is its own GeneDef, so the flag never fires for our kind
+        // BX_EssenceHarvest is its own GeneDef, so the flag never fires for our kind
         // and the check has to live here. Carriers count even while the gene is
         // still inactive (minAgeActive 3), otherwise a Bernael baby would be a
         // valid target and TryConvertBaby would adopt it into its own xenotype.
@@ -95,7 +95,7 @@ namespace Bernael_Xenotype
             {
                 return false;
             }
-            return genes.GetGene(BernaelDefOf.BX_SoulStarved) != null || genes.GetGene(BernaelDefOf.BX_SoulFeeder) != null;
+            return genes.GetGene(BernaelDefOf.BX_SoulEater) != null || genes.GetGene(BernaelDefOf.BX_EssenceHarvest) != null;
         }
 
         public static void DoDrain(Pawn biter, Pawn victim, float targetSoulGain, float victimResistanceGain, HediffDef hediffToGiveTarget, float victimSoulDrainSeverity = 0.4999f, ThoughtDef thoughtDefToGiveTarget = null, ThoughtDef opinionThoughtToGiveTarget = null)
