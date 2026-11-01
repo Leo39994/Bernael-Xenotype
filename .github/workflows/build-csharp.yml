@@ -33,7 +33,7 @@ jobs:
 
     - name: Build solution
       run: |
-        dotnet build ./1.6/Source/BernaelXenotype.slnx -c Release
+        dotnet build ./1.7/Source/BernaelXenotype17/BernaelXenotype17.csproj -c Release
         dotnet build ./1.7/Source/BernaelSoul/BernaelSoul.csproj -c Release
         dotnet build ./1.7/Source/BernaelVanquish/BernaelVanquish.csproj -c Release
 
@@ -41,9 +41,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: build-output
-        path: |
-          ./1.6/Assemblies/
-          ./1.7/Assemblies/
+        path: ./1.7/Assemblies/
 
     - name: Commit rebuilt assembly
       if: |
@@ -57,22 +55,21 @@ jobs:
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
         # -f bypasses .gitignore in case *.dll is ever ignored
-        git add -f \
-          ./1.6/Assemblies/BernaelXenotype.dll
+        git add -f ./1.7/Assemblies/*.dll
 
         if git diff --cached --quiet; then
           echo "Assembly unchanged, nothing to commit."
           exit 0
         fi
 
-        git commit -m "chore(assemblies): rebuild BernaelXenotype.dll [skip ci]"
+        git commit -m "chore(assemblies): rebuild 1.7 assemblies [skip ci]"
         git pull --rebase origin "$BRANCH"
         git push origin HEAD:"$BRANCH"
 
     - name: Resolve game version
       id: version
       run: |
-        VERSION=$(python3 -c "import xml.etree.ElementTree as ET;r=ET.parse('About/About.xml').getroot();n=r.find('supportedVersions');v=[x.text.strip() for x in n.findall('li') if x.text and x.text.strip()] if n is not None else [];print('-'.join(v) if v else '1.6')")
+        VERSION=$(python3 -c "import xml.etree.ElementTree as ET;r=ET.parse('About/About.xml').getroot();n=r.find('supportedVersions');v=[x.text.strip() for x in n.findall('li') if x.text and x.text.strip()] if n is not None else [];print('-'.join(v) if v else '1.7')")
         echo "version=$VERSION" >> "$GITHUB_OUTPUT"
         echo "zip=BernaelXenotype-${VERSION}-$(git rev-parse --short HEAD).zip" >> "$GITHUB_OUTPUT"
 
@@ -91,7 +88,6 @@ jobs:
           --exclude 'artifact/' \
           --exclude 'Tests/' \
           --exclude 'WeaponTweakData/' \
-          --exclude '1.6/Source/' \
           --exclude '1.7/Source/' \
           --exclude 'QA/' \
           --exclude 'obj/' \

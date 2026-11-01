@@ -3,6 +3,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
     <AssemblyName>BernaelSoul</AssemblyName>
     <RootNamespace>Bernael_Xenotype</RootNamespace>
     <Authors>Font</Authors>
@@ -10,23 +11,15 @@
     <Deterministic>true</Deterministic>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
-    <OutputPath>..\bin\$(Configuration)\</OutputPath>
+    <PathMap>$(MSBuildThisFileDirectory)=/_/</PathMap>
+    <OutputPath>..\..\Assemblies\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <RimWorldDir Condition="'$(RimWorldDir)' == ''">$(RIMWORLD_DIR)</RimWorldDir>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(RimWorldDir)' != ''">
-    <Reference Include="Assembly-CSharp">
-      <HintPath>$(RimWorldDir)\Assembly-CSharp.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityStubs">
-      <HintPath>$(RimWorldDir)\UnityStubs.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
-
+  <!-- Reference assemblies from NuGet, so the build needs no local RimWorld install (CI, any Steam library). -->
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.7.4977-alpha.1" Condition="'$(RimWorldDir)' == ''" />
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.7.4995-unstable" />
   </ItemGroup>
 </Project>
