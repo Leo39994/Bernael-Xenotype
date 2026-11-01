@@ -38,10 +38,23 @@ spawn Thing:MedicineIndustrial at 1,2 count=2
 bill "Bernael" recipe=InstallBionicEye expect=absent
 bill "Baseline" recipe=InstallBionicEye expect=allowed
 
-gene "Bernael" remove=BX_DepravedHead
+spawn Pawn:Colonist at 0,4 name="Bareheaded" xenotype=BX_Bernael
+assert pawn "Bareheaded" gene=BX_EtherealSight expect=present
+assert pawn "Bareheaded" hediff=BX_Blindness expect=present
+assert pawn "Bareheaded" capacity=Sight min=1.25 expect=present
+
+gene "Bareheaded" remove=BX_DepravedHead
+
+assert pawn "Bareheaded" gene=BX_DepravedHead expect=absent
+assert pawn "Bareheaded" gene=BX_EtherealSight expect=present
+assert pawn "Bareheaded" hediff=BX_Blindness expect=present
+assert pawn "Bareheaded" capacity=Sight min=1.25 expect=present
+
+gene "Bernael" remove=BX_EtherealSight
 
 assert pawn "Bernael" hediff=BX_Blindness expect=absent
 assert pawn "Bernael" capacity=Sight max=1 expect=present
+assert pawn "Bernael" gene=BX_DepravedHead expect=present
 
 spawn Pawn:Colonist at 0,8 name="Nihilist" xenotype=BX_Bernael
 prisoner "Nihilist" resistance=10
@@ -86,12 +99,13 @@ assert log clean
 spawn Pawn:Colonist at 6,0 name="Saved" xenotype=BX_Bernael
 spawn Thing:BX_SoulLantern at 7,0
 equip "Saved" thing=BX_SoulLantern
-give "Saved" resource=BX_EssenceHarvest value=0.42
+give "Saved" resource=BX_SoulEater value=0.42
 
 reload note="reload block: save, load, everything has to still be there"
 
+assert pawn "Saved" gene=BX_EtherealSight expect=present
 assert pawn "Saved" hediff=BX_Blindness expect=present
-assert pawn "Saved" resource=BX_EssenceHarvest min=0.41 max=0.43 expect=present
+assert pawn "Saved" resource=BX_SoulEater min=0.41 max=0.43 expect=present
 assert pawn "Saved" capacity=Sight min=1.25 expect=present
 assert pawn "Saved" equipment=BX_SoulLantern expect=present
 assert log clean
