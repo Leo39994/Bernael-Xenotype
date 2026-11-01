@@ -16,7 +16,7 @@
         <costList>
             <Plasteel>40</Plasteel>
             <Gold>25</Gold>
-            <VPE_Eltex MayRequire="VanillaPsycastsExpanded">2</VPE_Eltex>
+            <VPE_Eltex MayRequire="VanillaExpanded.VPsycastsE">2</VPE_Eltex>
             <BX_BottledSoul>5</BX_BottledSoul>
         </costList>
         <thingSetMakerTags>
@@ -71,7 +71,7 @@
         </tools>
         <recipeMaker>
             <researchPrerequisites>
-			<li MayRequire="VanillaPsycastsExpanded">VPE_CasterGear</li>
+			<li MayRequire="VanillaExpanded.VPsycastsE">VPE_CasterGear</li>
 			<li>Fabrication</li>
 		</researchPrerequisites>
             <recipeUsers Inherit="False">
@@ -110,7 +110,7 @@
         <costList>
             <Plasteel>30</Plasteel>
             <Gold>50</Gold>
-            <VPE_Eltex MayRequire="VanillaPsycastsExpanded">4</VPE_Eltex>
+            <VPE_Eltex MayRequire="VanillaExpanded.VPsycastsE">4</VPE_Eltex>
             <BX_BottledSoul>5</BX_BottledSoul>
         </costList>
 	<thingSetMakerTags>
@@ -119,7 +119,7 @@
         </thingSetMakerTags>
         <recipeMaker>
 		<researchPrerequisites>
-			<li MayRequire="VanillaPsycastsExpanded">VPE_CasterGear</li>
+			<li MayRequire="VanillaExpanded.VPsycastsE">VPE_CasterGear</li>
 			<li>Fabrication</li>
 		</researchPrerequisites>
             <recipeUsers>

@@ -7,7 +7,7 @@
 		<techLevel>Spacer</techLevel>
 		<researchPrerequisites>
         <li>PoweredArmor</li>
-		<li MayRequire="VanillaPsycastsExpanded">VPE_CasterGear</li>
+		<li MayRequire="VanillaExpanded.VPsycastsE">VPE_CasterGear</li>
 		</researchPrerequisites>
 		<tradeability>Sellable</tradeability>
 		<generateCommonality>0.25</generateCommonality>
@@ -20,7 +20,7 @@
 			<ComponentSpacer>1</ComponentSpacer>
 			<ComponentIndustrial>1</ComponentIndustrial>
 			<Plasteel>45</Plasteel>
-			<VPE_Eltex MayRequire="VanillaPsycastsExpanded">10</VPE_Eltex>
+			<VPE_Eltex MayRequire="VanillaExpanded.VPsycastsE">10</VPE_Eltex>
 		</costList>
 		<statBases>
 			<WorkToMake>20000</WorkToMake>
@@ -119,7 +119,7 @@
 		<techLevel>Spacer</techLevel>
 		<researchPrerequisites>
         <li>PoweredArmor</li>
-		<li MayRequire="VanillaPsycastsExpanded">VPE_CasterGear</li>
+		<li MayRequire="VanillaExpanded.VPsycastsE">VPE_CasterGear</li>
 		</researchPrerequisites>
 		<tradeability>Sellable</tradeability>
 		<generateCommonality>0.1</generateCommonality>
@@ -128,7 +128,7 @@
 			<ComponentIndustrial>2</ComponentIndustrial>
 			<Plasteel>160</Plasteel>
 			<Uranium>40</Uranium>
-			<VPE_Eltex MayRequire="VanillaPsycastsExpanded">6</VPE_Eltex>
+			<VPE_Eltex MayRequire="VanillaExpanded.VPsycastsE">6</VPE_Eltex>
 		</costList>
 		<tickerType>Normal</tickerType>
 		<statBases>
