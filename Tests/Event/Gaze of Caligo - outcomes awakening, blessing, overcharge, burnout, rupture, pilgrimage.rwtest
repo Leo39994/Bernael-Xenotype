@@ -1,0 +1,55 @@
+rwtest 1
+test "Gaze of Caligo - outcomes awakening, blessing, overcharge, burnout, rupture, pilgrimage" project="Bernael" created=2026-11-01T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+requires dlc=Royalty
+
+spawn Pawn:Colonist at 0,0 name="Adept"
+spawn Pawn:Colonist at 2,0 name="Sensitive" traits=PsychicSensitivity:1
+spawn Pawn:Colonist at 4,0 name="Dull"
+ability "Adept" grant=BX_DireOrb psylink=2
+rand value=0.99 in="Bernael_Xenotype.Patch_Hediff_Psylink_ChangeLevel.Postfix" silent=ok
+
+assert pawn "Sensitive" stat=PsychicSensitivity min=1.05 expect=present
+assert pawn "Dull" stat=PsychicSensitivity max=1.0 expect=present
+assert pawn "Sensitive" hediff=PsychicAmplifier expect=absent
+incident BX_AstralAwakening
+assert letter contains "Astral awakening" expect=present
+assert pawn "Sensitive" hediff=PsychicAmplifier severity min=0.9 max=1.1 expect=present
+assert pawn "Dull" hediff=PsychicAmplifier expect=absent
+assert pawn "Adept" hediff=PsychicAmplifier severity min=1.9 max=2.1 expect=present
+
+incident BX_EthersBlessing
+assert letter contains "Ethers blessing" expect=present
+assert pawn "Adept" hediff=PsychicAmplifier severity min=2.9 max=3.1 expect=present
+assert pawn "Sensitive" hediff=PsychicAmplifier severity min=1.9 max=2.1 expect=present
+assert pawn "Dull" hediff=PsychicAmplifier expect=absent
+
+assert pawn "Adept" stat=MeditationFocusGain min=0.48 max=0.52 expect=present
+assert pawn "Adept" stat=PsychicEntropyMax min=28.5 max=31.5 expect=present
+incident BX_PsychicOvercharge
+assert letter contains "Psychic overcharge" expect=present
+assert pawn "Adept" hediff=BX_PsychicOverchargeHediff expect=present
+assert pawn "Dull" hediff=BX_PsychicOverchargeHediff expect=absent
+assert pawn "Adept" stat=MeditationFocusGain min=0.95 max=1.05 expect=present
+assert pawn "Adept" stat=PsychicEntropyMax min=43 max=47 expect=present
+
+incident BX_PsychicBurnout
+assert letter contains "Psychic burnout" expect=present
+assert pawn "Adept" hediff=PsychicShock expect=present
+assert pawn "Sensitive" hediff=PsychicShock expect=present
+assert pawn "Dull" hediff=PsychicShock expect=absent
+
+spawn Thing:MealSimple at 5,1 count=10
+rand value=0 in="Bernael_Xenotype.IncidentWorker_PsychicRupture.TryExecuteWorker" keep=yes
+incident BX_PsychicRupture
+assert letter contains "Psychic rupture" expect=present
+assert pawn "Dull" mentalstate=Binging_Food expect=present
+assert pawn "Adept" mentalstate=Binging_Food expect=absent
+assert pawn "Sensitive" mentalstate=Binging_Food expect=absent
+rand off
+
+incident BX_PsycasterPilgrimage
+assert letter contains "Psycaster pilgrimage" expect=present
+assert log clean

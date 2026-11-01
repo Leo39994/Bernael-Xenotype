@@ -10,7 +10,7 @@ spawn Pawn:Colonist at 2,0 name="Victim"
 give "Bernael" resource=BX_EssenceHarvest value=0.1
 
 select "Bernael"
-gizmo "Soul drain" expect=allowed
+gizmo "Life drain" expect=allowed
 target "Victim" expect=allowed
 speed x1
 waitfor pawn "Victim" hediff=BX_SoulDrained expect=present ticks=300
@@ -35,12 +35,12 @@ assert pawn "Stranger" gene=BX_EssenceHarvest expect=absent
 assert pawn "Stranger" gene=BX_EssenceHarvest expect=absent
 
 select "Hungry"
-gizmo "Soul drain" expect=allowed
+gizmo "Life drain" expect=allowed
 target "Kin" expect=refused
 tick 300 note="own kind block: 4 s warmup is 240 ticks, plus the job that carries it, in case the cast went through anyway"
 assert pawn "Kin" hediff=BX_SoulDrained expect=absent
 
-gizmo "Soul drain" expect=allowed
+gizmo "Life drain" expect=allowed
 target "Stranger" expect=allowed
 waitfor pawn "Stranger" hediff=BX_SoulDrained expect=present ticks=300
 assert pawn "Kin" hediff=BX_SoulDrained expect=absent
@@ -52,7 +52,7 @@ prisoner "Prisoner" resistance=10
 give "Jailer" resource=BX_EssenceHarvest value=0.1
 
 select "Jailer"
-gizmo "Soul drain" expect=allowed
+gizmo "Life drain" expect=allowed
 target "Prisoner" expect=allowed
 speed x1
 waitfor pawn "Prisoner" hediff=BX_SoulDrained expect=present ticks=300
@@ -69,7 +69,7 @@ give "Asker" resource=BX_EssenceHarvest value=0.1
 give "Asked" hediff=BX_SoulDrained severity=0.5
 
 select "Asker"
-gizmo "Soul drain" expect=allowed
+gizmo "Life drain" expect=allowed
 target "Asked" expect=allowed
 
 assert window Dialog_MessageBox contains "serious soul damage" expect=present
@@ -86,7 +86,7 @@ give "Hesitant" resource=BX_EssenceHarvest value=0.1
 give "Spared" hediff=BX_SoulDrained severity=0.56
 
 select "Hesitant"
-gizmo "Soul drain" expect=allowed
+gizmo "Life drain" expect=allowed
 target "Spared" expect=allowed
 
 assert window Dialog_MessageBox contains "will kill" expect=present
@@ -103,21 +103,21 @@ spawn Pawn:Colonist at 2,30 name="Chained"
 give "Chainer" resource=BX_EssenceHarvest value=0.1
 
 select "Chainer"
-gizmo "Soul drain" expect=allowed
+gizmo "Life drain" expect=allowed
 target "Chained" expect=allowed
 speed x1
 waitfor pawn "Chained" hediff=BX_SoulDrained severity min=0.44 ticks=300 expect=present
 waitfor pawn "Chainer" job=CastAbilityOnThing ticks=60 expect=absent
 
 speed paused
-gizmo "Soul drain" expect=allowed
+gizmo "Life drain" expect=allowed
 target "Chained" expect=allowed
 click "Confirm"
 waitfor pawn "Chained" hediff=BX_SoulDrained severity min=0.89 ticks=300 expect=present
 waitfor pawn "Chainer" job=CastAbilityOnThing ticks=60 expect=absent
 
 speed paused
-gizmo "Soul drain" expect=allowed
+gizmo "Life drain" expect=allowed
 target "Chained" expect=allowed
 click "Confirm"
 waitfor pawn "Chained" dead ticks=600 expect=present

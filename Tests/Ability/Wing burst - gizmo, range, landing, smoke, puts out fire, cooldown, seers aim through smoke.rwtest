@@ -1,0 +1,69 @@
+rwtest 1
+test "Wing burst - gizmo, range, landing, smoke, puts out fire, cooldown, seers aim through smoke" project="Bernael" created=2026-11-01T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+
+despawn area=-2,0 size=24,9 natural
+spawn Pawn:Colonist at 0,4 name="Flier" xenotype=BX_Bernael
+spawn Pawn:Colonist at 0,6 name="Plain"
+draft "Flier"
+draft "Plain"
+
+assert pawn "Flier" gene=BX_CurvedWings expect=present
+
+select "Plain"
+gizmo "Wing burst" expect=absent
+
+speed paused
+spawn Thing:WoodLog at 11,4 count=50
+spawn Thing:Fire at 11,4
+spawn Thing:WoodLog at 18,4 count=50
+spawn Thing:Fire at 18,4
+assert thing Fire at 11,4 expect=present
+assert thing Fire at 18,4 expect=present
+
+select "Flier"
+gizmo "Wing burst" expect=allowed
+target cell=21,4 expect=refused
+gizmo "Wing burst" expect=allowed
+target cell=10,4 expect=allowed
+speed x1
+waitfor pawn "Flier" at 10,4 ticks=300 expect=present
+speed paused
+
+assert gas BlindSmoke at 10,4 expect=present
+assert thing BX_WingBurstSmoke at 10,4 expect=present
+assert thing Fire at 11,4 expect=absent
+assert thing Fire at 18,4 expect=present
+gizmo "Wing burst" expect=disabled
+
+tick 600 note="cooldown block: cooldownTicksRange 600 has run out"
+select "Flier"
+gizmo "Wing burst" expect=allowed
+despawn Thing:Fire at 18,4
+assert log clean
+
+requires assert=hitchance
+weather Clear
+spawn Pawn:Pirate at 14,7 name="Raider" faction=enemy pacify=true gear=none
+spawn Pawn:Colonist at 14,8 name="Seer" xenotype=BX_Bernael gear=none drafted=true holdfire=true
+spawn Pawn:Colonist at 15,7 name="Sighted" gear=none drafted=true holdfire=true
+spawn Thing:Gun_Revolver at 13,8 name="Seer's gun"
+spawn Thing:Gun_Revolver at 16,7 name="Sighted's gun"
+equip "Seer" thing="Seer's gun" now=true
+equip "Sighted" thing="Sighted's gun" now=true
+assert hitchance "Seer" target="Raider" min=0.70 max=0.82
+assert hitchance "Sighted" target="Raider" min=0.70 max=0.82
+select "Flier"
+gizmo "Wing burst" expect=allowed
+target cell=14,5 expect=allowed
+speed x1
+waitfor pawn "Flier" at 14,5 ticks=300 expect=present
+speed paused
+assert gas BlindSmoke at 14,7 expect=present
+assert hitchance "Seer" target="Raider" min=0.70 max=0.82
+assert hitchance "Sighted" target="Raider" min=0.48 max=0.57
+gene "Seer" remove=BX_EtherealSight
+assert hitchance "Seer" target="Raider" min=0.48 max=0.57
+assert log clean

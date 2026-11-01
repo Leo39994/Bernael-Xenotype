@@ -1,0 +1,17 @@
+rwtest 1
+test "Nihilism halves certainty loss" project="Bernael" created=2026-11-01T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+requires dlc=Ideology
+
+spawn Pawn:Colonist at 0,0 name="Nihilist" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,0 name="Believer"
+
+assert pawn "Nihilist" gene=BX_Nihilism expect=present
+assert pawn "Nihilist" stat=CertaintyLossFactor min=0.45 max=0.55 expect=present
+assert pawn "Believer" stat=CertaintyLossFactor min=0.95 max=1.05 expect=present
+
+gene "Nihilist" remove=BX_Nihilism
+assert pawn "Nihilist" stat=CertaintyLossFactor min=0.95 max=1.05 expect=present
+assert log clean

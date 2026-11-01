@@ -1,0 +1,62 @@
+rwtest 1
+test "Nephilim - pendulum gene, grace mutation, galling grudge, empty grace and frenzy turn into Bernael" project="Bernael" created=2026-09-18T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+requires mod=Sov.Nephilim
+requires mod=EBSG.Framework
+spawn Pawn:Colonist at 0,0 name="Neph" xenotype=GS_Nephilim
+spawn Pawn:Colonist at 2,0 name="Plain"
+assert pawn "Neph" gene=BX_GracePendulum expect=present
+assert pawn "Plain" gene=BX_GracePendulum expect=absent
+assert log clean
+
+spawn Pawn:Colonist at 0,4 name="Swinger" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,4 name="Abstainer" xenotype=BX_Bernael
+gene "Swinger" add=BX_SoulPendulum
+spawn Thing:GS_GracePack_Medieval at 1,5 count=4
+ingest "Swinger" thing=GS_GracePack_Medieval now=true
+ingest "Abstainer" thing=GS_GracePack_Medieval now=true
+assert pawn "Swinger" hediff=BX_Mutation_Hediff expect=present
+assert pawn "Swinger" thought=BX_ConsumedGraceThoughtMood mood min=-10.5 max=-9.5 expect=present
+assert pawn "Abstainer" hediff=BX_Mutation_Hediff expect=absent
+assert pawn "Abstainer" thought=BX_ConsumedGraceThoughtMood expect=absent
+assert log clean
+
+spawn Pawn:Colonist at 0,8 name="Galler" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,8 name="Witness"
+gene "Galler" add=BX_Grace_Galling
+ingest "Neph" thing=GS_GracePack_Medieval now=true
+tick 10 note="galling block: the tale thought is a situational social thought, read after a few ticks"
+assert opinion "Galler" of="Neph" thought=BX_ConsumedGrace min=-18.5 max=-17.5
+assert opinion "Witness" of="Neph" thought=BX_ConsumedGrace min=-0.5 max=0.5
+assert pawn "Neph" hediff=BX_Mutation_Hediff expect=absent
+assert log clean
+
+spawn Pawn:Colonist at 0,12 name="Fallen" xenotype=GS_Nephilim
+spawn Pawn:Colonist at 2,12 name="Steady" xenotype=GS_Nephilim
+spawn Pawn:Colonist at 4,12 name="Sated" xenotype=GS_Nephilim
+give "Fallen" resource=GS_Grace_New value=0
+give "Steady" resource=GS_Grace_New value=0
+give "Sated" resource=GS_Grace_New value=0.5
+mentalstate "Fallen" mentalstate=Wander_Sad forced=true
+mentalstate "Sated" mentalstate=Wander_Sad forced=true
+tick 400 note="empty grace block: the patch on ResourceGene.Tick looks every 180 ticks per pawn"
+assert pawn "Fallen" gene=BX_EtherealSight expect=present
+assert pawn "Fallen" gene=BX_GracePendulum expect=absent
+assert pawn "Steady" gene=BX_EtherealSight expect=absent
+assert pawn "Sated" gene=BX_EtherealSight expect=absent
+assert log clean
+
+spawn Pawn:Colonist at 0,16 name="Turner" xenotype=GS_Nephilim
+spawn Pawn:Colonist at 3,16 name="Meal"
+give "Turner" resource=GS_Grace_New value=0.5
+mentalstate "Turner" mentalstate=BX_SoulFeedingFrenzy forced=true
+assert pawn "Turner" mentalstate=BX_SoulFeedingFrenzy expect=present
+assert ability "Turner" range ability=BX_LifeDrain min=3.5 max=4.5
+tick 600 note="frenzy turn block: walk of three cells, warmup 4 s is 240 ticks, then the drain ends the frenzy"
+assert casts "Turner" ability=BX_LifeDrain min=1
+assert pawn "Turner" gene=BX_EtherealSight expect=present
+assert pawn "Turner" mentalstate=BX_SoulFeedingFrenzy expect=absent
+assert letter contains "has changed into a Bernael" expect=present
+assert log clean

@@ -1,0 +1,44 @@
+rwtest 1
+test "Soul feeding frenzy - empty soul breaks, needs prey in sight, hunts, recovers when full, keeps life drain" project="Bernael" created=2026-11-01T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Starved" xenotype=BX_Bernael
+spawn Pawn:Colonist at 3,0 name="Prey"
+spawn Pawn:Colonist at 0,40 name="Lonely" xenotype=BX_Bernael
+spawn Pawn:Colonist at 40,0 name="Fed" xenotype=BX_Bernael
+spawn Pawn:Colonist at 43,0 name="Neighbour"
+give "Starved" resource=BX_SoulEater value=0
+give "Lonely" resource=BX_SoulEater value=0
+give "Fed" resource=BX_SoulEater value=0.5
+
+assert pawn "Starved" mentalstate=BX_SoulFeedingFrenzy expect=absent
+rand value=0 in="Verse.Gene.TickInterval"
+speed x1
+tick 180 note="break block: Gene.TickInterval looks every 60 ticks per pawn, under the pin MTBEventOccurs says yes on the first look"
+speed paused
+rand off
+assert pawn "Starved" mentalstate=BX_SoulFeedingFrenzy expect=present
+assert pawn "Lonely" mentalstate=BX_SoulFeedingFrenzy expect=absent
+assert pawn "Fed" mentalstate=BX_SoulFeedingFrenzy expect=absent
+assert pawn "Prey" mentalstate=BX_SoulFeedingFrenzy expect=absent
+
+speed x1
+tick 600 note="hunt block: walk of three cells, warmup 4 s is 240 ticks, the rest is the job start and the drain itself"
+speed paused
+assert casts "Starved" ability=BX_LifeDrain min=1 max=2
+assert pawn "Prey" hediff=BX_SoulDrained expect=present
+assert pawn "Starved" resource=BX_SoulEater min=0.15 max=0.45 expect=present
+assert pawn "Starved" mentalstate=BX_SoulFeedingFrenzy expect=present
+assert casts "Lonely" ability=BX_LifeDrain max=0
+assert casts "Fed" ability=BX_LifeDrain max=0
+
+give "Starved" resource=BX_SoulEater value=1
+speed x1
+tick 60 note="recovery block: MentalStateTick checks the soul every 30 ticks and ends the state at 0.99"
+speed paused
+assert pawn "Starved" mentalstate=BX_SoulFeedingFrenzy expect=absent
+assert ability "Starved" range ability=BX_LifeDrain min=3.5 max=4.5
+assert log clean

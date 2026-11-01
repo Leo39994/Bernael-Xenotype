@@ -1,0 +1,132 @@
+rwtest 1
+test "Life vanquisher - recipe, vanquish gizmo, refusals, triple and fivefold damage, sensitivity, kill resets" project="Bernael" created=2026-11-01T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+
+spawn Thing:FabricationBench name="Bench" faction=player
+research Fabrication done=false
+workbill "Bench" recipe=Make_BX_LifeVanquisher count=1 expect=refused
+research Fabrication done=true
+workbill "Bench" recipe=Make_BX_LifeVanquisher count=1
+
+infocard BX_LifeVanquisher
+assert text contains "life vanquisher" expect=present
+assert text contains "BX_" expect=absent
+windowclose Dialog_InfoCard
+assert log clean
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Wielder" gear=none
+spawn Pawn:Colonist at 0,2 name="Friend"
+spawn Thing:BX_LifeVanquisher at 1,0 name="Sword" quality=normal
+draft "Wielder"
+select "Wielder"
+gizmo "Vanquish" expect=absent
+
+equip "Wielder" thing="Sword" now=true
+assert pawn "Wielder" equipment=BX_LifeVanquisher expect=present
+assert pawn "Wielder" stat=PsychicSensitivity min=0.99 max=1.01 expect=present
+undraft "Wielder"
+select "Wielder"
+gizmo "Vanquish" expect=absent
+draft "Wielder"
+select "Wielder"
+gizmo "Vanquish" expect=allowed
+target "Friend" expect=refused reason="Vanquish can only target a hostile pawn."
+
+spawn Pawn:Thrumbo at 3,0 name="Bull" faction=enemy pacify=true
+select "Wielder"
+gizmo "Vanquish" expect=allowed
+target "Bull" expect=allowed
+speed x1
+waitfor casts "Wielder" ability=BX_Vanquish min=1 ticks=300
+speed paused
+assert hit "Bull" by="Wielder" min=1 max=1
+assert damage "Bull" by="Wielder" min=50 max=60
+assert pawn "Bull" dead expect=absent
+select "Wielder"
+gizmo "Vanquish" expect=disabled
+
+spawn Pawn:Colonist at 0,8 name="Seer" xenotype=BX_Bernael gear=none
+spawn Thing:BX_LifeVanquisher at 1,8 name="Seer's sword" quality=normal
+equip "Seer" thing="Seer's sword" now=true
+assert pawn "Seer" stat=PsychicSensitivity min=1.35 max=1.45 expect=present
+spawn Pawn:Thrumbo at 3,8 name="Calf" faction=enemy pacify=true
+draft "Seer"
+select "Seer"
+gizmo "Vanquish" expect=allowed
+target "Calf" expect=allowed
+speed x1
+waitfor casts "Seer" ability=BX_Vanquish min=1 ticks=300
+speed paused
+assert damage "Calf" by="Seer" min=70 max=82
+
+spawn Pawn:Colonist at 0,14 name="Finisher" gear=none
+spawn Thing:BX_LifeVanquisher at 1,14 name="Finisher's sword" quality=normal
+equip "Finisher" thing="Finisher's sword" now=true
+spawn Pawn:Thrumbo at 3,14 name="Wounded" faction=enemy pacify=true
+give "Wounded" hediff=Bruise severity=45 part="front left leg"
+give "Wounded" hediff=Bruise severity=45 part="front right leg"
+give "Wounded" hediff=Bruise severity=45 part="rear left leg"
+give "Wounded" hediff=Bruise severity=45 part="rear right leg"
+give "Wounded" hediff=Bruise severity=45 part=Neck
+give "Wounded" hediff=Bruise severity=45 part=Neck
+give "Wounded" hediff=Bruise severity=45 part=Body
+give "Wounded" hediff=Bruise severity=45 part=Body
+give "Wounded" hediff=Bruise severity=45 part=Body
+give "Wounded" hediff=Bruise severity=45 part=Head
+assert health "Wounded" max=0.49 expect=present
+draft "Finisher"
+select "Finisher"
+gizmo "Vanquish" expect=allowed
+target "Wounded" expect=allowed
+speed x1
+waitfor casts "Finisher" ability=BX_Vanquish min=1 ticks=300
+speed paused
+assert damage "Wounded" by="Finisher" min=75 max=100
+undraft "Wielder"
+undraft "Seer"
+undraft "Finisher"
+assert log clean
+
+spawn Pawn:Colonist at 0,20 name="Slayer" gear=none
+spawn Thing:BX_LifeVanquisher at 1,20 name="Slayer's sword" quality=normal
+equip "Slayer" thing="Slayer's sword" now=true
+spawn Pawn:Pirate at 3,20 name="Victim" faction=enemy pacify=true gear=none
+draft "Slayer"
+select "Slayer"
+gizmo "Vanquish" expect=allowed
+rand value=0 in="Verse.HediffSet.GetRandomNotMissingPart"
+target "Victim" expect=allowed
+speed x1
+waitfor casts "Slayer" ability=BX_Vanquish min=1 ticks=300
+speed paused
+rand off
+assert pawn "Victim" dead expect=present
+select "Slayer"
+gizmo "Vanquish" expect=allowed
+undraft "Slayer"
+assert log clean
+
+requires dlc=Royalty
+requires assert=psyfocus
+spawn Pawn:Colonist at 0,26 name="Reaper" gear=none
+spawn Thing:BX_LifeVanquisher at 1,26 name="Reaper's sword" quality=normal
+equip "Reaper" thing="Reaper's sword" now=true
+ability "Reaper" grant=BX_DireOrb psylink=1 psyfocus=0.1
+spawn Pawn:Pirate at 3,26 name="Prey" faction=enemy pacify=true gear=none
+assert psyfocus "Reaper" min=0.09 max=0.11
+draft "Reaper"
+select "Reaper"
+gizmo "Vanquish" expect=allowed
+rand value=0 in="Verse.HediffSet.GetRandomNotMissingPart"
+target "Prey" expect=allowed
+speed x1
+waitfor casts "Reaper" ability=BX_Vanquish min=1 ticks=300
+speed paused
+rand off
+assert pawn "Prey" dead expect=present
+assert psyfocus "Reaper" min=0.28 max=0.32
+undraft "Reaper"
+assert log clean

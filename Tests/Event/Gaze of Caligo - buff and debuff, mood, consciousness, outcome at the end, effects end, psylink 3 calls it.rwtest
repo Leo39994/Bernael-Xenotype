@@ -1,0 +1,57 @@
+rwtest 1
+test "Gaze of Caligo - buff and debuff, mood, consciousness, outcome at the end, effects end, psylink 3 calls it" project="Bernael" created=2026-11-01T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+requires dlc=Royalty
+
+spawn Pawn:Colonist at 0,0 name="Adept"
+spawn Pawn:Colonist at 2,0 name="Mundane"
+ability "Adept" grant=BX_DireOrb psylink=1
+
+assert canfire BX_GazeCaligo expect=present
+assert condition BX_GazeCaligo expect=absent
+assert pawn "Adept" capacity=Consciousness min=0.97 max=1.03 expect=present
+assert pawn "Mundane" capacity=Consciousness min=0.97 max=1.03 expect=present
+
+rand value=0.99 in="Bernael_Xenotype.GameCondition_GazeCaligo.CalculateResonance" silent=ok
+rand value=0 in="Bernael_Xenotype.GameCondition_GazeCaligo.End" keep=yes
+condition BX_GazeCaligo ticks=3600
+assert condition BX_GazeCaligo expect=present
+tick 3300 note="effect block: the condition hands out its hediffs when TicksGame is a multiple of CheckInterval 3251, so one full interval and a little"
+assert pawn "Adept" hediff=BX_GazeCaligoBuff expect=present
+assert pawn "Adept" hediff=BX_GazeCaligoDebuff expect=absent
+assert pawn "Mundane" hediff=BX_GazeCaligoDebuff expect=present
+assert pawn "Mundane" hediff=BX_GazeCaligoBuff expect=absent
+assert pawn "Adept" thought=BX_GazeCaligoBuff mood min=9.5 max=10.5 expect=present
+assert pawn "Mundane" thought=BX_GazeCaligoDebuff mood min=-10.5 max=-9.5 expect=present
+assert pawn "Adept" capacity=Consciousness min=1.12 max=1.18 expect=present
+assert pawn "Mundane" capacity=Consciousness min=0.77 max=0.83 expect=present
+ask "caligo-eye" ticks=120 claim="a huge dark pupil hangs over the map inside a pale blue glow, the whole map is tinted blue, and the pupil is round, not a square or a pink texture"
+
+tick 400 note="end block: the 3600 ticks of the condition run out and End fires the outcome incident"
+rand off
+assert condition BX_GazeCaligo expect=absent
+assert letter contains "Psychic burnout" expect=present
+assert pawn "Adept" hediff=PsychicShock expect=present
+assert pawn "Mundane" hediff=PsychicShock expect=absent
+
+tick 300 note="aftermath block: the condition is gone, so the hediffs it handed out must be gone with it"
+assert pawn "Adept" hediff=BX_GazeCaligoBuff expect=absent
+assert pawn "Mundane" hediff=BX_GazeCaligoDebuff expect=absent
+assert pawn "Mundane" thought=BX_GazeCaligoDebuff expect=absent
+assert log clean
+
+rand value=0 in="Bernael_Xenotype.Patch_Hediff_Psylink_ChangeLevel.Postfix"
+incident BX_EthersBlessing
+assert pawn "Adept" hediff=PsychicAmplifier severity min=1.9 max=2.1 expect=present
+assert condition BX_GazeCaligo expect=absent
+
+spawn Pawn:Colonist at 4,0 name="Climber"
+ability "Climber" grant=BX_DireOrb psylink=2
+incident BX_EthersBlessing
+rand off
+assert pawn "Climber" hediff=PsychicAmplifier severity min=2.9 max=3.1 expect=present
+assert condition BX_GazeCaligo expect=present
+assert letter contains "Caligo's Gaze" expect=present
+assert log clean

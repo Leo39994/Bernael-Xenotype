@@ -1,0 +1,42 @@
+rwtest 1
+test "Bogeyman - only with children, warlock kidnaps and turns the child, child dread, ends without children" project="Bernael" created=2026-11-01T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+requires dlc=Royalty
+
+spawn Pawn:Colonist at 0,0 name="Parent"
+assert canfire BX_BogeymanInitial expect=absent
+incident BX_Bogeyman expect=refused
+assert lords job=LordJob_BogeymanKidnap max=0
+
+speed paused
+spawn Pawn:Colonist at 10,10 name="Victim" age=6
+assert pawn "Victim" gene=BX_EtherealSight expect=absent
+incident BX_Bogeyman
+assert letter contains "The bogeyman" expect=present
+assert lords job=LordJob_BogeymanKidnap min=1 max=1
+assert gas BlindSmoke at 10,10 expect=present
+speed x1
+waitfor pawn "Victim" carried=true ticks=900 expect=present
+waitfor whereabouts "Victim" in=world ticks=6000 expect=present
+assert pawn "Victim" faction=Empire expect=present
+assert pawn "Victim" gene=BX_EtherealSight expect=present
+assert pawn "Victim" lifestage=HumanlikeAdult expect=present
+assert pawn "Parent" faction=player expect=present
+assert log clean
+
+speed paused
+spawn Pawn:Colonist at 0,4 name="Kid" age=6
+assert canfire BX_BogeymanInitial expect=present
+incident BX_BogeymanInitial
+assert condition BX_BogeymanInitial expect=present
+speed x1
+tick 60 note="dread block: the game condition thought is situational and picked up on the next thought refresh"
+assert pawn "Kid" thought=BX_Bogeyman mood min=-41 max=-39 expect=present
+assert pawn "Parent" thought=BX_Bogeyman expect=absent
+
+despawn "Kid"
+tick 5 note="end block: GameConditionTick looks for a child every tick"
+assert condition BX_BogeymanInitial expect=absent
+assert log clean

@@ -1,0 +1,62 @@
+rwtest 1
+test "Rancor of souls - drafted only, needs soul and target, volley per soul, hostiles only, drains soul" project="Bernael" created=2026-11-01T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Rancor" xenotype=BX_Bernael
+spawn Pawn:Colonist at 0,3 name="Hollow" xenotype=BX_Bernael
+spawn Pawn:Colonist at 0,6 name="Plain"
+give "Rancor" resource=BX_SoulEater value=0.5
+give "Hollow" resource=BX_SoulEater value=0.02
+
+assert pawn "Rancor" gene=BX_EssenceReservoir expect=present
+assert pawn "Plain" gene=BX_EssenceReservoir expect=absent
+
+select "Rancor"
+gizmo "Rancor of Souls" expect=absent
+draft "Rancor"
+select "Rancor"
+gizmo "Rancor of Souls" expect=disabled reason="No standing hostile target is within range and line of sight." match=equals
+
+spawn Pawn:Pirate at 10,0 name="Raider A" faction=enemy pacify=true
+spawn Pawn:Pirate at 12,3 name="Raider B" faction=enemy pacify=true
+spawn Pawn:Pirate at 40,0 name="Far" faction=enemy pacify=true
+spawn Pawn:Pirate at 6,-2 name="Downed" faction=enemy
+down "Downed"
+spawn Pawn:Colonist at 5,0 name="Ally"
+draft "Ally"
+
+draft "Plain"
+select "Plain"
+gizmo "Rancor of Souls" expect=absent
+
+draft "Hollow"
+select "Hollow"
+gizmo "Rancor of Souls" expect=disabled reason="Hollow needs at least 5% Soul Saturation to use Rancor of Souls." match=equals
+
+select "Rancor"
+gizmo "Rancor of Souls" expect=allowed
+speed x1
+waitfor casts "Rancor" ability=BX_RancorOfSouls min=1 ticks=240
+tick 180 note="volley block: 10 projectiles 2 ticks apart, then flight time over about 12 cells"
+speed paused
+
+assert casts "Rancor" ability=BX_RancorOfSouls min=1 max=1
+assert pawn "Rancor" resource=BX_SoulEater max=0.01 expect=present
+assert shots "Rancor" min=10 max=10
+assert hit "Raider A" by="Rancor" min=1
+assert hit "Raider B" by="Rancor" min=1
+assert hit "Far" by="Rancor" max=0
+assert hit "Downed" by="Rancor" max=0
+assert hit "Ally" by="Rancor" max=0
+assert hit "Hollow" by="Rancor" max=0
+select "Rancor"
+gizmo "Rancor of Souls" expect=disabled
+
+undraft "Rancor"
+undraft "Hollow"
+undraft "Plain"
+undraft "Ally"
+assert log clean

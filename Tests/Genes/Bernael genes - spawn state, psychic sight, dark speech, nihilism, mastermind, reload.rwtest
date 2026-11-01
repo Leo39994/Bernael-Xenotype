@@ -1,5 +1,5 @@
 rwtest 1
-test "Bernael genes - spawn state, psychic sight, dark speech, nihilism, reload" project="Bernael" created=2026-09-17T00:00:00
+test "Bernael genes - spawn state, psychic sight, dark speech, nihilism, mastermind, reload" project="Bernael" created=2026-09-17T00:00:00
 
 requires mod=Mortis.BX
 requires dlc=Biotech
@@ -63,6 +63,24 @@ assert pawn "Listener" thought=BX_HeardDarkSpeech expect=present
 interact "Speaker B" with="Kin" kind=Chitchat
 assert pawn "Kin" thought=BX_HeardDarkSpeech expect=absent
 
+assert log clean
+
+spawn Pawn:Colonist at 0,16 name="Mind" xenotype=BX_Bernael
+give "Mind" need=Mood value=0.98
+tick 450 note="mastermind block: withered soul reads mood every 420 ticks, one look while mood is still near the top puts it at absence of pain"
+assert pawn "Mind" need=Mood min=0.9 expect=present
+assert pawn "Mind" pain max=0.01 expect=present
+assert pawn "Mind" gene=BX_Mastermind expect=present
+assert pawn "Mind" stat=PsychicSensitivity min=1.35 max=1.45 expect=present
+assert pawn "Mind" stat=MeditationFocusGain min=0.63 max=0.67 expect=present
+assert pawn "Mind" stat=PsychicEntropyMax min=46.5 max=50 expect=present
+assert pawn "Mind" stat=PsychicEntropyRecoveryRate min=0.77 max=0.81 expect=present
+
+gene "Mind" remove=BX_Mastermind
+assert pawn "Mind" stat=PsychicSensitivity min=0.95 max=1.05 expect=present
+assert pawn "Mind" stat=MeditationFocusGain min=0.48 max=0.52 expect=present
+assert pawn "Mind" stat=PsychicEntropyMax min=28.5 max=31.5 expect=present
+assert pawn "Mind" stat=PsychicEntropyRecoveryRate min=0.52 max=0.56 expect=present
 assert log clean
 
 spawn Pawn:Colonist at 6,0 name="Saved" xenotype=BX_Bernael

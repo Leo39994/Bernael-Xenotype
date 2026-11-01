@@ -1,5 +1,5 @@
 rwtest 1
-test "Psycasting - hexmaster psylink, entropy, dire orb blast, mirage looks" project="Bernael" created=2026-10-06T00:00:00
+test "Psycasting - hexmaster psylink, entropy, warlockracy, dire orb blast, mirage looks" project="Bernael" created=2026-10-06T00:00:00
 
 requires mod=Mortis.BX
 requires dlc=Biotech
@@ -18,6 +18,22 @@ assert pawn "Hexmaster" stat=PsychicEntropyGain min=0.50 max=0.61 expect=present
 give "Hexmaster" hediff=BX_ReaperEcstasy severity=100
 assert pawn "Hexmaster" stat=PsychicEntropyGain min=0.08 max=0.12 expect=present
 
+assert log clean
+
+spawn Pawn:Colonist at 0,-14 name="Warlock" xenotype=BX_Bernael
+spawn Pawn:Colonist at 2,-14 name="Mundane"
+spawn Pawn:Colonist at 4,-14 name="Adept"
+spawn Pawn:Colonist at 6,-14 name="Archon"
+ability "Adept" grant=BX_DireOrb psylink=3
+ability "Archon" grant=BX_DireOrb psylink=6
+tick 10 note="warlockracy block: situational social thoughts are read on demand, a few ticks let the opinion cache drop"
+assert pawn "Warlock" gene=BX_Warlockracy expect=present
+assert opinion "Warlock" of="Mundane" thought=BX_WarlockracyOpinion min=-15.5 max=-14.5
+assert opinion "Warlock" of="Hexmaster" thought=BX_WarlockracyOpinion min=4.5 max=5.5
+assert opinion "Warlock" of="Adept" thought=BX_WarlockracyOpinion min=14.5 max=15.5
+assert opinion "Warlock" of="Archon" thought=BX_WarlockracyOpinion min=29.5 max=30.5
+assert opinion "Mundane" of="Adept" thought=BX_WarlockracyOpinion min=-0.5 max=0.5
+assert opinion "Mundane" of="Warlock" thought=BX_WarlockracyOpinion min=-0.5 max=0.5
 assert log clean
 
 speed paused
