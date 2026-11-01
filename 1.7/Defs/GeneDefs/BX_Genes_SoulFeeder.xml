@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<GeneDef>
+		<defName>BX_SoulFeeder</defName>
+		<label>souldrainer</label>
+		<description>PLACEHOLDER</description>
+		<iconPath>UI/Icons/Genes/BX_LifeDrain</iconPath>
+		<geneClass>Gene_Bloodfeeder</geneClass>
+		<prerequisite>BX_SoulStarved</prerequisite>
+		<displayCategory>BX_DarkEnergy</displayCategory>
+		<deathHistoryEvent>BloodfeederDied</deathHistoryEvent>
+		<abilities>
+			<li>BX_SoulFeeding</li>
+		</abilities>
+		<descriptionHyperlinks>
+			<AbilityDef>BX_SoulFeeding</AbilityDef>
+		</descriptionHyperlinks>
+		<biostatMet>-1</biostatMet>
+		<minAgeActive>3</minAgeActive>
+	<modExtensions>
+		<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
+			<backgroundPathXenogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathXenogenes>
+			<backgroundPathEndogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathEndogenes>
+			<backgroundPathArchite>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathArchite>
+		</li>
+	</modExtensions>
+	</GeneDef>
+</Defs>

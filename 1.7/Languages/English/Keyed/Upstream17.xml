@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<BX_SealBlocked>Malicious seal needs a walkable cell.</BX_SealBlocked>
+	<BX_VanquishHostilePawnOnly>Vanquish can only target a hostile pawn.</BX_VanquishHostilePawnOnly>
+	<BX_VanquishRequiresLifeVanquisher>Vanquish requires Life Vanquisher to be equipped.</BX_VanquishRequiresLifeVanquisher>
+</LanguageData>

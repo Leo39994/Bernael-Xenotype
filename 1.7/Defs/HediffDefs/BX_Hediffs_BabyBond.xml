@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <HediffDef>
+    <defName>BX_BabyBond_Feeder</defName>
+    <label>baby bond</label>
+    <labelNoun>a baby bond</labelNoun>
+    <description>A supernatural link has formed between this creature and the baby it converted. The feeder feels the baby's emotional state as if it were their own, and will not survive the death of their bonded child.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.9, 0.6, 0.9)</defaultLabelColor>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <li Class="Bernael_Xenotype.HediffCompProperties_BabyBond_Feeder" />
+    </comps>
+    <stages>
+      <li>
+        <label>bonded to baby</label>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>BX_BabyBond_Victim</defName>
+    <label>blood bond</label>
+    <labelNoun>a blood bond</labelNoun>
+    <description>This child is bound to the creature that converted them. If this child dies, the bond will kill their feeder.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.9, 0.6, 0.9)</defaultLabelColor>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <li Class="Bernael_Xenotype.HediffCompProperties_BabyBond_Victim" />
+    </comps>
+    <stages>
+      <li>
+        <label>bound to feeder</label>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

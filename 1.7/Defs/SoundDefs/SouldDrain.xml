@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <SoundDef>
+    <defName>BX_SoulDrain</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>4</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains><li Class="AudioGrain_Clip"><clipPath>drain_begin</clipPath></li></grains>
+        <volumeRange>130</volumeRange>
+        <pitchRange>1</pitchRange>
+        <distRange>24~40</distRange>
+        <muteWhenPaused>true</muteWhenPaused>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>

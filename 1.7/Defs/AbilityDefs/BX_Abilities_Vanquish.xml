@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <JobDef ParentName="CastAbilityOnThing">
+        <defName>BX_CastVanquish</defName>
+        <driverClass>JobDriver_CastAbilityMelee</driverClass>
+        <neverShowWeapon>false</neverShowWeapon>
+    </JobDef>
+
+    <AbilityDef ParentName="AbilityTouchBase">
+        <defName>BX_Vanquish</defName>
+        <label>vanquish</label>
+        <description>Deliver an unavoidable psychic strike with Life Vanquisher for triple normal melee damage. Targets below 50% health take five times normal melee damage. Killing the target immediately recharges Vanquish, restores 20% psyfocus, and clears all neural heat.</description>
+        <abilityClass>Bernael_Xenotype.Ability_Vanquish</abilityClass>
+        <iconPath>Things/Weapons/LifeVanquisher/LifeVanquisher</iconPath>
+        <cooldownTicksRange>15000</cooldownTicksRange>
+        <hostile>true</hostile>
+        <jobDef>BX_CastVanquish</jobDef>
+        <displayGizmoWhileUndrafted>false</displayGizmoWhileUndrafted>
+        <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+        <verbProperties>
+            <verbClass>Bernael_Xenotype.Verb_CastAbilityVanquish</verbClass>
+            <drawAimPie>false</drawAimPie>
+            <range>-1</range>
+            <warmupTime>0.5</warmupTime>
+            <soundCast>BX_Lantern_Cast</soundCast>
+            <targetParams>
+                <canTargetSelf>false</canTargetSelf>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetAnimals>true</canTargetAnimals>
+                <canTargetMechs>true</canTargetMechs>
+                <canTargetBuildings>false</canTargetBuildings>
+            </targetParams>
+        </verbProperties>
+        <comps>
+            <li Class="Bernael_Xenotype.CompProperties_AbilityVanquish">
+                <healthThreshold>0.5</healthThreshold>
+                <baseDamageMultiplier>3</baseDamageMultiplier>
+                <damageMultiplier>5</damageMultiplier>
+                <psyfocusGain>0.2</psyfocusGain>
+                <requiredWeaponDefName>BX_LifeVanquisher</requiredWeaponDefName>
+            </li>
+        </comps>
+    </AbilityDef>
+</Defs>

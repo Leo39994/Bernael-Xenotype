@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+<XenotypeDef>
+	<defName>BX_Bernael</defName>
+	<label>Bernael</label>
+	<description>Bernael</description>
+	<descriptionShort>Bernael</descriptionShort>
+	<iconPath>UI/XenoIconBernael</iconPath>
+	<inheritable>true</inheritable>
+	<genes>
+		<li>BX_Mastermind</li>
+		<li>BX_AbyssalReach</li>
+		<li>BX_Nihilism</li>
+		<li>BX_Hexmaster</li>
+		<li>BX_DarkSpeech</li>
+		<li>BX_DepravedHead</li>
+		<li>BX_BernaelBlind</li>
+		<li>BX_CravedBody</li>
+		<li>BX_Profane_Halo</li>
+		<li>BX_CurvedWings</li>
+		<li>BX_WitheredSoul</li>
+		<li>MeleeDamage_Weak</li>
+		<li>BX_Skin_Withered</li>
+		<li>Sterile</li>
+		<li>Beard_NoBeardOnly</li>
+		<li>Hair_BaldOnly</li>
+		<li>Aggression_DeadCalm</li>
+		<li>Neversleep</li>
+		<li>UVSensitivity_Mild</li>
+		<li>AptitudeRemarkable_Intellectual</li>
+		<li>AptitudeStrong_Shooting</li>
+		<li>AptitudeStrong_Medicine</li>
+		<li>AptitudeTerrible_Melee</li>
+		<li>AptitudeTerrible_Social</li>
+		<li>AptitudePoor_Mining</li>
+		<!-- Soul Energy -->
+		<li>BX_SoulStarved</li>
+		<li>BX_UnstableEssenceReservoir</li>
+		<li>BX_ReaperEcstasy</li>
+		<!-- Abilities -->
+		<li>BX_SoulFeeder</li>
+		<!-- Nephilim Only -->
+		<li MayRequire="Sov.Nephilim">BX_Grace_Galling</li>
+		<li MayRequire="Sov.Nephilim">BX_GracePendulum</li>
+	</genes>
+</XenotypeDef>
+
+<XenotypeIconDef>
+	<defName>XenoIconBernael</defName>
+	<texPath>UI/XenoIconBernael</texPath>
+</XenotypeIconDef>
+
+  </Defs>

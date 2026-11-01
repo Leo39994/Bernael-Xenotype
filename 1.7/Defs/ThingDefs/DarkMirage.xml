@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef>
+    <defName>BX_DarkMirageDecoy</defName>
+    <label>dark mirage</label>
+    <description>TODO.</description>
+    <thingClass>Bernael_Xenotype.DarkMirage</thingClass>
+    <category>Building</category>
+    <tickerType>Normal</tickerType>
+    <drawerType>RealtimeOnly</drawerType>
+    <altitudeLayer>Pawn</altitudeLayer>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <size>(1,1)</size>
+    <passability>Standable</passability>
+    <fillPercent>0.1</fillPercent>
+    <rotatable>false</rotatable>
+    <castEdgeShadows>false</castEdgeShadows>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <MarketValue>0</MarketValue>
+      <Mass>0</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>UI/Icons/Genes/BX_Hexmaster</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+    </graphicData>
+    <building>
+      <isEdifice>false</isEdifice>
+      <isTargetable>true</isTargetable>
+      <ai_combatDangerous>true</ai_combatDangerous>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <repairable>false</repairable>
+      <neverBuildable>true</neverBuildable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1.8</glowRadius>
+        <glowColor>(185,217,237,0)</glowColor>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="Bernael_Xenotype.MirageSettings">
+        <durationTicks>600</durationTicks>
+        <burstRadius>2.4</burstRadius>
+        <frostbiteDamage>4</frostbiteDamage>
+        <targetPriority>2.5</targetPriority>
+        <startSound>BX_DarkMirage_Start</startSound>
+        <ambientSound>BX_DarkMirage_Ambient</ambientSound>
+        <endSound>BX_DarkMirage_End</endSound>
+        <ambientStartTicks>117</ambientStartTicks>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

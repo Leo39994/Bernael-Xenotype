@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <HediffDef>
+        <defName>BX_SoulCraving</defName>
+        <label>soul exhaustion</label>
+        <description>PLACEHOLDER</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <defaultLabelColor>(1, 0.2, 0.2)</defaultLabelColor>
+        <initialSeverity>0.01</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <everCurableByItem>false</everCurableByItem>
+        <stages>
+            <li>
+                <label>minor</label>
+                <painOffset>0.05</painOffset>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.9</setMax>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>moderate</label>
+                <minSeverity>0.35</minSeverity>
+                <painOffset>0.1</painOffset>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.8</setMax>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>major</label>
+                <minSeverity>0.7</minSeverity>
+                <painOffset>0.15</painOffset>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.5</setMax>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+        <comps>
+            <li Class="Bernael_Xenotype.HediffCompProperties_SeverityFromSoul">
+                <severityPerHourEmpty>0.25</severityPerHourEmpty>
+                <severityPerHourSoul>-0.1</severityPerHourSoul>
+            </li>
+        </comps>
+    </HediffDef>
+
+    <HediffDef>
+        <defName>BX_SoulDrained</defName>
+        <label>soul drained</label>
+        <description>A portion of this creature's soul has been torn away. Minor soul loss causes weakness and disorientation, while severe depletion suppresses consciousness and can leave the victim unable to move. Complete depletion is fatal.
+            \nLost soul essence does not return on its own, but it can be restored through a soul transfusion.</description>
+        <lethalSeverity>1</lethalSeverity>
+        <stages>
+            <li>
+                <label>minor</label>
+                <becomeVisible>false</becomeVisible>
+            </li>
+            <li>
+                <minSeverity>0.15</minSeverity>
+                <label>minor</label>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.1</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <minSeverity>0.30</minSeverity>
+                <label>moderate</label>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.2</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <minSeverity>0.45</minSeverity>
+                <label>severe</label>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.4</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <minSeverity>0.60</minSeverity>
+                <label>extreme</label>
+                <lifeThreatening>true</lifeThreatening>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.4</offset>
+                    </li>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.1</setMax>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+</Defs>

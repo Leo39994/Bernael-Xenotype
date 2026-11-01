@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Royalty level-2 psycast; the dedicated dev action grants it immediately. -->
+  <AbilityDef MayRequire="Ludeon.RimWorld.Royalty">
+    <defName>BX_DarkMirage</defName>
+    <label>dark mirage</label>
+    <description>TODO.</description>
+    <abilityClass>RimWorld.Psycast</abilityClass>
+    <category>Psychic</category>
+    <level>2</level>
+    <iconPath>UI/Icons/Genes/BX_Hexmaster</iconPath>
+    <cooldownTicksRange>900</cooldownTicksRange>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>true</disableGizmoWhileUndrafted>
+    <targetRequired>true</targetRequired>
+    <canUseAoeToGetTargets>false</canUseAoeToGetTargets>
+    <warmupSound>BX_Cast1</warmupSound>
+    <statBases>
+      <Ability_PsyfocusCost>0.04</Ability_PsyfocusCost>
+      <Ability_EntropyGain>12</Ability_EntropyGain>
+    </statBases>
+    <verbProperties>
+      <verbClass>RimWorld.Verb_CastPsycast</verbClass>
+      <range>19.9</range>
+      <warmupTime>1.2</warmupTime>
+      <requireLineOfSight>true</requireLineOfSight>
+      <targetParams>
+        <canTargetLocations>true</canTargetLocations>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetSelf>false</canTargetSelf>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="Bernael_Xenotype.CompProperties_DarkMirage">
+        <mirageDef>BX_DarkMirageDecoy</mirageDef>
+      </li>
+    </comps>
+  </AbilityDef>
+</Defs>

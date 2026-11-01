@@ -1,0 +1,8 @@
+<Patch>
+<Operation Class="PatchOperationAdd">
+  <xpath>Defs/XenotypeDef[defName="GS_Nephilim"]/genes</xpath>
+  <value>
+    <li>BX_GracePendulum</li>
+  </value>
+</Operation>
+</Patch>

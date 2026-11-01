@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+<ThoughtDef>
+	<defName>BX_ConsumedGrace</defName>
+	<thoughtClass>Thought_Tale</thoughtClass>
+	<workerClass>ThoughtWorker_Tale</workerClass>
+	<taleDef>BX_ConsumedGrace</taleDef>
+	<!-- <validWhileDespawned>true</validWhileDespawned> -->
+	<stages>
+		<li>
+			<label>consumed grace</label>
+			<baseOpinionOffset>-18</baseOpinionOffset>
+		</li>
+	</stages>
+	<!-- <nullifiedIfNotColonist>true</nullifiedIfNotColonist> -->
+</ThoughtDef>
+
+  <ThoughtDef>
+    <defName>BX_ConsumedGraceThoughtMood</defName>
+    <durationDays>1</durationDays>
+    <developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter>
+    <stages>
+      <li>
+        <label>Pendulum of Grace</label>
+        <description>That was awful, I shouldn't consume this...Thing.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<HeadTypeDef ParentName="AverageBase">
+		<defName>BX_Depraved</defName>
+		<randomChosen>false</randomChosen>
+		<graphicPath>Parts/Head/DepravedHead</graphicPath>
+		<requiredGenes>
+			<li>BX_DepravedHead</li>
+		</requiredGenes>
+	</HeadTypeDef>
+
+	<FurDef>
+		<defName>BX_Craved</defName>
+		<noGraphic>true</noGraphic>
+		<bodyTypeGraphicPaths>
+			<Male>Parts/Body/CravedBody_Male</Male>
+			<Female>Parts/Body/CravedBody_Female</Female>
+			<Hulk>Parts/Body/CravedBody_Hulk</Hulk>
+			<Fat>Parts/Body/CravedBody_Fat</Fat>
+			<Thin>Parts/Body/CravedBody_Thin</Thin>
+			<Child>Parts/Body/CravedBody_Child</Child>
+			<Baby>Parts/Body/CravedBody_Child</Baby>
+		</bodyTypeGraphicPaths>
+	</FurDef>
+
+</Defs>

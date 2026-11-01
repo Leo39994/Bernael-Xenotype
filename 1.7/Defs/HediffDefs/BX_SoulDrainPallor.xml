@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Cosmetic only. The shader covers every rendered pawn layer. -->
+  <HediffDef>
+    <defName>BX_SoulDrainPallor</defName>
+    <label>soul pallor</label>
+    <description>Drained of vitality, this person's entire appearance has turned a lifeless charcoal gray. Their natural colors will return shortly.</description>
+    <hediffClass>Bernael_Xenotype.Hediff_SoulDrainPallor</hediffClass>
+    <isBad>false</isBad>
+    <initialSeverity>0.1</initialSeverity>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>600</disappearsAfterTicks>
+      </li>
+    </comps>
+  </HediffDef>
+</Defs>
