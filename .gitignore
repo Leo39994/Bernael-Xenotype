@@ -19,32 +19,12 @@
 *.orig
 *.pdb
 *.FileListAbsolute.txt
-1.6/Source/obj/Debug/PublicizedAssemblies/
-
-# Unity-generated state; keep source assets, metadata and the build entry point.
-1.6/Source/DarkMirage/Unity/Library/
-1.6/Source/DarkMirage/Unity/Temp/
-1.6/Source/DarkMirage/Unity/Logs/
-1.6/Source/DarkMirage/Unity/UserSettings/
-1.6/Source/DarkMirage/Unity/Build/
-1.6/Source/DarkMirage/Unity/Builds/
-1.6/Source/DarkMirage/Unity/MemoryCaptures/
-1.6/Source/DarkMirage/Unity/Recordings/
-1.6/Source/DarkMirage/Unity/*.csproj
-1.6/Source/DarkMirage/Unity/*.sln
-1.6/Source/DarkMirage/Unity/*.slnx
-1.6/Source/DarkMirage/Unity/ProjectSettings/*
-!1.6/Source/DarkMirage/Unity/ProjectSettings/ProjectVersion.txt
 
 # Local-only Dark Mirage tests, captures, previews and verification tools.
-1.6/Source/DarkMirage/QA/
-1.6/Source/DarkMirage/MirageQaHarness.cs
-1.6/Source/DarkMirage/VerifyDefs.cs
-1.6/Source/DarkMirage/verify.ps1
-1.6/Source/DarkMirage/Unity/Assets/Editor/MiragePreview.cs
-1.6/Source/DarkMirage/Unity/Assets/Editor/MiragePreview.cs.meta
-1.6/Source/DarkMirage/Unity/Assets/Editor/MirageDistanceChecks.cs
-1.6/Source/DarkMirage/Unity/Assets/Editor/MirageDistanceChecks.cs.meta
+1.7/Source/BernaelXenotype17/DarkMirage/QA/
+1.7/Source/BernaelXenotype17/DarkMirage/MirageQaHarness.cs
+1.7/Source/BernaelXenotype17/DarkMirage/VerifyDefs.cs
+1.7/Source/BernaelXenotype17/DarkMirage/verify.ps1
 
 # NuGet restore output
 project.assets.json
@@ -60,27 +40,18 @@ desktop.ini
 # Additional tools for RimDevKit mod (unreleased yet)
 Tests/tools
 
-# Local Soul Drain render captures and isolated test profile.
-1.6/Source/SoulDrain/QA/
-1.6/Source/DarkMirage/Unity/Assets/Editor/SoulDrainPreview.cs
-1.6/Source/DarkMirage/Unity/Assets/Editor/SoulDrainPreview.cs.meta
-
 # Local captures, test profiles and caches retained from before the source migration.
 /Source/
 
 # Local QA harnesses, reports and implementation notes. Keep official Tests/*.rwtest.
 [Qq][Aa]/
 [Qq][Aa].meta
-/1.[67]/Source/**/*.md
-!/1.6/Source/DarkMirage/README.md
-/1.[67]/Source/Directory.Build.targets
-/1.[67]/Assemblies/*QA.dll
-/1.[67]/Assemblies/*.deps.json
-/1.[67]/Assemblies/*.runtimeconfig.json
+/1.7/Source/**/*.md
+!/1.7/Source/ShaderReference/README.md
+/1.7/Source/Directory.Build.targets
+/1.7/Assemblies/*QA.dll
+/1.7/Assemblies/*.deps.json
+/1.7/Assemblies/*.runtimeconfig.json
 
 # Original audio masters; the game uses the WAV assets under Common/Sounds.
 /*.mp3
-
-# Local dark magic shader contact sheets.
-1.6/Source/DarkMirage/Unity/Assets/Editor/DarkMagicPreview.cs
-1.6/Source/DarkMirage/Unity/Assets/Editor/DarkMagicPreview.cs.meta

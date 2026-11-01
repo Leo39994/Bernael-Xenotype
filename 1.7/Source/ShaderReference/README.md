@@ -1,12 +1,30 @@
-# Dark Mirage
+# Shader reference
+
+The ShaderLab originals of the 1.6 effects, kept as reference for the GLSL shaders that
+RimWorld 1.7 compiles at load. Nothing here is built or loaded; the 1.6 Unity project, its
+build scripts and the asset bundles were removed with 1.6 (last state: commit cf938f0).
+
+| ShaderLab original | 1.7 ShaderDef | GLSL source under `1.7/Shaders/Bernael/` |
+| --- | --- | --- |
+| `MaliciousSeal.shader` | `BX_MaliciousSeal` | `BX_Effect.vert.glsl`, `BX_MaliciousSeal.frag.glsl` |
+| `DireOrb.shader` | `BX_DireOrb` | `BX_Effect.vert.glsl`, `BX_DireOrb.frag.glsl` |
+| `DarkMirage.shader` | `BX_DarkMirage` | `BX_Effect.vert.glsl`, `BX_DarkMirage.frag.glsl` |
+| `SoulDrain.shader` | `BX_SoulDrain` | `BX_SoulDrain.vert.glsl`, `BX_SoulDrain.frag.glsl` |
+| `SoulDrainAshen.shader` | `BX_SoulDrainAshen` | `BX_Effect.vert.glsl`, `BX_SoulDrainAshen.frag.glsl` |
+
+A change to an effect goes into the GLSL file; the ShaderDefs are in
+`1.7/Defs/ShaderDefs/BX_Shaders.xml`, the smoke texture of Soul Drain is
+`1.7/Textures/Effects/BX_SoulDrainSmoke_Uncompressed.png`.
+
+## Dark Mirage
 
 A Royalty psycast that creates a stationary decoy using a snapshot of the caster's appearance. The phantom has a dark outline, glowing eyes and rising blue-black flames. All included text is English.
 
-## In-game use
+### In-game use
 
 Enable Royalty and the mod's existing dependencies, then restart RimWorld. In developer mode, select **Grant Dark Mirage (click pawn)** from the debug actions menu and click a player-controlled humanlike pawn. This grants the ability, raises the psylink to at least level 2 and fills psyfocus. Draft the pawn and cast **dark mirage** on an open cell.
 
-## Mechanics
+### Mechanics
 
 | Property | Value |
 | --- | --- |
@@ -21,7 +39,7 @@ Enable Royalty and the mod's existing dependencies, then restart RimWorld. In de
 
 Caster death, departure or faction changes dismiss the decoy without damage. The effect does not create spreading fire.
 
-## Rendering
+### Rendering
 
 The vanilla pawn cache renderer captures the caster into a transparent 512-by-512 texture, including supported hair, clothing and headgear. The snapshot and full-precision eye anchors are saved with the decoy. Changing the caster's equipment does not change an existing mirage.
 
@@ -32,18 +50,3 @@ On summoning, a noisy dissolve reveals the decoy from bottom to top over 0.85 se
 Each decoy releases its own textures and material when removed. Rendering does not modify the caster's materials or require full-screen post-processing. The capture covers three map cells; unusually large attachments and third-party renderers that bypass the vanilla cache may need additional support.
 
 The layered atmosphere was informed by the Killing Instinct aura in MRK's assorted little gadgets. This implementation uses an independent shader and does not copy or depend on that module's code, assets or framework.
-
-## Build
-
-Run from the mod root:
-
-```powershell
-& .\1.6\Source\DarkMirage\Unity\build.ps1
-dotnet build 1.6\Source\BernaelXenotype.slnx
-```
-
-The shader project uses Unity 2022.3.62f3 and the Built-in Render Pipeline. The build script uses `-noUpm`; pass `-UnityPath` to select another editor installation. The C# code is compiled into the main mod assembly by `1.6/Source/BernaelXenotype.csproj`; there is no separate project. RimWorld references come from the `Krafs.Rimworld.Ref` NuGet package, so no local game install is needed. CI rebuilds and commits the assembly on every push.
-
-Runtime files are `1.6/Assemblies/BernaelXenotype.dll` and `1.6/AssetBundles/darkmirage_win`. Both must be distributed with the Defs and English language data. The shader bundle currently targets Windows / Direct3D 11.
-
-The release build does not require local QA files. Test harnesses, verification scripts, preview tools, captures, videos, logs, temporary profiles and Unity caches are excluded from Git. Source assets, required Unity metadata, build scripts and runtime packages remain eligible for commit.
