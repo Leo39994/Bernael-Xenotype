@@ -15,13 +15,12 @@ Requires the .NET 10 SDK. All references come from NuGet (`Krafs.Rimworld.Ref`,
 `Lib.Harmony` 3), so no local RimWorld install is needed:
 
 ```powershell
-dotnet build 1.7/Source/BernaelXenotype17/BernaelXenotype17.csproj -c Release
-dotnet build 1.7/Source/BernaelSoul/BernaelSoul.csproj -c Release
-dotnet build 1.7/Source/BernaelVanquish/BernaelVanquish.csproj -c Release
+dotnet build 1.7/Source/BernaelXenotype.slnx -c Release
 ```
 
-Each project writes its DLL straight into `1.7/Assemblies`. The GitHub workflow runs
-the same three builds and commits the DLLs.
+The solution holds the three projects (`BernaelXenotype17`, `BernaelSoul`,
+`BernaelVanquish`); each writes its DLL straight into `1.7/Assemblies`. The GitHub
+workflow runs the same build and commits the DLLs.
 
 ## Validation
 
