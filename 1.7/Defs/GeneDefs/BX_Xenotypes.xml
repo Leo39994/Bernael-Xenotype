@@ -50,7 +50,7 @@
 
 <XenotypeIconDef>
 	<defName>XenoIconBernael</defName>
-	<texPath>UI/XenoIconBernael</texPath>
+	<texPath>UI/BX_Bernael_XenoIcon</texPath>
 </XenotypeIconDef>
   
   </Defs>
