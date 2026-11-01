@@ -8,6 +8,9 @@
     <iconPath>UI/Icons/Abilities/BX_FoldShift</iconPath>
 		<category>Bernael</category>
     <cooldownTicksRange>3000</cooldownTicksRange>
+    <statBases>
+      <Ability_Duration>15</Ability_Duration>
+    </statBases>
 		<targetRequired>false</targetRequired>
     <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
     <warmupSound>PsycastCastLoop</warmupSound>
