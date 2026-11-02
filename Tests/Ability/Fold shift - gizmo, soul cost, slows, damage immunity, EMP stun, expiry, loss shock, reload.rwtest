@@ -3,6 +3,7 @@ test "Fold shift - gizmo, soul cost, slows, damage immunity, EMP stun, expiry, l
 
 requires mod=Mortis.BX
 requires dlc=Biotech
+steppause ticks=1
 
 spawn Pawn:Colonist at 0,0 name="Folder" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Poor" xenotype=BX_Bernael
@@ -51,7 +52,6 @@ damage "Plain" amount=10 kind=Cut
 assert pawn "Plain" hediff=Cut expect=present
 assert log clean
 
-steppause ticks=1
 spawn Pawn:Colonist at 0,6 name="Saver" xenotype=BX_Bernael
 give "Saver" resource=BX_SoulEater value=0.9
 draft "Saver"

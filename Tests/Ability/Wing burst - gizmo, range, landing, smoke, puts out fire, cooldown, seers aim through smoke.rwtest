@@ -48,16 +48,16 @@ requires assert=hitchance
 speed paused
 weather Clear
 spawn Pawn:Pirate at 14,7 name="Raider" faction=enemy pacify=true gear=none
-spawn Pawn:Colonist at 14,8 name="Seer" xenotype=BX_Bernael gear=none
-spawn Pawn:Colonist at 15,7 name="Sighted" gear=none
-spawn Thing:Gun_Revolver at 13,8 name="Seer's gun"
-spawn Thing:Gun_Revolver at 16,7 name="Sighted's gun"
+spawn Pawn:Colonist at 14,9 name="Seer" xenotype=BX_Bernael gear=none
+spawn Pawn:Colonist at 16,7 name="Sighted" gear=none
+spawn Thing:Gun_Revolver at 13,9 name="Seer's gun"
+spawn Thing:Gun_Revolver at 17,7 name="Sighted's gun"
 equip "Seer" thing="Seer's gun" now=true
 equip "Sighted" thing="Sighted's gun" now=true
 draft "Seer" holdfire=true
 draft "Sighted" holdfire=true
-assert hitchance "Seer" target="Raider" min=0.70 max=0.82
-assert hitchance "Sighted" target="Raider" min=0.70 max=0.82
+assert hitchance "Seer" target="Raider" min=0.65 max=0.74
+assert hitchance "Sighted" target="Raider" min=0.65 max=0.74
 select "Flier"
 gizmo "Wing burst" expect=allowed
 target cell=14,5 expect=allowed
@@ -65,8 +65,8 @@ speed x1
 waitfor pawn "Flier" at 14,5 ticks=300 expect=present
 speed paused
 assert gas BlindSmoke at 14,7 expect=present
-assert hitchance "Seer" target="Raider" min=0.70 max=0.82
-assert hitchance "Sighted" target="Raider" min=0.48 max=0.57
+assert hitchance "Seer" target="Raider" min=0.65 max=0.74
+assert hitchance "Sighted" target="Raider" min=0.45 max=0.52
 gene "Seer" remove=BX_EtherealSight
-assert hitchance "Seer" target="Raider" min=0.48 max=0.57
+assert hitchance "Seer" target="Raider" min=0.45 max=0.52
 assert log clean

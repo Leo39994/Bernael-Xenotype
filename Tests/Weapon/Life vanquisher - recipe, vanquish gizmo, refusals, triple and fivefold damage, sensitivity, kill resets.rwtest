@@ -43,6 +43,7 @@ room at 1,-1 size=4,3 door=none roof=false name="Bull pen"
 spawn Pawn:Thrumbo at 3,0 name="Bull" faction=enemy pacify=true
 select "Wielder"
 gizmo "Vanquish" expect=allowed
+rand value=0.5 in="RimWorld.Verb_MeleeAttackDamage.ApplyMeleeDamageToTarget"
 target "Bull" expect=allowed
 speed x1
 waitfor casts "Wielder" ability=BX_Vanquish min=1 ticks=300

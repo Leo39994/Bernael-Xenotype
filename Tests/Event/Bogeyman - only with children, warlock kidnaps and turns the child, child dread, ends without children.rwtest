@@ -16,6 +16,7 @@ assert pawn "Victim" gene=BX_EtherealSight expect=absent
 incident BX_Bogeyman
 assert letter contains "The bogeyman" expect=present
 assert lords job=LordJob_BogeymanKidnap min=1 max=1
+alias "Warlock" lord=LordJob_BogeymanKidnap
 speed x1
 tick 10 note="smoke block: the explosion is a thing that spreads over its cells while it ticks, under pause it has touched none"
 assert gas BlindSmoke at 10,10 expect=present
