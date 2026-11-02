@@ -41,7 +41,11 @@ assert pawn "Adept" hediff=PsychicShock expect=present
 assert pawn "Sensitive" hediff=PsychicShock expect=present
 assert pawn "Dull" hediff=PsychicShock expect=absent
 
+designator ZoneAddStockpile_Resources
+cell 5,1 to 6,1
 spawn Thing:MealSimple at 5,1 count=10
+spawn Thing:MealSimple at 6,1 count=10
+tick 210 note="rupture block: ResourceCounter counts stored food every 204 ticks; Binging_Food wants more than 10 nutrition in storage"
 rand value=0 in="Bernael_Xenotype.IncidentWorker_PsychicRupture.TryExecuteWorker" keep=yes
 rand value=0.99 in="Verse.AI.MentalBreaker.get_ChooseAnomalyBreak" keep=yes
 incident BX_PsychicRupture
@@ -54,3 +58,11 @@ rand off
 incident BX_PsycasterPilgrimage
 assert letter contains "Psycaster pilgrimage" expect=present
 assert log clean
+
+requires assert=mentalbreaks
+designator ZoneAddStockpile_Resources
+cell 7,1 to 8,1
+spawn Thing:MealSimple at 7,1 count=10
+spawn Thing:MealSimple at 8,1 count=10
+tick 210 note="break pick block: the stockpile holds more than 10 nutrition again after the binge"
+assert mentalbreaks "Sensitive" intensity=Minor contains=Binging_Food

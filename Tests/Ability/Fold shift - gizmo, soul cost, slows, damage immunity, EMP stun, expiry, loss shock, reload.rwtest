@@ -79,6 +79,7 @@ terrain Mud at 1,14
 terrain Soil at -1,14
 spawn Pawn:Colonist at 0,12 name="Wader" xenotype=BX_Bernael
 spawn Pawn:Colonist at 0,14 name="Walker" xenotype=BX_Bernael
+draft "Walker"
 give "Wader" resource=BX_SoulEater value=0.9
 draft "Wader"
 select "Wader"

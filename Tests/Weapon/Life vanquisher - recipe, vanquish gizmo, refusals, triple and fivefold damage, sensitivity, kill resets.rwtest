@@ -48,6 +48,8 @@ speed x1
 waitfor casts "Wielder" ability=BX_Vanquish min=1 ticks=300
 speed paused
 assert hit "Bull" by="Wielder" min=1 max=1
+tick 100 note="cooldown block: the vanquish strike keeps the 2 s weapon cooldown, so no follow-up hit"
+assert hit "Bull" by="Wielder" min=1 max=1
 assert damage "Bull" by="Wielder" min=50 max=60
 assert pawn "Bull" dead expect=absent
 select "Wielder"

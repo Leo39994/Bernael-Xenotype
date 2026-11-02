@@ -65,6 +65,8 @@ namespace Bernael_Xenotype
 
     public class Verb_CastAbilityVanquish : Verb_CastAbilityTouch
     {
+        private Stance_Cooldown strikeCooldown;
+
         public override void WarmupComplete()
         {
             Pawn caster = CasterPawn;
@@ -73,7 +75,33 @@ namespace Bernael_Xenotype
                 caster.stances.SetStance(new Stance_Mobile());
             }
 
+            strikeCooldown = null;
             base.WarmupComplete();
+            RestoreStrikeCooldown(caster);
+        }
+
+        protected override bool TryCastShot()
+        {
+            bool cast = base.TryCastShot();
+            strikeCooldown = CasterPawn?.stances?.curStance as Stance_Cooldown;
+            return cast;
+        }
+
+        // TryCastNextBurstShot ends the cast with this verb's own cooldown of 0 ticks, which would
+        // replace the cooldown of the weapon strike and give the caster a free follow-up hit.
+        private void RestoreStrikeCooldown(Pawn caster)
+        {
+            Stance_Cooldown cooldown = strikeCooldown;
+            strikeCooldown = null;
+            if (cooldown == null || cooldown.verb == this || caster?.stances == null || !caster.Spawned)
+            {
+                return;
+            }
+
+            if (caster.stances.curStance is Stance_Cooldown current && current.verb == this)
+            {
+                caster.stances.SetStance(new Stance_Cooldown(cooldown.ticksLeft, cooldown.focusTarg, cooldown.verb));
+            }
         }
     }
 
