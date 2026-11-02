@@ -37,6 +37,8 @@ select "Wielder"
 gizmo "Vanquish" expect=allowed
 target "Friend" expect=refused reason="Vanquish can only target a hostile pawn."
 
+teleport "Wielder" at 2,0
+room at 1,-1 size=4,3 door=none roof=false name="Bull pen"
 spawn Pawn:Thrumbo at 3,0 name="Bull" faction=enemy pacify=true
 select "Wielder"
 gizmo "Vanquish" expect=allowed
@@ -54,6 +56,8 @@ spawn Pawn:Colonist at 0,8 name="Seer" xenotype=BX_Bernael gear=none
 spawn Thing:BX_LifeVanquisher at 1,8 name="Seer's sword" quality=normal
 equip "Seer" thing="Seer's sword" now=true
 assert pawn "Seer" stat=PsychicSensitivity min=1.35 max=1.45 expect=present
+teleport "Seer" at 2,8
+room at 1,7 size=4,3 door=none roof=false name="Calf pen"
 spawn Pawn:Thrumbo at 3,8 name="Calf" faction=enemy pacify=true
 draft "Seer"
 select "Seer"
@@ -67,6 +71,8 @@ assert damage "Calf" by="Seer" min=70 max=82
 spawn Pawn:Colonist at 0,14 name="Finisher" gear=none
 spawn Thing:BX_LifeVanquisher at 1,14 name="Finisher's sword" quality=normal
 equip "Finisher" thing="Finisher's sword" now=true
+teleport "Finisher" at 2,14
+room at 1,13 size=4,3 door=none roof=false name="Wounded pen"
 spawn Pawn:Thrumbo at 3,14 name="Wounded" faction=enemy pacify=true
 give "Wounded" hediff=Bruise severity=45 part="front left leg"
 give "Wounded" hediff=Bruise severity=45 part="front right leg"
@@ -95,6 +101,8 @@ assert log clean
 spawn Pawn:Colonist at 0,20 name="Slayer" gear=none
 spawn Thing:BX_LifeVanquisher at 1,20 name="Slayer's sword" quality=normal
 equip "Slayer" thing="Slayer's sword" now=true
+teleport "Slayer" at 2,20
+room at 1,19 size=4,3 door=none roof=false name="Victim pen"
 spawn Pawn:Pirate at 3,20 name="Victim" faction=enemy pacify=true gear=none
 draft "Slayer"
 select "Slayer"
@@ -117,6 +125,8 @@ spawn Pawn:Colonist at 0,26 name="Reaper" gear=none
 spawn Thing:BX_LifeVanquisher at 1,26 name="Reaper's sword" quality=normal
 equip "Reaper" thing="Reaper's sword" now=true
 ability "Reaper" grant=BX_DireOrb psylink=1 psyfocus=0.1
+teleport "Reaper" at 2,26
+room at 1,25 size=4,3 door=none roof=false name="Prey pen"
 spawn Pawn:Pirate at 3,26 name="Prey" faction=enemy pacify=true gear=none
 assert psyfocus "Reaper" min=0.09 max=0.11
 draft "Reaper"

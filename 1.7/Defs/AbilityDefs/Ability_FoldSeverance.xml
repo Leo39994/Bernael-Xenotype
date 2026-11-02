@@ -40,7 +40,6 @@
         <onlyBrain>True</onlyBrain>
         <onlyApplyToSelf>True</onlyApplyToSelf>
         <replaceExisting>true</replaceExisting>
-        <durationSecondsOverride>83.33~83.33</durationSecondsOverride>	<!-- 2 hours -->
       </li>
     </comps>
   </AbilityDef>

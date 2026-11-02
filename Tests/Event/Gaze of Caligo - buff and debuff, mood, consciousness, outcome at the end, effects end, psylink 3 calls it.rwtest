@@ -16,6 +16,7 @@ assert pawn "Mundane" capacity=Consciousness min=0.97 max=1.03 expect=present
 
 rand value=0.99 in="Bernael_Xenotype.GameCondition_GazeCaligo.CalculateResonance" silent=ok
 rand value=0 in="Bernael_Xenotype.GameCondition_GazeCaligo.End" keep=yes
+steppause ticks=1
 condition BX_GazeCaligo ticks=3600
 assert condition BX_GazeCaligo expect=present
 tick 3300 note="effect block: the condition hands out its hediffs when TicksGame is a multiple of CheckInterval 3251, so one full interval and a little"
