@@ -20,6 +20,7 @@ assert pawn "Hexmaster" stat=PsychicEntropyGain min=0.08 max=0.12 expect=present
 
 assert log clean
 
+rand value=0.99 in="Bernael_Xenotype.Patch_Hediff_Psylink_ChangeLevel.Postfix" silent=ok
 spawn Pawn:Colonist at 0,-14 name="Warlock" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,-14 name="Mundane"
 spawn Pawn:Colonist at 4,-14 name="Adept"

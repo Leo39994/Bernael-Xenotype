@@ -27,13 +27,13 @@ assert pawn "Sensitive" hediff=PsychicAmplifier severity min=1.9 max=2.1 expect=
 assert pawn "Dull" hediff=PsychicAmplifier expect=absent
 
 assert pawn "Adept" stat=MeditationFocusGain min=0.48 max=0.52 expect=present
-assert pawn "Adept" stat=PsychicEntropyMax min=28.5 max=31.5 expect=present
+assert pawn "Adept" stat=PsychicEntropyMax min=48.5 max=51.5 expect=present
 incident BX_PsychicOvercharge
 assert letter contains "Psychic overcharge" expect=present
 assert pawn "Adept" hediff=BX_PsychicOverchargeHediff expect=present
 assert pawn "Dull" hediff=BX_PsychicOverchargeHediff expect=absent
 assert pawn "Adept" stat=MeditationFocusGain min=0.95 max=1.05 expect=present
-assert pawn "Adept" stat=PsychicEntropyMax min=43 max=47 expect=present
+assert pawn "Adept" stat=PsychicEntropyMax min=73 max=77 expect=present
 
 incident BX_PsychicBurnout
 assert letter contains "Psychic burnout" expect=present

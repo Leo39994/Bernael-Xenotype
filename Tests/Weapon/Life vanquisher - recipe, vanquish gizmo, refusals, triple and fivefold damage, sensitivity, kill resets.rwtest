@@ -12,7 +12,7 @@ workbill "Bench" recipe=Make_BX_LifeVanquisher count=1
 
 spawn Thing:BX_LifeVanquisher at 6,6 name="Shown"
 infocard "Shown"
-assert text contains "life vanquisher" expect=present
+assert text contains "Life vanquisher" expect=present
 assert text contains "BX_" expect=absent
 windowclose Dialog_InfoCard
 despawn "Shown"

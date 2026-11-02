@@ -41,11 +41,11 @@ select "Rancor"
 gizmo "Rancor of Souls" expect=allowed
 speed x1
 waitfor casts "Rancor" ability=BX_RancorOfSouls min=1 ticks=240
+assert pawn "Rancor" resource=BX_SoulEater max=0.01 expect=present
 tick 180 note="volley block: 10 projectiles 2 ticks apart, then flight time over about 12 cells"
 speed paused
 
 assert casts "Rancor" ability=BX_RancorOfSouls min=1 max=1
-assert pawn "Rancor" resource=BX_SoulEater max=0.01 expect=present
 assert shots "Rancor" min=10 max=10
 assert hit "Raider A" by="Rancor" min=1
 assert hit "Raider B" by="Rancor" min=1

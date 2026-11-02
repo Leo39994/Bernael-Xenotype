@@ -43,8 +43,8 @@ assert pawn "Folder" hediff=BX_FoldShift expect=present
 assert pawn "Folder" hediff=XenogermLossShock expect=absent
 
 damage "Folder" amount=5 kind=EMP
-assert pawn "Folder" hediff=BX_FoldShift expect=absent
 assert stun "Folder" ticks min=1400 max=1500 expect=present
+assert pawn "Folder" hediff=BX_FoldShift expect=absent
 assert pawn "Folder" hediff=XenogermLossShock expect=present
 
 damage "Plain" amount=10 kind=Cut
