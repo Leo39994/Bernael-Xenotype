@@ -73,6 +73,7 @@ assert pawn "Saver" hediff=XenogermLossShock expect=present
 assert log clean
 
 requires assert=pathcost
+time hour=0
 terrain Mud at 1,12
 terrain Soil at -1,12
 terrain Mud at 1,14

@@ -59,7 +59,7 @@ gizmo "Vanquish" expect=disabled
 spawn Pawn:Colonist at 0,8 name="Seer" xenotype=BX_Bernael gear=none
 spawn Thing:BX_LifeVanquisher at 1,8 name="Seer's sword" quality=normal
 equip "Seer" thing="Seer's sword" now=true
-assert pawn "Seer" stat=PsychicSensitivity min=1.35 max=1.45 expect=present
+assert pawn "Seer" stat=PsychicSensitivity min=1.85 max=1.95 expect=present
 teleport "Seer" at 2,8
 room at 1,7 size=4,3 door=none roof=false name="Calf pen"
 spawn Pawn:Thrumbo at 3,8 name="Calf" faction=enemy pacify=true
@@ -70,7 +70,7 @@ target "Calf" expect=allowed
 speed x1
 waitfor casts "Seer" ability=BX_Vanquish min=1 ticks=300
 speed paused
-assert damage "Calf" by="Seer" min=84 max=90
+assert damage "Calf" by="Seer" min=114 max=122
 
 spawn Pawn:Colonist at 0,14 name="Finisher" gear=none
 spawn Thing:BX_LifeVanquisher at 1,14 name="Finisher's sword" quality=normal
