@@ -9,6 +9,7 @@ research Fabrication done=false
 workbill "Bench" recipe=Make_BX_LifeVanquisher count=1 expect=refused
 research Fabrication done=true
 workbill "Bench" recipe=Make_BX_LifeVanquisher count=1
+despawn "Bench"
 
 spawn Thing:BX_LifeVanquisher at 6,6 name="Shown"
 infocard "Shown"

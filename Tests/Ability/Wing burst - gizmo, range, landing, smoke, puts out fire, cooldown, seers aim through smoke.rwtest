@@ -47,12 +47,14 @@ assert log clean
 requires assert=hitchance
 weather Clear
 spawn Pawn:Pirate at 14,7 name="Raider" faction=enemy pacify=true gear=none
-spawn Pawn:Colonist at 14,8 name="Seer" xenotype=BX_Bernael gear=none drafted=true holdfire=true
-spawn Pawn:Colonist at 15,7 name="Sighted" gear=none drafted=true holdfire=true
+spawn Pawn:Colonist at 14,8 name="Seer" xenotype=BX_Bernael gear=none
+spawn Pawn:Colonist at 15,7 name="Sighted" gear=none
 spawn Thing:Gun_Revolver at 13,8 name="Seer's gun"
 spawn Thing:Gun_Revolver at 16,7 name="Sighted's gun"
 equip "Seer" thing="Seer's gun" now=true
 equip "Sighted" thing="Sighted's gun" now=true
+draft "Seer" holdfire=true
+draft "Sighted" holdfire=true
 assert hitchance "Seer" target="Raider" min=0.70 max=0.82
 assert hitchance "Sighted" target="Raider" min=0.70 max=0.82
 select "Flier"

@@ -5,6 +5,7 @@
     <defName>BX_GazeCaligoBuff</defName>
     <label>gaze caligo buff</label>
     <description>TODO.</description>
+    <hediffClass>HediffWithComps</hediffClass>
     <scenarioCanAdd>false</scenarioCanAdd>
     <defaultLabelColor>(0.51, 0.71, 0.86)</defaultLabelColor>
     <stages>
@@ -17,6 +18,11 @@
         </capMods>
       </li>
     </stages>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>3256~3256</disappearsAfterTicks>
+      </li>
+    </comps>
   </HediffDef>
 
   <!-- Gaze Caligo Debuff -->
@@ -24,6 +30,7 @@
     <defName>BX_GazeCaligoDebuff</defName>
     <label>gaze caligo debuff</label>
     <description>TODO.</description>
+    <hediffClass>HediffWithComps</hediffClass>
     <isBad>true</isBad>
     <scenarioCanAdd>false</scenarioCanAdd>
     <defaultLabelColor>(0.51, 0.71, 0.86)</defaultLabelColor>
@@ -37,6 +44,11 @@
         </capMods>
       </li>
     </stages>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>3256~3256</disappearsAfterTicks>
+      </li>
+    </comps>
   </HediffDef>
 
   <!-- Psychic Overcharge -->

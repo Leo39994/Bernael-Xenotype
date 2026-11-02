@@ -20,6 +20,7 @@ speed x1
 tick 10 note="smoke block: the explosion is a thing that spreads over its cells while it ticks, under pause it has touched none"
 assert gas BlindSmoke at 10,10 expect=present
 waitfor pawn "Victim" carried=true ticks=900 expect=present
+waitfor pawn "Victim" lifestage=HumanlikeAdult ticks=6000 expect=present
 waitfor whereabouts "Victim" in=world ticks=6000 expect=present
 assert pawn "Victim" faction=Empire expect=present
 assert pawn "Victim" gene=BX_EtherealSight expect=present

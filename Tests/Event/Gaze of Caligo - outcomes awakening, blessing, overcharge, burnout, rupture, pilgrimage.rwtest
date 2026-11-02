@@ -43,7 +43,7 @@ assert pawn "Dull" hediff=PsychicShock expect=absent
 
 spawn Thing:MealSimple at 5,1 count=10
 rand value=0 in="Bernael_Xenotype.IncidentWorker_PsychicRupture.TryExecuteWorker" keep=yes
-rand value=0.99 in="RimWorld.MentalBreaker.get_ChooseAnomalyBreak" keep=yes
+rand value=0.99 in="Verse.AI.MentalBreaker.get_ChooseAnomalyBreak" keep=yes
 incident BX_PsychicRupture
 assert letter contains "Psychic rupture" expect=present
 assert pawn "Dull" mentalstate=Binging_Food expect=present

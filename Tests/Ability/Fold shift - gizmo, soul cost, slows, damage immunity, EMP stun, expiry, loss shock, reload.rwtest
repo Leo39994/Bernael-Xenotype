@@ -51,6 +51,7 @@ damage "Plain" amount=10 kind=Cut
 assert pawn "Plain" hediff=Cut expect=present
 assert log clean
 
+steppause ticks=1
 spawn Pawn:Colonist at 0,6 name="Saver" xenotype=BX_Bernael
 give "Saver" resource=BX_SoulEater value=0.9
 draft "Saver"

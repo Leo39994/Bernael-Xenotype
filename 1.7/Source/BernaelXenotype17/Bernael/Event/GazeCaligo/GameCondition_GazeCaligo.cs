@@ -230,8 +230,9 @@ namespace Bernael_Xenotype
                     : GetRandomLowResonanceIncident();
 
                 OutcomeIncident(selectedIncident, map);
+                RemoveGazeHediffs(map);
             }
-            
+
             sustainer?.End();
             sustainer = null;
 
@@ -288,6 +289,25 @@ namespace Bernael_Xenotype
             Hediff hediff = target.health.hediffSet.GetFirstHediffOfDef(hediffDef) ?? target.health.AddHediff(hediffDef);
             HediffComp_Disappears comp = hediff?.TryGetComp<HediffComp_Disappears>();
             if (comp != null) comp.ticksToDisappear = HediffDuration;
+        }
+
+        // The buff and debuff belong to the condition; pawns that left the map lose them through HediffComp_Disappears.
+        private static void RemoveGazeHediffs(Map map)
+        {
+            if (map == null) return;
+
+            IReadOnlyList<Pawn> allPawns = map.mapPawns.AllPawnsSpawned;
+            for (int i = 0; i < allPawns.Count; i++)
+            {
+                HediffSet hediffSet = allPawns[i].health?.hediffSet;
+                if (hediffSet == null) continue;
+
+                Hediff buff = hediffSet.GetFirstHediffOfDef(BernaelDefOf.BX_GazeCaligoBuff);
+                if (buff != null) allPawns[i].health.RemoveHediff(buff);
+
+                Hediff debuff = hediffSet.GetFirstHediffOfDef(BernaelDefOf.BX_GazeCaligoDebuff);
+                if (debuff != null) allPawns[i].health.RemoveHediff(debuff);
+            }
         }
 
         private void MovePupil(Map map, int currentTick)
