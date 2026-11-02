@@ -6,9 +6,6 @@ requires dlc=Biotech
 requires dlc=Royalty
 
 spawn Pawn:Colonist at 0,0 name="Parent"
-assert canfire BX_BogeymanInitial expect=absent
-incident BX_Bogeyman expect=refused
-assert lords job=LordJob_BogeymanKidnap max=0
 
 speed paused
 spawn Pawn:Colonist at 10,10 name="Victim" age=6
@@ -28,6 +25,12 @@ assert pawn "Victim" gene=BX_EtherealSight expect=present
 assert pawn "Victim" lifestage=HumanlikeTeenager expect=present
 assert pawn "Parent" faction=player expect=present
 assert log clean
+
+requires verb=difficulty
+difficulty allowBigThreats=true
+assert canfire BX_BogeymanInitial expect=absent
+incident BX_Bogeyman expect=refused
+assert lords job=LordJob_BogeymanKidnap max=0
 
 speed paused
 spawn Pawn:Colonist at 0,4 name="Kid" age=6

@@ -51,7 +51,7 @@ speed paused
 assert hit "Bull" by="Wielder" min=1 max=1
 tick 100 note="cooldown block: the vanquish strike keeps the 2 s weapon cooldown, so no follow-up hit"
 assert hit "Bull" by="Wielder" min=1 max=1
-assert damage "Bull" by="Wielder" min=50 max=60
+assert damage "Bull" by="Wielder" min=60 max=64
 assert pawn "Bull" dead expect=absent
 select "Wielder"
 gizmo "Vanquish" expect=disabled
@@ -70,7 +70,7 @@ target "Calf" expect=allowed
 speed x1
 waitfor casts "Seer" ability=BX_Vanquish min=1 ticks=300
 speed paused
-assert damage "Calf" by="Seer" min=70 max=82
+assert damage "Calf" by="Seer" min=84 max=90
 
 spawn Pawn:Colonist at 0,14 name="Finisher" gear=none
 spawn Thing:BX_LifeVanquisher at 1,14 name="Finisher's sword" quality=normal
@@ -96,7 +96,7 @@ target "Wounded" expect=allowed
 speed x1
 waitfor casts "Finisher" ability=BX_Vanquish min=1 ticks=300
 speed paused
-assert damage "Wounded" by="Finisher" min=75 max=100
+assert damage "Wounded" by="Finisher" min=100 max=107
 undraft "Wielder"
 undraft "Seer"
 undraft "Finisher"

@@ -3,6 +3,7 @@ test "Wing burst - gizmo, range, landing, smoke, puts out fire, cooldown, seers 
 
 requires mod=Mortis.BX
 requires dlc=Biotech
+time hour=12
 
 despawn area=-2,0 size=24,9 natural
 spawn Pawn:Colonist at 0,4 name="Flier" xenotype=BX_Bernael
@@ -54,6 +55,8 @@ spawn Thing:Gun_Revolver at 13,9 name="Seer's gun"
 spawn Thing:Gun_Revolver at 17,7 name="Sighted's gun"
 equip "Seer" thing="Seer's gun" now=true
 equip "Sighted" thing="Sighted's gun" now=true
+train "Seer" skill=Shooting level=6
+train "Sighted" skill=Shooting level=6
 draft "Seer" holdfire=true
 draft "Sighted" holdfire=true
 assert hitchance "Seer" target="Raider" min=0.65 max=0.74
