@@ -14,7 +14,9 @@ namespace Bernael_Xenotype
         {
             base.PostAdd();
 
-            if (!pawn.HasPsylink && ModsConfig.RoyaltyActive)
+            // HasPsylink is cached per tick, so a second Gene_Hexmaster added in the same tick would see
+            // no psylink and raise it to level 2; the hediff set is read directly instead.
+            if (pawn.GetMainPsylinkSource() == null && ModsConfig.RoyaltyActive)
                 pawn.ChangePsylinkLevel(1);
         }
     }

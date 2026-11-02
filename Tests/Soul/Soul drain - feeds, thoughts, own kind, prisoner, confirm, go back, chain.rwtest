@@ -35,6 +35,9 @@ assert pawn "Kin" gene=BX_SoulEater expect=present
 assert pawn "Stranger" gene=BX_SoulEater expect=absent
 assert pawn "Stranger" gene=BX_EssenceHarvest expect=absent
 
+draft "Hungry"
+draft "Kin"
+draft "Stranger"
 select "Hungry"
 gizmo "Life drain" expect=allowed
 target "Kin" expect=refused
@@ -45,6 +48,9 @@ gizmo "Life drain" expect=allowed
 target "Stranger" expect=allowed
 waitfor pawn "Stranger" hediff=BX_SoulDrained expect=present ticks=300
 assert pawn "Kin" hediff=BX_SoulDrained expect=absent
+undraft "Hungry"
+undraft "Kin"
+undraft "Stranger"
 
 speed paused
 spawn Pawn:Colonist at 0,12 name="Jailer" xenotype=BX_Bernael

@@ -36,6 +36,7 @@ draft "Hollow"
 select "Hollow"
 gizmo "Rancor of Souls" expect=disabled reason="Hollow needs at least 5% Soul Saturation to use Rancor of Souls." match=equals
 
+tick 30 note="target block: HasTarget keeps its answer for 30 ticks, the no-target answer from before the raiders spawned has to run out"
 select "Rancor"
 gizmo "Rancor of Souls" expect=allowed
 speed x1

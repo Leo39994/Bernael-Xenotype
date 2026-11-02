@@ -7,7 +7,7 @@ requires dlc=Royalty
 
 spawn Pawn:Colonist at 0,0 name="Adept"
 spawn Pawn:Colonist at 2,0 name="Mundane"
-ability "Adept" grant=BX_DireOrb psylink=1
+ability "Adept" grant=Painblock psylink=1
 
 assert canfire BX_GazeCaligo expect=present
 assert condition BX_GazeCaligo expect=absent
@@ -48,7 +48,7 @@ assert pawn "Adept" hediff=PsychicAmplifier severity min=1.9 max=2.1 expect=pres
 assert condition BX_GazeCaligo expect=absent
 
 spawn Pawn:Colonist at 4,0 name="Climber"
-ability "Climber" grant=BX_DireOrb psylink=2
+ability "Climber" grant=Painblock psylink=2
 incident BX_EthersBlessing
 rand off
 assert pawn "Climber" hediff=PsychicAmplifier severity min=2.9 max=3.1 expect=present

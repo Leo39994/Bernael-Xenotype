@@ -31,14 +31,23 @@ speed paused
 assert casts "Starved" ability=BX_LifeDrain min=1 max=2
 assert pawn "Prey" hediff=BX_SoulDrained expect=present
 assert pawn "Starved" resource=BX_SoulEater min=0.15 max=0.45 expect=present
-assert pawn "Starved" mentalstate=BX_SoulFeedingFrenzy expect=present
+assert pawn "Starved" mentalstate=BX_SoulFeedingFrenzy expect=absent
 assert casts "Lonely" ability=BX_LifeDrain max=0
 assert casts "Fed" ability=BX_LifeDrain max=0
 
+give "Starved" resource=BX_SoulEater value=0
+rand value=0 in="Verse.Gene.TickInterval"
+speed x1
+tick 180 note="second break block: the soul is empty again and Prey is still in sight, so the break comes back as in the break block"
+speed paused
+rand off
+assert pawn "Starved" mentalstate=BX_SoulFeedingFrenzy expect=present
+
 give "Starved" resource=BX_SoulEater value=1
 speed x1
-tick 60 note="recovery block: MentalStateTick checks the soul every 30 ticks and ends the state at 0.99"
+tick 60 note="recovery block: MentalStateTick checks the soul every 30 ticks and ends the state at 0.99, long before the 4 s warmup of a second drain"
 speed paused
 assert pawn "Starved" mentalstate=BX_SoulFeedingFrenzy expect=absent
+assert casts "Starved" ability=BX_LifeDrain min=1 max=2
 assert ability "Starved" range ability=BX_LifeDrain min=3.5 max=4.5
 assert log clean

@@ -7,7 +7,7 @@ requires dlc=Royalty
 
 spawn Pawn:Colonist at 0,-8 name="Hexmaster" xenotype=BX_Bernael
 
-assert pawn "Hexmaster" hediff=PsychicAmplifier expect=present
+assert pawn "Hexmaster" hediff=PsychicAmplifier severity min=0.9 max=1.1 expect=present
 
 assert pawn "Hexmaster" stat=PsychicEntropyGain min=0.98 max=1.02 expect=present
 

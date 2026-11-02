@@ -16,10 +16,12 @@ assert pawn "Plain" gene=BX_FoldSeverance expect=absent
 select "Plain"
 gizmo "Fold shift" expect=absent
 
+draft "Poor"
 select "Poor"
 gizmo "Fold shift" expect=disabled reason="Poor does not have enough soul saturation." match=equals
 
 assert pawn "Folder" stat=MoveSpeed min=3 expect=present
+draft "Folder"
 select "Folder"
 gizmo "Fold shift" expect=allowed
 tick 60 note="cast block: warmup 0.25 s is 15 ticks, the rest covers the job start"
@@ -51,6 +53,7 @@ assert log clean
 
 spawn Pawn:Colonist at 0,6 name="Saver" xenotype=BX_Bernael
 give "Saver" resource=BX_SoulEater value=0.9
+draft "Saver"
 select "Saver"
 gizmo "Fold shift" expect=allowed
 tick 60 note="reload block: the cast lands as in the cast block"
@@ -76,6 +79,7 @@ terrain Soil at -1,14
 spawn Pawn:Colonist at 0,12 name="Wader" xenotype=BX_Bernael
 spawn Pawn:Colonist at 0,14 name="Walker" xenotype=BX_Bernael
 give "Wader" resource=BX_SoulEater value=0.9
+draft "Wader"
 select "Wader"
 gizmo "Fold shift" expect=allowed
 tick 60 note="path cost block: the cast lands as in the cast block"

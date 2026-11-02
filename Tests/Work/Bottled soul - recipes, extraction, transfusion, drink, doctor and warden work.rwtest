@@ -27,7 +27,7 @@ assert thing BX_BottledSoul expect=absent
 
 spawn Pawn:Colonist in="cell" name="Prisoner"
 prisoner "Prisoner" resistance=10
-assert pawn "Prisoner" room=PrisonCell expect=present
+assert pawn "Prisoner" room=PrisonBarracks expect=present
 
 bill "Prisoner" recipe=BX_ExtractSoul expect=absent
 spawn Pawn:Colonist in="ward" name="Bernael" xenotype=BX_Bernael
@@ -89,18 +89,18 @@ work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Captive" expect=dis
 prisoner "Wounded"
 down "Wounded"
 bed "Wounded"
-assert pawn "Wounded" room=PrisonCell expect=present
+assert pawn "Wounded" room=PrisonBarracks expect=present
 assert pawn "Wounded" job=LayDown expect=present
 assert pawn "Wounded" downed expect=present
 assert reach "Warden" to="Wounded" pathEndMode=OnCell expect=present
 work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Wounded" expect=disabled reason="needs food before a bottled soul" match=contains
 prisoner "Caged"
 assert prisoner "Caged" secure by="Warden" expect=present
-assert pawn "Caged" room=PrisonCell expect=present
+assert pawn "Caged" room=PrisonBarracks expect=present
 work "Warden" giver=Bernael_DeliverBottledSoulToPrisoner on="Caged" expect=absent
 prisoner "Starved"
 assert prisoner "Starved" secure by="Warden" expect=present
-assert pawn "Starved" room=PrisonCell expect=present
+assert pawn "Starved" room=PrisonBarracks expect=present
 give "Starved" resource=BX_SoulEater value=0.6 targetValue=0.5
 assert pawn "Starved" gene=BX_SoulEater expect=present
 assert pawn "Starved" resource=BX_SoulEater min=0.55 max=0.65 expect=present

@@ -8,7 +8,7 @@ requires dlc=Royalty
 spawn Pawn:Colonist at 0,0 name="Adept"
 spawn Pawn:Colonist at 2,0 name="Sensitive" traits=PsychicSensitivity:1
 spawn Pawn:Colonist at 4,0 name="Dull"
-ability "Adept" grant=BX_DireOrb psylink=2
+ability "Adept" grant=Painblock psylink=2
 rand value=0.99 in="Bernael_Xenotype.Patch_Hediff_Psylink_ChangeLevel.Postfix" silent=ok
 
 assert pawn "Sensitive" stat=PsychicSensitivity min=1.05 expect=present
