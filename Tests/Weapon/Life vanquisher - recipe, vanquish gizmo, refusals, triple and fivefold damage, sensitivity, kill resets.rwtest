@@ -13,7 +13,7 @@ despawn "Shown"
 assert log clean
 
 speed paused
-spawn Pawn:Colonist at 0,0 name="Wielder" gear=none
+spawn Pawn:Colonist at 0,0 name="Wielder" gear=none age=30
 spawn Pawn:Colonist at 0,2 name="Friend"
 spawn Thing:BX_LifeVanquisher at 1,0 name="Sword" quality=normal
 draft "Wielder"
@@ -49,7 +49,7 @@ assert pawn "Bull" dead expect=absent
 select "Wielder"
 gizmo "Vanquish" expect=disabled
 
-spawn Pawn:Colonist at 0,8 name="Seer" xenotype=BX_Bernael gear=none
+spawn Pawn:Colonist at 0,8 name="Seer" xenotype=BX_Bernael gear=none age=30
 spawn Thing:BX_LifeVanquisher at 1,8 name="Seer's sword" quality=normal
 equip "Seer" thing="Seer's sword" now=true
 assert pawn "Seer" stat=PsychicSensitivity min=1.85 max=1.95 expect=present
@@ -65,7 +65,7 @@ waitfor casts "Seer" ability=BX_Vanquish min=1 ticks=300
 speed paused
 assert damage "Calf" by="Seer" min=114 max=122
 
-spawn Pawn:Colonist at 0,14 name="Finisher" gear=none
+spawn Pawn:Colonist at 0,14 name="Finisher" gear=none age=30
 spawn Thing:BX_LifeVanquisher at 1,14 name="Finisher's sword" quality=normal
 equip "Finisher" thing="Finisher's sword" now=true
 teleport "Finisher" at 2,14
@@ -92,12 +92,14 @@ undraft "Seer"
 undraft "Finisher"
 assert log clean
 
-spawn Pawn:Colonist at 0,20 name="Slayer" gear=none
+spawn Pawn:Colonist at 0,20 name="Slayer" gear=none age=30
 spawn Thing:BX_LifeVanquisher at 1,20 name="Slayer's sword" quality=normal
 equip "Slayer" thing="Slayer's sword" now=true
+assert pawn "Slayer" stat=PsychicSensitivity min=0.99 max=1.01 expect=present
+assert pawn "Slayer" stat=MeleeDamageFactor min=0.99 max=1.01 expect=present
 teleport "Slayer" at 2,20
 room at 1,19 size=4,3 door=none roof=false name="Victim pen"
-spawn Pawn:Pirate at 3,20 name="Victim" faction=enemy pacify=true gear=none
+spawn Pawn:Pirate at 3,20 name="Victim" faction=enemy pacify=true gear=none age=30
 draft "Slayer"
 select "Slayer"
 gizmo "Vanquish" expect=allowed
@@ -115,13 +117,15 @@ assert log clean
 
 requires dlc=Royalty
 requires assert=psyfocus
-spawn Pawn:Colonist at 0,26 name="Reaper" gear=none
+spawn Pawn:Colonist at 0,26 name="Reaper" gear=none age=30
 spawn Thing:BX_LifeVanquisher at 1,26 name="Reaper's sword" quality=normal
 equip "Reaper" thing="Reaper's sword" now=true
+assert pawn "Reaper" stat=PsychicSensitivity min=0.99 max=1.01 expect=present
+assert pawn "Reaper" stat=MeleeDamageFactor min=0.99 max=1.01 expect=present
 ability "Reaper" grant=Painblock psylink=1 psyfocus=0.1
 teleport "Reaper" at 2,26
 room at 1,25 size=4,3 door=none roof=false name="Prey pen"
-spawn Pawn:Pirate at 3,26 name="Prey" faction=enemy pacify=true gear=none
+spawn Pawn:Pirate at 3,26 name="Prey" faction=enemy pacify=true gear=none age=30
 assert psyfocus "Reaper" min=0.09 max=0.11
 draft "Reaper"
 select "Reaper"
