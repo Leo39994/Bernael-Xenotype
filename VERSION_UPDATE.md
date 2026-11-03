@@ -57,14 +57,14 @@ ours = 1.7 tree, theirs = 1.6 HEAD with `#if RIMWORLD_1_7` reduced to its 1.7 br
       which still exists in EBSG 1.7)
 - [x] rw-smith validate_mod: 0 errors; find_duplicate_defs: none; vanilla parents and XPath
       targets exist in 1.7 Data; every defName used in Tests/*.rwtest exists
-- [ ] game started, Player.log worked top to bottom (needs deploy, user's call)
-- [ ] ported features checked in game: Cursed Fire, Wing Burst, Fold Severance, Gaze of Caligo,
+- [x] game started, Player.log worked top to bottom: 2026-11-03 sessions 0 errors, no BX warnings (log now in Config/../Logs/Player.log)
+- [x] ported features checked in game: Cursed Fire, Wing Burst, Fold Severance, Gaze of Caligo,
       Warlockracy, Bogeyman, Soul Feeding Frenzy, Essence Reservoir -> Rancor of Souls
-- [ ] .rwtest suite: rwtest-refresh for 1.7 before the first run
+- [x] .rwtest suite: rwtest-refresh for 1.7 before the first run
 
 ## After every beta patch (until 1.7 is on main)
 - [x] 2026-10-28 1.7.4990 rev1069: build ok, 19 patches, log clean (contributors, 1.7/README.md)
-- [ ] 2026-11-01 1.7.4995 rev309: build ok, 22 patches probed ok, log open
+- [x] 2026-11-01 1.7.4995 rev309: build ok, 22 patches probed ok, log clean (2026-11-03 sessions, 0 errors)
 
 ## Open points
 - [x] `XenoIconBernael` texPath pointed to `UI/XenoIconBernael` (broken since 5ce8a84); now
