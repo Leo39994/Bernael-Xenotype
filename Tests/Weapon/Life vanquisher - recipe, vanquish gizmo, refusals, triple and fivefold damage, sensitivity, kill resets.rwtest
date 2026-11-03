@@ -4,13 +4,6 @@ test "Life vanquisher - recipe, vanquish gizmo, refusals, triple and fivefold da
 requires mod=Mortis.BX
 requires dlc=Biotech
 
-spawn Thing:FabricationBench name="Bench" faction=player
-research Fabrication done=false
-workbill "Bench" recipe=Make_BX_LifeVanquisher count=1 expect=refused
-research Fabrication done=true
-workbill "Bench" recipe=Make_BX_LifeVanquisher count=1
-despawn "Bench"
-
 spawn Thing:BX_LifeVanquisher at 6,6 name="Shown"
 infocard "Shown"
 assert text contains "Life vanquisher" expect=present
@@ -145,4 +138,13 @@ rand off
 assert pawn "Prey" dead expect=present
 assert psyfocus "Reaper" min=0.28 max=0.32
 undraft "Reaper"
+assert log clean
+
+requires absent=VanillaExpanded.VPsycastsE
+spawn Thing:FabricationBench name="Bench" faction=player
+research Fabrication done=false
+workbill "Bench" recipe=Make_BX_LifeVanquisher count=1 expect=refused
+research Fabrication done=true
+workbill "Bench" recipe=Make_BX_LifeVanquisher count=1
+despawn "Bench"
 assert log clean

@@ -28,6 +28,7 @@ assert log clean
 
 requires verb=difficulty
 difficulty allowBigThreats=true
+time tick=200001
 assert canfire BX_BogeymanInitial expect=absent
 incident BX_Bogeyman expect=refused
 assert lords job=LordJob_BogeymanKidnap max=0

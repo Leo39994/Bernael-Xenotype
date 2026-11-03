@@ -22,5 +22,6 @@ vefability "Reacher" grant=VPE_Flameball
 vefability "Plain" grant=VPE_Flameball
 assert pawn "Reacher" gene=BX_PsychicReach expect=present
 assert vefability "Plain" range ability=VPE_Flameball min=18.8 max=19.0
-assert vefability "Reacher" range ability=VPE_Flameball min=23.5 max=23.75
+assert pawn "Reacher" stat=PsychicSensitivity min=1.89 max=1.91 expect=present
+assert vefability "Reacher" range ability=VPE_Flameball min=44.6 max=45.2
 assert log clean

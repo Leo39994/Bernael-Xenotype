@@ -59,7 +59,7 @@ train "Seer" skill=Shooting level=6
 train "Sighted" skill=Shooting level=6
 draft "Seer" holdfire=true
 draft "Sighted" holdfire=true
-assert hitchance "Seer" target="Raider" min=0.65 max=0.74
+assert hitchance "Seer" target="Raider" min=0.73 max=0.76
 assert hitchance "Sighted" target="Raider" min=0.65 max=0.74
 select "Flier"
 gizmo "Wing burst" expect=allowed
@@ -68,7 +68,7 @@ speed x1
 waitfor pawn "Flier" at 14,5 ticks=300 expect=present
 speed paused
 assert gas BlindSmoke at 14,7 expect=present
-assert hitchance "Seer" target="Raider" min=0.65 max=0.74
+assert hitchance "Seer" target="Raider" min=0.73 max=0.76
 assert hitchance "Sighted" target="Raider" min=0.45 max=0.52
 gene "Seer" remove=BX_EtherealSight
 assert hitchance "Seer" target="Raider" min=0.45 max=0.52

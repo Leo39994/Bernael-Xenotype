@@ -73,13 +73,13 @@ assert pawn "Saver" hediff=XenogermLossShock expect=present
 assert log clean
 
 requires assert=pathcost
-time hour=0
+sky glow=1
 terrain Mud at 1,12
 terrain Soil at -1,12
 terrain Mud at 1,14
 terrain Soil at -1,14
-spawn Pawn:Colonist at 0,12 name="Wader" xenotype=BX_Bernael
-spawn Pawn:Colonist at 0,14 name="Walker" xenotype=BX_Bernael
+spawn Pawn:Colonist at 0,12 name="Wader" xenotype=BX_Bernael age=30
+spawn Pawn:Colonist at 0,14 name="Walker" xenotype=BX_Bernael age=30
 give "Walker" hediff=BX_WitheredSoulHediff severity=1 hold=on
 give "Wader" hediff=BX_WitheredSoulHediff severity=1 hold=on
 assert pawn "Walker" stat=MoveSpeed min=4.5 max=4.7 expect=present
