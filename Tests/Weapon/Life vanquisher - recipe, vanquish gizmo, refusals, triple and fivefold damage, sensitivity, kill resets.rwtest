@@ -118,7 +118,7 @@ requires assert=psyfocus
 spawn Pawn:Colonist at 0,26 name="Reaper" gear=none
 spawn Thing:BX_LifeVanquisher at 1,26 name="Reaper's sword" quality=normal
 equip "Reaper" thing="Reaper's sword" now=true
-ability "Reaper" grant=BX_DireOrb psylink=1 psyfocus=0.1
+ability "Reaper" grant=Painblock psylink=1 psyfocus=0.1
 teleport "Reaper" at 2,26
 room at 1,25 size=4,3 door=none roof=false name="Prey pen"
 spawn Pawn:Pirate at 3,26 name="Prey" faction=enemy pacify=true gear=none
