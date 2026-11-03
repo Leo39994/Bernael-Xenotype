@@ -75,11 +75,8 @@ give "Wounded" hediff=Bruise severity=45 part="front left leg"
 give "Wounded" hediff=Bruise severity=45 part="front right leg"
 give "Wounded" hediff=Bruise severity=45 part="rear left leg"
 give "Wounded" hediff=Bruise severity=45 part="rear right leg"
-give "Wounded" hediff=Bruise severity=45 part=Neck
-give "Wounded" hediff=Bruise severity=45 part=Neck
-give "Wounded" hediff=Bruise severity=45 part=Body
-give "Wounded" hediff=Bruise severity=45 part=Body
-give "Wounded" hediff=Bruise severity=45 part=Body
+give "Wounded" hediff=Bruise severity=90 part=Neck
+give "Wounded" hediff=Bruise severity=135 part=Body
 give "Wounded" hediff=Bruise severity=45 part=Head
 assert health "Wounded" max=0.49 expect=present
 draft "Finisher"

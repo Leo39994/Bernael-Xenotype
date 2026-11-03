@@ -49,6 +49,7 @@ requires assert=hitchance
 speed paused
 weather Clear
 spawn Pawn:Pirate at 14,7 name="Raider" faction=enemy pacify=true gear=none
+startjob "Raider" cell=14,7 job=Wait_MaintainPosture
 spawn Pawn:Colonist at 14,9 name="Seer" xenotype=BX_Bernael gear=none
 spawn Pawn:Colonist at 16,7 name="Sighted" gear=none
 spawn Thing:Gun_Revolver at 13,9 name="Seer's gun"
@@ -68,6 +69,7 @@ speed x1
 waitfor pawn "Flier" at 14,5 ticks=300 expect=present
 speed paused
 assert gas BlindSmoke at 14,7 expect=present
+assert pawn "Raider" at 14,7 expect=present
 assert hitchance "Seer" target="Raider" min=0.73 max=0.76
 assert hitchance "Sighted" target="Raider" min=0.45 max=0.52
 gene "Seer" remove=BX_EtherealSight
