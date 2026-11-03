@@ -103,7 +103,9 @@ spawn Pawn:Pirate at 3,20 name="Victim" faction=enemy pacify=true gear=none age=
 draft "Slayer"
 select "Slayer"
 gizmo "Vanquish" expect=allowed
-rand value=0 in="Verse.HediffSet.GetRandomNotMissingPart"
+rand value=0.5 in="RimWorld.Verb_MeleeAttackDamage.ApplyMeleeDamageToTarget"
+rand value=0.99 in="Verse.DamageWorker_Stab.ChooseHitPart" keep=yes
+rand value=0 in="Verse.HediffSet.GetRandomNotMissingPart" keep=yes
 target "Victim" expect=allowed
 speed x1
 waitfor casts "Slayer" ability=BX_Vanquish min=1 ticks=300
@@ -130,7 +132,9 @@ assert psyfocus "Reaper" min=0.09 max=0.11
 draft "Reaper"
 select "Reaper"
 gizmo "Vanquish" expect=allowed
-rand value=0 in="Verse.HediffSet.GetRandomNotMissingPart"
+rand value=0.5 in="RimWorld.Verb_MeleeAttackDamage.ApplyMeleeDamageToTarget"
+rand value=0.99 in="Verse.DamageWorker_Stab.ChooseHitPart" keep=yes
+rand value=0 in="Verse.HediffSet.GetRandomNotMissingPart" keep=yes
 target "Prey" expect=allowed
 speed x1
 waitfor casts "Reaper" ability=BX_Vanquish min=1 ticks=300
