@@ -22,7 +22,7 @@ namespace Bernael_Xenotype
 	    	return true;
 	    }
 
-        private bool HasBabyOrChildVictim(Map map)
+        private static bool HasBabyOrChildVictim(Map map)
         {
             return map.mapPawns.FreeColonistsSpawned.Any(p => p.DevelopmentalStage.Baby() || p.DevelopmentalStage.Child());
         }
@@ -54,26 +54,24 @@ namespace Bernael_Xenotype
             SoundDefOf.Psycast_Skip_Exit.PlayOneShot(new TargetInfo(spawnCell, map));
             GenExplosion.DoExplosion(spawnCell, map, SmokeRadius, DamageDefOf.Extinguish, null, -1, -1f, null, null, null, null, BernaelDefOf.BX_WingBurstSmoke, 1, 1, GasType.BlindSmoke);
 
-            LordMaker.MakeNewLord(faction, new LordJob_BogeymanKidnap(), map, new[] { bogeyman });
+            LordMaker.MakeNewLord(faction, new LordJob_Bogeyman(), map, new[] { bogeyman });
 
             SendStandardLetter(parms, bogeyman, bogeyman.Named("PAWN"));
             return true;
         }
 
-        private IntVec3 TryFindSpawnCell(Map map)
+        private static IntVec3 TryFindSpawnCell(Map map)
         {
-            Building_Bed babyBed = map.listerBuildings.AllBuildingsColonistOfClass<Building_Bed>().FirstOrDefault(b => (b.def.building.bed_crib || b.def.building.bed_maxBodySize < 1f) && b.AnyUnownedSleepingSlot);
-            if (babyBed != null)
-            {
-                return CellFinder.RandomClosewalkCellNear(babyBed.Position, map, 2);
-            }
-
             Pawn targetChild = map.mapPawns.FreeColonistsSpawned.FirstOrDefault(p => p.DevelopmentalStage.Baby() || p.DevelopmentalStage.Child());
             if (targetChild != null)
             {
                 return CellFinder.RandomClosewalkCellNear(targetChild.Position, map, 2);
             }
-
+            Building_Bed babyBed = map.listerBuildings.AllBuildingsColonistOfClass<Building_Bed>().FirstOrDefault(b => (b.def.building.bed_crib || b.def.building.bed_maxBodySize < 1f) && b.AnyUnownedSleepingSlot);
+            if (babyBed != null)
+            {
+                return CellFinder.RandomClosewalkCellNear(babyBed.Position, map, 2);
+            }
             return IntVec3.Invalid;
         }
     }

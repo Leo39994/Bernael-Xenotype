@@ -4,11 +4,23 @@
   <!--============= Special hauling ===============-->
 
   <JobDef>
+    <defName>BX_BogeymanEscape</defName>
+    <driverClass>Bernael_Xenotype.JobDriver_BogeymanEscape</driverClass>
+    <reportString>fleeing.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <checkOverrideOnDamage>Never</checkOverrideOnDamage>
+    <carryThingAfterJob>true</carryThingAfterJob>
+    <dropThingBeforeJob>false</dropThingBeforeJob>
+  </JobDef>
+
+  <JobDef>
     <defName>BX_BogeymanKidnap</defName>
     <driverClass>Bernael_Xenotype.JobDriver_BogeymanKidnap</driverClass>
     <reportString>kidnapping TargetA.</reportString>
     <casualInterruptible>false</casualInterruptible>
     <checkOverrideOnDamage>Never</checkOverrideOnDamage>
+    <carryThingAfterJob>true</carryThingAfterJob>
+    <dropThingBeforeJob>false</dropThingBeforeJob>
   </JobDef>
 
 </Defs>

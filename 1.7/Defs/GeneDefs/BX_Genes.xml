@@ -373,9 +373,11 @@
 		<displayCategory>BX_DarkEnergy</displayCategory>
 		<abilities>
 			<li>BX_FoldShift</li>
+			<li>BX_TraverseTheFold</li>
 		</abilities>
 		<descriptionHyperlinks>
 			<AbilityDef>BX_FoldShift</AbilityDef>
+			<AbilityDef>BX_TraverseTheFold</AbilityDef>
 		</descriptionHyperlinks>
 		<displayOrderInCategory>-97</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_FoldSeverance</iconPath>

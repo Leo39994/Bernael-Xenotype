@@ -5,14 +5,15 @@ using Verse.AI;
 
 namespace Bernael_Xenotype
 {
-    public class LordToil_BogeymanKidnap : LordToil_DoOpportunisticTaskOrCover
+    public class LordToil_Bogeyman : LordToil_DoOpportunisticTaskOrCover
     {
-        public LordToil_BogeymanKidnap()
+        public LordToil_Bogeyman()
         {
+            useAvoidGrid = true;
             cover = false;
         }
 
-        protected override DutyDef DutyDef => BernaelDefOf.BX_Kidnap;
+        protected override DutyDef DutyDef => BernaelDefOf.BX_Bogeyman_Duty;
 
         public override bool ForceHighStoryDanger => true;
 
@@ -25,9 +26,7 @@ namespace Bernael_Xenotype
                 target = carriedPawn;
                 return true;
             }
-
-            Pawn victim;
-            bool result = BogeymanKidnapAIUtility.TryFindBabyOrChildVictim(pawn, JobGiver_BogeymanKidnap.VictimSearchRadius, out victim, alreadyTakenTargets);
+            bool result = BogeymanKidnapAIUtility.TryFindBabyOrChildVictim(pawn, JobGiver_Bogeyman.VictimSearchRadius, out Pawn victim, alreadyTakenTargets);
             target = victim;
             return result;
         }

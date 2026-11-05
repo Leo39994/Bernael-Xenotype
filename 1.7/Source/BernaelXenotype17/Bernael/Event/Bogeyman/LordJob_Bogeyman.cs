@@ -3,7 +3,7 @@ using Verse.AI.Group;
 
 namespace Bernael_Xenotype
 {
-    public class LordJob_BogeymanKidnap : LordJob
+    public class LordJob_Bogeyman : LordJob
     {
         public override bool GuiltyOnDowned => true;
 
@@ -11,9 +11,9 @@ namespace Bernael_Xenotype
         {
             StateGraph stateGraph = new StateGraph();
 
-            LordToil_BogeymanKidnap toilKidnap = new LordToil_BogeymanKidnap();
-            stateGraph.AddToil(toilKidnap);
-            stateGraph.StartingToil = toilKidnap;
+            LordToil_Bogeyman toil = new LordToil_Bogeyman();
+            stateGraph.AddToil(toil);
+            stateGraph.StartingToil = toil;
 
             return stateGraph;
         }
