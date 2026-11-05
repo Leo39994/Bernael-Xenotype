@@ -312,13 +312,13 @@
 		<defName>BX_GracePendulum</defName>
 		<label>Pendulum of Grace</label>
 		<description>Carriers of this gene that transforms an angel into a fallen one (and vice versa) when they are deprived of Grace and suffering from a mental break.</description>
-		<geneClass>Bernael_Xenotype.Gene_Pendulum</geneClass>
+		<geneClass>Gene</geneClass>
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>-1</biostatMet>
 				<displayCategory>BX_DarkEnergy</displayCategory>
 		<displayOrderInCategory>62</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_PendulumOfGrace</iconPath>
-		<prerequisite>BX_SoulEater</prerequisite>
+		<prerequisite>GS_Grace_New</prerequisite>
 		<modExtensions>
 			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
 				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>
@@ -354,11 +354,11 @@
 			<AbilityDef>BX_RancorOfSouls</AbilityDef>
 		</descriptionHyperlinks>
 		<modExtensions>
-			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
-				<backgroundPathXenogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathXenogenes>
-				<backgroundPathEndogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathEndogenes>
-				<backgroundPathArchite>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathArchite>
-			</li>
+		<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
+			<backgroundPathXenogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathXenogenes>
+			<backgroundPathEndogenes>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathEndogenes>
+			<backgroundPathArchite>UI/Icons/Genes/BX_ArchogenesDark</backgroundPathArchite>
+		</li>
 		</modExtensions>
 	</GeneDef>
 
