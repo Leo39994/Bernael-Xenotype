@@ -15,4 +15,15 @@
     </thinkNode>
   </DutyDef>
 
+  <DutyDef>
+    <defName>BX_FeedingOnAnimaTree</defName>
+    <socialModeMax>Off</socialModeMax>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="Bernael_Xenotype.JobGiver_AnimaFeeding">
+        </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
 </Defs>

@@ -110,12 +110,6 @@ namespace Bernael_Xenotype
 
             hasTriggeredOutcome = false;
             SoundDefOf.Thunder_OnMap.PlayOneShotOnCamera();
-
-            List<Map> affectedMaps = AffectedMaps;
-            if (affectedMaps != null && affectedMaps.Count > 0)
-            {
-                CenterAndZoomOutCamera(affectedMaps[0]);
-            }
         }
 
         public override void ExposeData()
@@ -261,19 +255,6 @@ namespace Bernael_Xenotype
         {
             nextBlinkTick = currentTick + BlinkIntervalTicks.RandomInRange;
             blinkEndTick = nextBlinkTick + blinkHoldTicks;
-        }
-
-        private void CenterAndZoomOutCamera(Map map)
-        {
-            if (map == null || map != Find.CurrentMap) return;
-
-            CameraDriver driver = Find.CameraDriver;
-            if (driver == null) return;
-
-            Vector3 mapCenter = map.Center.ToVector3Shifted();
-            float maxSize = driver.config.sizeRange.max;
-
-            driver.SetRootPosAndSize(mapCenter, maxSize);
         }
 
         private int GetNewColorIndex()
