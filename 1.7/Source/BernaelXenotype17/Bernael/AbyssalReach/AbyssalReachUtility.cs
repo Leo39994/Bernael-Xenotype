@@ -4,7 +4,7 @@ namespace Bernael_Xenotype
 {
     public static class AbyssalReachUtility
     {
-        public const float RangeFactor = 1.25f;
+        public const float RangeFactor = 1.15f;
 
         public static bool HasActiveGene(Pawn pawn)
         {
