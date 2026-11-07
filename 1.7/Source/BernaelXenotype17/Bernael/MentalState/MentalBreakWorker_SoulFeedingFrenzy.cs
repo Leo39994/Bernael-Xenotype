@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -8,17 +9,23 @@ namespace Bernael_Xenotype
 {
     public class MentalBreakWorker_SoulFeedingFrenzy : MentalBreakWorker
     {
+        private const float SearchRadius = 19.9f;
+        private const float SearchRadiusSq = SearchRadius * SearchRadius;
+        private static readonly Type EBSGResourceGeneType = AccessTools.TypeByName("EBSGFramework.ResourceGene");
         public override bool BreakCanOccur(Pawn pawn)
         {
-		    if (!pawn.Spawned)
-		    {
-		    	return false;
-		    }
-            if (!base.BreakCanOccur(pawn))
+            if (pawn == null || !pawn.Spawned || pawn.abilities == null || pawn.genes == null)
             {
                 return false;
             }
-            if (pawn.abilities == null)
+
+            bool hasSoulEater = pawn.genes.HasActiveGene(BernaelDefOf.BX_SoulEater);
+            bool hasGrace = ModsConfig.IsActive("Sov.Nephilim") && pawn.genes.HasActiveGene(BernaelDefOf.GS_Grace_New);
+            if (!hasSoulEater && !hasGrace)
+            {
+                return false;
+            }
+            if (!base.BreakCanOccur(pawn))
             {
                 return false;
             }
@@ -28,16 +35,17 @@ namespace Bernael_Xenotype
             {
                 return false;
             }
-
-            if (ModsConfig.IsActive("Sov.Nephilim") && pawn.genes != null)
+            if (EBSGResourceGeneType != null && hasGrace)
             {
-                Type resourceGeneType = AccessTools.TypeByName("EBSGFramework.ResourceGene");
-                if (resourceGeneType != null)
+                List<Gene> genesList = pawn.genes.GenesListForReading;
+                for (int i = 0; i < genesList.Count; i++)
                 {
-                    foreach (var gene in pawn.genes.GenesListForReading)
+                    Gene gene = genesList[i];
+                    if (gene == null || !gene.Active) continue;
+
+                    if (EBSGResourceGeneType.IsAssignableFrom(gene.GetType()))
                     {
-                        if (gene == null || !resourceGeneType.IsAssignableFrom(gene.GetType())) continue;
-                        if (gene is Gene_Resource resourceGene && resourceGene.Active && resourceGene.Value > 0f)
+                        if (gene is Gene_Resource resourceGene && resourceGene.Value > 0f)
                         {
                             return false;
                         }
@@ -47,42 +55,40 @@ namespace Bernael_Xenotype
             return HasValidSoulFeedingTarget(pawn);
         }
 
-        private bool HasValidSoulFeedingTarget(Pawn pawn)
+        private static bool HasValidSoulFeedingTarget(Pawn pawn)
         {
             Map mapHeld = pawn.MapHeld;
             if (mapHeld == null)
             {
                 return false;
             }
-
-            int num = GenRadial.NumCellsInRadius(19.9f);
-            for (int i = 0; i < num; i++)
+            IntVec3 pawnPos = pawn.Position;
+            Faction pawnFaction = pawn.Faction;
+            IReadOnlyList<Pawn> allPawns = mapHeld.mapPawns.AllPawnsSpawned;
+            for (int i = 0; i < allPawns.Count; i++)
             {
-                IntVec3 intVec = pawn.Position + GenRadial.RadialPattern[i];
-                if (intVec.InBounds(mapHeld) && !intVec.Fogged(mapHeld))
+                Pawn target = allPawns[i];
+                if (target == pawn || target.Dead || !target.RaceProps.Humanlike)
                 {
-                    var thingList = intVec.GetThingList(mapHeld);
-                    for (int j = 0; j < thingList.Count; j++)
-                    {
-                        if (thingList[j] is Pawn target && target != pawn && !target.Dead && target.Spawned && target.RaceProps.Humanlike)
-                        {
-                            if (SoulUtility.IsSoulFeeder(target))
-                            {
-                                continue;
-                            }
-                            if (target.Faction != null && target.Faction.HostileTo(pawn.Faction) && !target.IsSlaveOfColony && !target.IsPrisonerOfColony && !target.Downed)
-                            {
-                                continue;
-                            }
-                            if (GenSight.LineOfSight(pawn.Position, intVec, mapHeld, skipFirstCell: true))
-                            {
-                                return true;
-                            }
-                        }
-                    }
+                    continue;
+                }
+                if (pawnPos.DistanceToSquared(target.Position) > SearchRadiusSq)
+                {
+                    continue;
+                }
+                if (target.Position.Fogged(mapHeld) || SoulUtility.IsSoulFeeder(target))
+                {
+                    continue;
+                }
+                if (target.Faction != null && target.Faction.HostileTo(pawnFaction) && !target.IsSlaveOfColony && !target.IsPrisonerOfColony && !target.Downed)
+                {
+                    continue;
+                }
+                if (GenSight.LineOfSight(pawnPos, target.Position, mapHeld, skipFirstCell: true))
+                {
+                    return true;
                 }
             }
-
             return false;
         }
     }

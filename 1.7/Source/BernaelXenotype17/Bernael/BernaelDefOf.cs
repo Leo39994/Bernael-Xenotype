@@ -30,12 +30,16 @@ namespace Bernael_Xenotype
         public static HediffDef BX_ConsumedSoulStrength;
         public static HediffDef BX_BabyBond_Feeder;
         public static HediffDef BX_BabyBond_Victim;
+        public static HediffDef BX_FoldShift_Hediff;
+        public static HediffDef BX_TraverseTheFold_Hediff;
         public static HediffDef BX_GazeCaligoBuff;
         public static HediffDef BX_GazeCaligoDebuff;
         public static HediffDef BX_PsychicOverchargeHediff;
         public static HediffDef BX_MaliciousSeal;
         public static DamageDef BX_CursedFlame;
         public static AbilityDef BX_LifeDrain;
+        public static AbilityDef BX_FoldShift;
+        public static AbilityDef BX_TraverseTheFold;
         public static ThoughtDef BX_ConsumedGraceThoughtMood;
         public static ThoughtDef BX_HeardDarkSpeech;
         public static ThoughtDef BX_FedOn;
@@ -54,9 +58,11 @@ namespace Bernael_Xenotype
         public static RecipeDef BX_ExtractSoul;
 
         public static JobDef BX_PrisonerSoulFeed;
+        public static JobDef BX_BogeymanEscape;
         public static JobDef BX_BogeymanKidnap;
+        public static JobDef BX_TraverseTheFold_Job;
 
-        public static DutyDef BX_Kidnap;
+        public static DutyDef BX_Bogeyman_Duty;
 
         public static IncidentDef BX_GazeCaligo;
         public static IncidentDef BX_AstralAwakening;

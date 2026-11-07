@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <JobDef ParentName="CastAbilityOnThing">
+    <defName>BX_CastAbilityOnThing_KeepCarrying</defName>
+    <carryThingAfterJob>true</carryThingAfterJob>
+    <dropThingBeforeJob>false</dropThingBeforeJob>
+  </JobDef>
+
+  <JobDef>
+    <defName>BX_TraverseTheFold_Job</defName>
+    <driverClass>Bernael_Xenotype.JobDriver_TraverseTheFold</driverClass>
+    <reportString>traversing the fold.</reportString>
+    <suspendable>false</suspendable>
+    <casualInterruptible>false</casualInterruptible>
+    <carryThingAfterJob>true</carryThingAfterJob>
+    <dropThingBeforeJob>false</dropThingBeforeJob>
+  </JobDef>
+
+</Defs>

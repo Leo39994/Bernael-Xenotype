@@ -43,7 +43,7 @@ namespace Bernael_Xenotype
     		}
     	}
 
-        private bool HasBabyOrChildVictim(Map map)
+        private static bool HasBabyOrChildVictim(Map map)
 		{
 		    if (map.mapPawns.FreeColonistsSpawned.Any(p => p.DevelopmentalStage.Baby() || p.DevelopmentalStage.Child()))
 		    {

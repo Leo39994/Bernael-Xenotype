@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Verse.Sound;
@@ -33,9 +34,22 @@ namespace Bernael_Xenotype
             Scribe_Values.Look(ref fireSize, "fireSize", 0.1f);
             Scribe_References.Look(ref instigator, "instigator");
         }
+        
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
+            base.SpawnSetup(map, respawningAfterLoad);
+            if (!respawningAfterLoad && parent == null && Spawned)
+            {
+                MergeExistingFires(map);
+            }
+        }
 
         protected override void TickInterval(int delta)
         {
+            if (parent == null && Spawned)
+            {
+                MergeExistingFires(Map);
+            }
             ticksSinceSpawn += delta;
             float maxLifetime = 600f + (fireSize * 3000f); 
             if (ticksSinceSpawn >= maxLifetime)
@@ -53,7 +67,14 @@ namespace Bernael_Xenotype
                 Pawn steppingPawn = Map.thingGrid.ThingAt<Pawn>(Position);
                 if (steppingPawn != null && steppingPawn.Spawned && !steppingPawn.Dead)
                 {
-                    AttachTo(steppingPawn);
+                    if (!steppingPawn.HasAttachment(def))
+                    {
+                        CursedFire pawnFire = (CursedFire)ThingMaker.MakeThing(def);
+                        pawnFire.fireSize = fireSize;
+                        pawnFire.instigator = instigator;
+                        pawnFire.AttachTo(steppingPawn);
+                        GenSpawn.Spawn(pawnFire, Position, Map, Rot4.North);
+                    }
                 }
             }
             if (parent != null && this.IsHashIntervalTick(150, delta))
@@ -62,9 +83,8 @@ namespace Bernael_Xenotype
             }
             if (Spawned)
             {
-                float coldPower = fireSize * -60f;
+                float coldPower = fireSize * -80f;
                 GenTemperature.PushHeat(Position, Map, coldPower);
-                
                 fireSize += 0.0002f * delta;
                 if (fireSize > MaxFireSize) 
                 {
@@ -73,14 +93,51 @@ namespace Bernael_Xenotype
             }
         }
 
+        private void MergeExistingFires(Map map)
+        {
+            bool hasMerged = false;
+            List<Thing> thingList = Position.GetThingList(map);
+            for (int i = thingList.Count - 1; i >= 0; i--)
+            {
+                Thing thing = thingList[i];
+                if (thing is Fire otherFire && otherFire != this && otherFire.parent == null)
+                {
+                    fireSize += otherFire.fireSize;
+                    if (fireSize > MaxFireSize)
+                    {
+                        fireSize = MaxFireSize;
+                    }
+                    otherFire.Destroy(DestroyMode.Vanish);
+                    hasMerged = true;
+                }
+            }
+            if (hasMerged)
+            {
+                ticksSinceSpawn = 0;
+            }
+        }
+
         private void DoCursedDamage(Thing target)
         {
-            if (target == null || target.Destroyed) return;
             int damageAmount = GenMath.RoundRandom(Mathf.Clamp(0.0125f + 0.0036f * fireSize, 0.0125f, 0.05f) * 150f);
-            if (damageAmount < 1) damageAmount = 1;
-            DamageInfo dinfo = new DamageInfo(DamageDefOf.Frostbite, damageAmount, 0f, -1f, instigator ?? this);
-            dinfo.SetBodyRegion(BodyPartHeight.Undefined, BodyPartDepth.Outside);
-            target.TakeDamage(dinfo);
+            if (damageAmount < 1)
+            {
+                damageAmount = 1;
+            }
+            if (target is Pawn pawn)
+            {
+                DamageInfo dinfo = new(DamageDefOf.Frostbite, damageAmount, 0f, -1f, instigator ?? this);
+                dinfo.SetBodyRegion(BodyPartHeight.Undefined, BodyPartDepth.Outside);
+                pawn.TakeDamage(dinfo);
+                if (pawn.apparel != null && pawn.apparel.WornApparel.TryRandomElement(out var apparelResult))
+                {
+                    apparelResult.TakeDamage(new DamageInfo(DamageDefOf.Frostbite, damageAmount, 0f, -1f, instigator ?? this));
+                }
+            }
+            else
+            {
+                target.TakeDamage(new DamageInfo(DamageDefOf.Frostbite, damageAmount, 0f, -1f, instigator ?? this));
+            }
         }
 
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)

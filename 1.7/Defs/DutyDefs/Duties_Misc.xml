@@ -2,10 +2,10 @@
 <Defs>
 
   <DutyDef>
-    <defName>BX_Kidnap</defName>
+    <defName>BX_Bogeyman_Duty</defName>
     <thinkNode Class="ThinkNode_Priority">
       <subNodes>
-        <li Class="Bernael_Xenotype.JobGiver_BogeymanKidnap" />
+        <li Class="Bernael_Xenotype.JobGiver_Bogeyman" />
         <li Class="JobGiver_ExitMapBest">
           <defaultLocomotion>Jog</defaultLocomotion>
           <jobMaxDuration>200</jobMaxDuration>

@@ -60,7 +60,7 @@ namespace Bernael_Xenotype
 
         public void Notify_AbilityCastFinished()
         {
-            if (pawn?.genes?.Xenotype != null && ModsConfig.IsActive("Sov.Nephilim") && pawn.genes.Xenotype == BernaelDefOf.GS_Nephilim)
+            if (pawn?.genes?.Xenotype != null && ModsConfig.IsActive("Sov.Nephilim") && pawn.genes.HasActiveGene(BernaelDefOf.GS_Grace_New) && pawn.genes.HasActiveGene(BernaelDefOf.BX_GracePendulum))
             {
                 XenotypeDef oldXenotype = BernaelDefOf.GS_Nephilim;
                 if (!oldXenotype.genes.NullOrEmpty())
@@ -85,11 +85,11 @@ namespace Bernael_Xenotype
                 }
                 pawn.genes.SetXenotype(BernaelDefOf.BX_Bernael);
                 SendIncidentLetter(pawn);
+                RecoverFromState();
             }
-            RecoverFromState();
         }
 
-        private void SendIncidentLetter(Pawn transformedPawn)
+        private static void SendIncidentLetter(Pawn transformedPawn)
         {
             if (PawnUtility.ShouldSendNotificationAbout(transformedPawn))
             {

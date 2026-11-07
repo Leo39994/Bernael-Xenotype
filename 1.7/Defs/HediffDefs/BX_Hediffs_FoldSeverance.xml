@@ -2,7 +2,7 @@
 <Defs>
 
   <HediffDef>
-    <defName>BX_FoldShift</defName>
+    <defName>BX_FoldShift_Hediff</defName>
     <label>fold shift</label>
     <description>TODO.</description>
     <hediffClass>HediffWithComps</hediffClass>
@@ -30,11 +30,7 @@
         <weakDamageDef>EMP</weakDamageDef>
         <stunTicks>1500</stunTicks>
       </li>
-      <li Class="HediffCompProperties_Disappears">
-        <disappearsAfterTicks>10000~10000</disappearsAfterTicks>		<!-- 2 hours -->
-        <showRemainingTime>true</showRemainingTime>
-      </li>
-      <li Class="HediffCompProperties_DisappearsOnDeath"/>
+      <li Class="HediffCompProperties_DisappearsOnDeath" />
     </comps>
     <stages>
       <li>
@@ -42,6 +38,31 @@
         <statFactors>
           <MoveSpeed>0.2</MoveSpeed>
         </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>BX_TraverseTheFold_Hediff</defName>
+    <label>traverse the fold</label>
+    <description>TODO.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+		<defaultLabelColor>(0.8, 0, 0.7)</defaultLabelColor>
+    <comps>
+      <li Class="Bernael_Xenotype.HediffCompProperties_NoPathCost"/>
+
+      <li Class="Bernael_Xenotype.HediffCompProperties_FoldShiftVisual">
+        <visualColor>(0.5, 0.8, 1.0, 0.75)</visualColor>
+      </li>
+      <li Class="HediffCompProperties_DisappearsOnDeath"/>
+    </comps>
+    <stages>
+      <li>
+        <becomeVisible>false</becomeVisible>
+        <disabledWorkTags>Violent</disabledWorkTags>
       </li>
     </stages>
   </HediffDef>
