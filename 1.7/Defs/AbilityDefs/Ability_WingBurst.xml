@@ -27,6 +27,11 @@
       </targetParams>
     </verbProperties>
     <jobDef>CastJump</jobDef>
+    <comps>
+      <li Class="Bernael_Xenotype.CompProperties_AbilitySoulCost">
+        <soulCost>0.1</soulCost>
+      </li>
+    </comps>
   </AbilityDef>
 
   <ThingDef ParentName="PawnFlyerBase">

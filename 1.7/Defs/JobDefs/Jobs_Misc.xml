@@ -17,4 +17,11 @@
     <dropThingBeforeJob>false</dropThingBeforeJob>
   </JobDef>
 
+  <JobDef>
+    <defName>BX_FeedPsylinkable</defName>
+    <driverClass>Bernael_Xenotype.JobDriver_FeedPsylinkable</driverClass>
+    <reportString>feeding on TargetA</reportString>
+    <neverShowWeapon>true</neverShowWeapon>
+  </JobDef>
+
 </Defs>
