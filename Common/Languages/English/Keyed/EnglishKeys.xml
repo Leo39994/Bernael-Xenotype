@@ -32,4 +32,10 @@
 
     <BX_CursedFireOn>TODO.</BX_CursedFireOn>
     <BX_CursedBurning>TODO.</BX_CursedBurning>
+
+    <BX_LetterLabelFeedingRitualCompleted>Fedding ritual completed</BX_LetterLabelFeedingRitualCompleted>
+    <BX_LetterTextFeedingRitualCompleted>{PAWN_labelShort} has completed the feeding ritual with {FEEDABLE_labelShort}.\n\n{PAWN_pronoun} now has an upgraded psylink, permitting the use of new psychic powers.</BX_LetterTextFeedingRitualCompleted>
+    <BX_RitualTargetAnimaTreeMustBeCapableOfHexmaster>Must be a colonist with Hexmaster gene who is below maximum psylink level.</BX_RitualTargetAnimaTreeMustBeCapableOfHexmaster>
+    <BX_AnimaFeedingExplanationBase>The anima linking ceremony is more powerful with more participants. The more people participate, the less time the ceremony takes, and the greater the chance of getting a high psylink level.</BX_AnimaFeedingExplanationBase>
+
 </LanguageData>

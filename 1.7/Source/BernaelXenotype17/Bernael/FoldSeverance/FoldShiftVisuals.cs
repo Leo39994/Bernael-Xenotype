@@ -7,7 +7,7 @@ namespace Bernael_Xenotype
     public sealed class FoldShiftVisuals : IDisposable
     {
         public const int CaptureSize = 512;
-        public const float WorldSize = 2f;
+        public const float WorldSize = 3.5f; 
         private Texture2D snapshot;
         private Material material;
         private readonly MaterialPropertyBlock properties = new MaterialPropertyBlock();
@@ -55,11 +55,22 @@ namespace Bernael_Xenotype
                 camera.clearFlags = CameraClearFlags.SolidColor;
                 camera.backgroundColor = Color.clear;
                 camera.rect = new Rect(0f, 0f, 1f, 1f);
-
-                Find.PawnCacheRenderer.RenderPawn(pawn, capture, Vector3.zero, 2f / WorldSize, 0f, facing, renderHead: true, renderHeadgear: true, renderClothes: true, portrait: false);
-
                 camera.targetTexture = capture;
-                camera.orthographicSize = WorldSize * 0.5f;
+                float cameraZoom = 2f / WorldSize;
+                float verticalOffset = (WorldSize - 2f) * 0.25f;
+                Vector3 cameraOffset = new Vector3(0f, verticalOffset, 0f);
+                Find.PawnCacheRenderer.RenderPawn(
+                    pawn: pawn,
+                    renderTexture: capture,
+                    cameraOffset: cameraOffset,
+                    cameraZoom: cameraZoom,
+                    angle: 0f,
+                    rotation: facing,
+                    renderHead: true,
+                    renderHeadgear: true,
+                    renderClothes: true,
+                    portrait: false
+                );
 
                 RenderTexture.active = capture;
                 snapshot = new Texture2D(CaptureSize, CaptureSize, TextureFormat.RGBA32, false);
@@ -86,8 +97,17 @@ namespace Bernael_Xenotype
 
             position.y = AltitudeLayer.Pawn.AltitudeFor() + 0.05f;
             properties.SetColor("_Color", color);
-
-            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(position, Quaternion.identity, new Vector3(WorldSize, 1f, WorldSize)), material, 0, null, 0, properties, UnityEngine.Rendering.ShadowCastingMode.Off, false);
+            Graphics.DrawMesh(
+                MeshPool.plane10, 
+                Matrix4x4.TRS(position, Quaternion.identity, new Vector3(WorldSize, 1f, WorldSize)), 
+                material, 
+                0, 
+                null, 
+                0, 
+                properties, 
+                UnityEngine.Rendering.ShadowCastingMode.Off, 
+                false
+            );
         }
 
         public void Dispose()

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <AnimationDef>
+    <defName>BX_BernaelFeeding</defName>
+    <durationTicks>6</durationTicks>
+    <keyframeParts>
+      <li>
+        <key>Head</key>
+        <value>
+          <workerType>Bernael_Xenotype.AnimationWorker_BernaelFeeding</workerType>
+          <keyframes>
+            <li>
+              <tick>0</tick>
+              <offset>(0.02,0,0)</offset>
+            </li>
+            <li>
+              <tick>3</tick>
+              <offset>(-0.02,0,0)</offset>
+            </li>
+            <li>
+              <tick>6</tick>
+              <offset>(0.02,0,0)</offset>
+            </li>
+          </keyframes>
+        </value>
+      </li>
+    </keyframeParts>
+  </AnimationDef>
+
+</Defs>

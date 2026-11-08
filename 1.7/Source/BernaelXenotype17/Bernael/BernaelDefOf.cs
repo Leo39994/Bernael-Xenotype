@@ -17,11 +17,14 @@ namespace Bernael_Xenotype
             DefOfHelper.EnsureInitializedInCtor(typeof(BernaelDefOf));
         }
 
+        public static AnimationDef BX_BernaelFeeding;
+
         public static GeneDef BX_DarkSpeech;
         public static GeneDef BX_PsychicReach;
         public static GeneDef BX_DepravedHead;
         public static GeneDef BX_EtherealSight;
         public static GeneDef BX_Warlockracy;
+        public static GeneDef BX_Hexmaster;
         public static TaleDef BX_ConsumedGrace;
         public static XenotypeDef BX_Bernael;
         public static HediffDef BX_Blindness;
@@ -61,6 +64,7 @@ namespace Bernael_Xenotype
         public static JobDef BX_BogeymanEscape;
         public static JobDef BX_BogeymanKidnap;
         public static JobDef BX_TraverseTheFold_Job;
+        public static JobDef BX_FeedPsylinkable;
 
         public static DutyDef BX_Bogeyman_Duty;
 

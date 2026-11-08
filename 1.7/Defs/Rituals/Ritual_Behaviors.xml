@@ -1,0 +1,46 @@
+<Defs>
+
+  <RitualBehaviorDef>
+    <defName>BX_FeedingOnAnimaTree</defName>
+    <durationTicks>15000</durationTicks>
+    <workerClass>Bernael_Xenotype.RitualBehaviorWorker_AnimaFeeding</workerClass>
+    <roles>
+      <li Class="Bernael_Xenotype.RitualRoleAnimaFeeder">
+        <label>feeder</label>
+        <id>organizer</id>
+        <required>true</required>
+        <maxCount>1</maxCount>
+        <defaultForSelectedColonist>true</defaultForSelectedColonist>
+        <noCandidatesGizmoDesc>Need a colonist with the Hexmaster gene who is below maximum psylink level and not psychically deaf.</noCandidatesGizmoDesc>
+        <allowChild>false</allowChild>
+        <customChildDisallowMessage>Only adults can link with an anima tree.</customChildDisallowMessage>
+      </li>
+    </roles>
+    <spectatorFilter Class="Bernael_Xenotype.RitualSpectatorFilter_HexmasterGene">
+      <description>Must have Hexmaster gene.</description>
+    </spectatorFilter>
+    <spectatorsLabel>Participants</spectatorsLabel>
+    <spectatorGerund>participate</spectatorGerund>
+    <stages>
+      <li Class="RitualStage_AnimaTreeLinking">
+        <defaultDuty>LinkWithAnimaTreeSecondary</defaultDuty>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>1</percentage>
+          </li>
+        </endTriggers>
+        <spectateDistanceOverride>3~4</spectateDistanceOverride>
+        <roleBehaviors>
+          <li>
+            <roleId>organizer</roleId>
+            <dutyDef>BX_FeedingOnAnimaTree</dutyDef>
+            <customPositions>
+              <li Class="RitualPosition_AnimaLinkingSpot" />
+            </customPositions>
+          </li>
+        </roleBehaviors>
+      </li>
+    </stages>
+  </RitualBehaviorDef>
+
+</Defs>
