@@ -83,6 +83,10 @@ namespace Bernael_Xenotype
                         }
                     }
                 }
+                if (pawn.Map != null)
+                {
+                    FleckMaker.Static(pawn.Position, pawn.Map, FleckDefOf.PsycastSkipInnerExit);
+                }
                 pawn.genes.SetXenotype(BernaelDefOf.BX_Bernael);
                 SendIncidentLetter(pawn);
                 RecoverFromState();

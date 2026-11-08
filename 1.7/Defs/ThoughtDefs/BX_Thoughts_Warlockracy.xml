@@ -8,7 +8,7 @@
     <stages>
       <li>
         <label>non-psionic standard</label>
-        <baseOpinionOffset>-15</baseOpinionOffset>
+        <baseOpinionOffset>-30</baseOpinionOffset>
       </li>
       <li>
         <label>psionic level 1</label>

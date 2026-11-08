@@ -1,0 +1,14 @@
+<Defs>
+
+  <RitualPatternDef>
+    <defName>BX_FeedingOnAnimaTree</defName>
+    <ritualOnlyForIdeoMembers>false</ritualOnlyForIdeoMembers>
+    <ritualBehavior>BX_FeedingOnAnimaTree</ritualBehavior>
+    <ritualTargetFilter>SelectedThing</ritualTargetFilter>
+    <ritualObligationTargetFilter>BX_AnimaTree</ritualObligationTargetFilter>
+    <ritualOutcomeEffect>BX_FeedingOnAnimaTree</ritualOutcomeEffect>
+    <playsIdeoMusic>false</playsIdeoMusic>
+    <alwaysStartAnytime>true</alwaysStartAnytime>
+  </RitualPatternDef>
+
+</Defs>
