@@ -1,0 +1,8 @@
+<Defs>
+
+  <RitualObligationTargetFilterDef>
+    <defName>BX_AnimaTree</defName>
+    <workerClass>Bernael_Xenotype.RitualObligationTargetWorker_AnimaTree</workerClass>
+  </RitualObligationTargetFilterDef>
+
+</Defs>
