@@ -145,7 +145,8 @@ namespace Bernael_Xenotype
             }
         }
 
-        private static Vector4 EyeAnchor(Pawn pawn, Rot4 facing, string tag, Camera camera)
+        // Also used by the Fold Shift shadow, which captures pawns the same way.
+        internal static Vector4 EyeAnchor(Pawn pawn, Rot4 facing, string tag, Camera camera)
         {
             if (facing == Rot4.North || pawn.story?.bodyType == null || !pawn.health.hediffSet.HasHead)
                 return Vector4.zero;
@@ -193,7 +194,7 @@ namespace Bernael_Xenotype
                 UnityEngine.Rendering.ShadowCastingMode.Off, false);
         }
 
-        // Explicit dev QA uses this same shader and capture, not a separate mockup.
+        // Export the in-game shader with the captured pawn appearance.
         public void ExportPreview(string path, float time, float spawnAge = 10f, float opacity = 1f)
         {
             if (material == null || !FinishDistanceField(wait: true))

@@ -31,6 +31,7 @@ gizmo "Wing burst" expect=allowed
 target cell=10,4 expect=allowed
 speed x1
 waitfor pawn "Flier" at 10,4 ticks=300 expect=present
+tick 10 note="landing explosion resolves its smoke and extinguish cells over the following ticks"
 speed paused
 
 assert gas BlindSmoke at 10,4 expect=present
@@ -67,6 +68,7 @@ gizmo "Wing burst" expect=allowed
 target cell=14,5 expect=allowed
 speed x1
 waitfor pawn "Flier" at 14,5 ticks=300 expect=present
+tick 10 note="allow landing smoke to populate its cells"
 speed paused
 assert gas BlindSmoke at 14,7 expect=present
 assert pawn "Raider" at 14,7 expect=present

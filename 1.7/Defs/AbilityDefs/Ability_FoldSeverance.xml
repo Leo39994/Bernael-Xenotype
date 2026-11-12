@@ -4,8 +4,10 @@
   <Bernael_Xenotype.AbilityDef_Toggle>
     <defName>BX_FoldShift</defName>
     <label>fold shift</label>
-    <description>TODO.</description>
+    <description>Shift out of physical reality, becoming a shadow that moves slowly and resists physical harm. While active, the shift drains soul essence and allows Traverse the Fold. EMP forces the shift to end and stuns the carrier. Leaving the shifted state causes severe shock.</description>
     <abilityClass>Bernael_Xenotype.Ability_ToggleHediff</abilityClass>
+    <showPsycastEffects>false</showPsycastEffects>
+    <hostile>false</hostile>
     <toggleHediffDef>BX_FoldShift_Hediff</toggleHediffDef>
     <iconPath>UI/Icons/Abilities/BX_FoldShift</iconPath>
 		<category>Bernael</category>
@@ -33,14 +35,13 @@
       <li Class="Bernael_Xenotype.CompProperties_AbilitySoulCostPerSecond">
         <soulCostPerSecond>0.02</soulCostPerSecond>
       </li>
-      <li MayRequire="Ludeon.RimWorld.Royalty" Class="CompProperties_AbilityFleckOnTarget">
-        <fleckDef>PsycastPsychicEffect</fleckDef>
-      </li>
     </comps>
   </Bernael_Xenotype.AbilityDef_Toggle>
 
   <AbilityDef ParentName="AbilityTouchBase">
     <defName>BX_TraverseTheFold</defName>
+    <showPsycastEffects>false</showPsycastEffects>
+    <hostile>false</hostile>
     <label>traverse the fold</label>
     <description>Phase through solid matter along a straight line, passing through up to 5 walls or obstacles. Blocked by special barriers, such as ancient fortified walls, and impassable terrain.</description>
     <iconPath>UI/Icons/Abilities/BX_TraverseTheFold</iconPath>
@@ -73,9 +74,6 @@
       </li>
       <li Class="Bernael_Xenotype.CompProperties_AbilityTraverseTheFold">
         <maxPassWall>5</maxPassWall>
-      </li>
-      <li MayRequire="Ludeon.RimWorld.Royalty" Class="CompProperties_AbilityFleckOnTarget">
-        <fleckDef>PsycastPsychicEffect</fleckDef>
       </li>
     </comps>
   </AbilityDef>

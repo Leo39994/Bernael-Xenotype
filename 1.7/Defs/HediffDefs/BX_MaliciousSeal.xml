@@ -4,7 +4,7 @@
   <HediffDef>
     <defName>BX_MaliciousSeal</defName>
     <label>malicious seal</label>
-    <description>An ancient seal of malice has been branded on this creature's mind, and every second its daggers pierce the skull at its heart. While it lasts the creature cannot cast psycasts or use any other ability, it suffers constant pain, and cursed flame sears it far deeper than normal.\n\nIf the sealed creature dies before the brand fades, the seal leaps from its corpse to the nearest hostile minds.</description>
+    <description>An ancient seal of malice has been branded on this creature's mind. Its angular rune pulses with cold light. While it lasts the creature cannot cast psycasts or use any other ability, it suffers constant pain, and cursed flame sears it far deeper than normal.\n\nIf the sealed creature dies before the brand fades, the seal leaps from its corpse to the nearest hostile minds.</description>
     <hediffClass>HediffWithComps</hediffClass>
     <defaultLabelColor>(0.51, 0.71, 0.86)</defaultLabelColor>
     <isBad>true</isBad>

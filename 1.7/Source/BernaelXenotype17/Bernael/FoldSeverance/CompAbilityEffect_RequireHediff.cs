@@ -33,6 +33,19 @@ namespace Bernael_Xenotype
 
         public override bool ShouldHideGizmo => Props.hideGizmoOnUndesirable && !HasEnoughHediff;
 
+        public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
+        {
+            if (!HasEnoughHediff)
+            {
+                if (throwMessages && GizmoDisabled(out string reason))
+                    Messages.Message(reason, MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+            return base.Valid(target, throwMessages);
+        }
+
+        public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest) => Valid(target);
+
         public override bool GizmoDisabled(out string reason)
         {
             if (!HasEnoughHediff)

@@ -17,18 +17,31 @@ namespace Bernael_Xenotype
 
     public class CompAbilityEffect_TraverseTheFold : CompAbilityEffect
     {
+        public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest) => Valid(target);
+
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
+            if (!Valid(target, true)) return;
             base.Apply(target, dest);
 
             Pawn pawn = parent.pawn;
             if (pawn == null || !pawn.Spawned) return;
 
+            if (!TryFindExit(pawn, target.Cell, out IntVec3 finalTarget)) return;
+            Job traverseJob = JobMaker.MakeJob(BernaelDefOf.BX_TraverseTheFold_Job, finalTarget);
+            traverseJob.targetB = target.Cell;
+            traverseJob.playerForced = true;
+            traverseJob.ability = parent;
+            pawn.jobs.StartJob(traverseJob, JobCondition.InterruptForced, null, false, true, null, null, false, false);
+        }
+
+        private static bool TryFindExit(Pawn pawn, IntVec3 targetCell, out IntVec3 finalTarget)
+        {
             IntVec3 casterPos = pawn.Position;
-            IntVec3 targetCell = target.Cell;
+            finalTarget = IntVec3.Invalid;
             int dx = targetCell.x - casterPos.x;
             int dz = targetCell.z - casterPos.z;
-            if (dx == 0 && dz == 0) return;
+            if (dx == 0 && dz == 0) return false;
             int stepX = 0;
             int stepZ = 0;
             if (Mathf.Abs(dx) >= Mathf.Abs(dz))
@@ -41,12 +54,15 @@ namespace Bernael_Xenotype
             }
 
             Map map = pawn.Map;
-            IntVec3 finalTarget = casterPos;
             bool insideBlockingBuilding = false;
             for (int i = 1; i < 100; i++)
             {
                 IntVec3 checkCell = new(casterPos.x + stepX * i, casterPos.y, casterPos.z + stepZ * i);
                 if (!checkCell.InBounds(map)) break;
+                if (checkCell.GetTerrain(map).passability == Traversability.Impassable) return false;
+                Building edifice = checkCell.GetEdifice(map);
+                if (edifice?.def.building != null && !edifice.def.building.claimable &&
+                    !edifice.def.building.IsDeconstructible && edifice.def.building.neverBuildable) return false;
 
                 bool isBlocked = !checkCell.Walkable(map) || checkCell.Impassable(map);
                 if (isBlocked)
@@ -56,17 +72,10 @@ namespace Bernael_Xenotype
                 else if (insideBlockingBuilding && !isBlocked)
                 {
                     finalTarget = checkCell;
-                    break;
+                    return true;
                 }
             }
-            if (finalTarget == casterPos)
-            {
-                finalTarget = targetCell.InBounds(map) ? targetCell : casterPos;
-            }
-            Job traverseJob = JobMaker.MakeJob(BernaelDefOf.BX_TraverseTheFold_Job, finalTarget);
-            traverseJob.playerForced = true;
-            traverseJob.ability = parent;
-            pawn.jobs.StartJob(traverseJob, JobCondition.InterruptForced, null, false, true, null, null, false, false);
+            return false;
         }
 
         public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
@@ -78,6 +87,8 @@ namespace Bernael_Xenotype
 
             Pawn pawn = parent.pawn;
             if (pawn == null || pawn.Map == null) return false;
+            if (parent.CompOfType<CompAbilityEffect_RequireHediff>() is { } requirement && !requirement.Valid(target, throwMessages))
+                return false;
 
             Map map = pawn.Map;
             if (!target.Cell.IsValid || !target.Cell.InBounds(map))
@@ -88,12 +99,17 @@ namespace Bernael_Xenotype
             Building edifice = target.Cell.GetEdifice(map);
             if (edifice == null || !target.Cell.Impassable(map))
             {
-                Messages.Message("Target must be an impassable blocking structure.", MessageTypeDefOf.RejectInput, historical: false);
+                if (throwMessages) Messages.Message("Target must be an impassable blocking structure.", MessageTypeDefOf.RejectInput, historical: false);
                 return false;
             }
             if (edifice.def.building != null && !edifice.def.building.claimable && !edifice.def.building.IsDeconstructible && edifice.def.building.neverBuildable)
             {
-                Messages.Message("Cannot target this special barrier.", MessageTypeDefOf.RejectInput, historical: false);
+                if (throwMessages) Messages.Message("Cannot target this special barrier.", MessageTypeDefOf.RejectInput, historical: false);
+                return false;
+            }
+            if (!TryFindExit(pawn, target.Cell, out _))
+            {
+                if (throwMessages) Messages.Message("No clear passage through this barrier.", MessageTypeDefOf.RejectInput, false);
                 return false;
             }
             return true;

@@ -1,0 +1,30 @@
+rwtest 1
+test "Traverse the fold - requires shift, wall passage, reload and cleanup" project="Bernael" created=2026-11-09T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+
+speed paused
+room at 0,-2 size=3,5 door=none roof=false name="Barrier"
+spawn Pawn:Colonist at -1,0 name="Traveler" xenotype=BX_Bernael
+give "Traveler" resource=BX_SoulEater value=1.0
+draft "Traveler"
+select "Traveler"
+gizmo "Traverse the fold" expect=disabled
+gizmo "Fold shift" expect=allowed
+tick 45 note="allow the self-shift cast to finish"
+assert pawn "Traveler" hediff=BX_FoldShift_Hediff expect=present
+select "Traveler"
+gizmo "Traverse the fold" expect=allowed
+target cell=0,0 expect=allowed
+speed x1
+waitfor pawn "Traveler" at 0,0 ticks=400 expect=present
+speed paused
+reload note="save while occupying the wall; phasing permissions and destination must restore"
+speed x1
+waitfor pawn "Traveler" at 1,0 ticks=400 expect=present
+tick 25 note="allow both rifts and the shift's exit image to finish"
+assert thing Wall at 0,0 expect=present
+assert pawn "Traveler" hediff=BX_TraverseTheFold_Hediff expect=absent
+assert pawn "Traveler" hediff=BX_FoldShift_Hediff expect=absent
+assert log clean

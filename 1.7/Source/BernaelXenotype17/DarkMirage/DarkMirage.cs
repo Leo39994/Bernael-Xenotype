@@ -95,9 +95,6 @@ namespace Bernael_Xenotype
         private Vector4 eyeB;
         private MirageVisuals visuals;
         private bool visualFailed;
-#if MIRAGE_QA
-        public int QaDrawCalls;
-#endif
         private bool suppressBurst;
         private bool burstDone;
         private Sustainer ambientSound;
@@ -174,9 +171,6 @@ namespace Bernael_Xenotype
 
         protected override void DrawAt(Vector3 drawLoc, bool flip = false)
         {
-#if MIRAGE_QA
-            QaDrawCalls++;
-#endif
             int now = Find.TickManager.TicksGame;
             // Spawn is revealed by the shader; retain the existing 36-tick fade-out.
             float opacity = Mathf.Clamp01((expiresTick - now) / (float)FadeOutTicks);

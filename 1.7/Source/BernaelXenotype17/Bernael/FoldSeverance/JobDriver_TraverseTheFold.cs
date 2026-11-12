@@ -14,6 +14,10 @@ namespace Bernael_Xenotype
         private IntVec3 lastCheckedNextCell = IntVec3.Invalid;
         private int impassableCellCount = 0;
         private bool isReturning = false;
+        private IntVec3 originalDestination = IntVec3.Invalid;
+        private bool visualsRegistered;
+        private bool cleanupRegistered;
+        private List<IntVec3> countedWalls = new List<IntVec3>();
 
         public override bool PlayerInterruptable => false;
 
@@ -30,20 +34,59 @@ namespace Bernael_Xenotype
             {
                 startPosition = pawn.Position;
             }
+            originalDestination = job.targetA.Cell;
             if (pawn.health != null)
             {
                 AddHediffIfNotExists(BernaelDefOf.BX_FoldShift_Hediff);
                 AddHediffIfNotExists(BernaelDefOf.BX_TraverseTheFold_Hediff);
             }
-            AddFinishAction(delegate (JobCondition condition)
+            EnsureVisuals();
+        }
+
+        public override void ExposeData()
+        {
+            // Base SetupToils runs during PostLoadInit, after these values were read in LoadingVars.
+            base.ExposeData();
+            Scribe_Values.Look(ref startPosition, "foldStart", IntVec3.Invalid);
+            Scribe_Values.Look(ref originalDestination, "foldDestination", IntVec3.Invalid);
+            Scribe_Values.Look(ref lastCheckedNextCell, "foldLastChecked", IntVec3.Invalid);
+            Scribe_Values.Look(ref impassableCellCount, "foldWallCount");
+            Scribe_Values.Look(ref isReturning, "foldReturning");
+            Scribe_Collections.Look(ref countedWalls, "foldCountedWalls", LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit) countedWalls ??= new List<IntVec3>();
+        }
+
+        private void FinishTraversal(JobCondition condition)
+        {
+            if (pawn?.Spawned == true && pawn.Position.Impassable(pawn.Map) && startPosition.IsValid)
             {
-                WorldComponent_TraverseTheFold.Remove(pawn);
-                if (pawn?.health != null)
-                {
-                    RemoveHediffIfExists(BernaelDefOf.BX_FoldShift_Hediff);
-                    RemoveHediffIfExists(BernaelDefOf.BX_TraverseTheFold_Hediff);
-                }
-            });
+                // Forced interruptions must not leave a pawn stranded after its phasing permission ends.
+                foreach (IntVec3 cell in GenRadial.RadialCellsAround(startPosition, 3.9f, true))
+                    if (cell.InBounds(pawn.Map) && cell.Walkable(pawn.Map) && !cell.Impassable(pawn.Map))
+                    {
+                        pawn.Position = cell;
+                        pawn.Notify_Teleported(endCurrentJob: false);
+                        break;
+                    }
+            }
+            WorldComponent_TraverseTheFold.Remove(pawn);
+            pawn?.Map?.GetComponent<FoldGateMapComponent>().End(pawn);
+            if (pawn?.health != null)
+            {
+                RemoveHediffIfExists(BernaelDefOf.BX_FoldShift_Hediff);
+                RemoveHediffIfExists(BernaelDefOf.BX_TraverseTheFold_Hediff);
+            }
+        }
+
+        private void EnsureVisuals()
+        {
+            WorldComponent_TraverseTheFold.Add(pawn);
+            if (visualsRegistered || pawn?.Map == null) return;
+            if (!startPosition.IsValid) startPosition = pawn.Position;
+            if (!originalDestination.IsValid) originalDestination = job.targetA.Cell;
+            IntVec3 entry = job.targetB.IsValid ? job.targetB.Cell : pawn.Position;
+            pawn.Map.GetComponent<FoldGateMapComponent>().Begin(pawn, startPosition, entry, originalDestination);
+            visualsRegistered = true;
         }
 
         private void AddHediffIfNotExists(HediffDef hediffDef)
@@ -68,14 +111,23 @@ namespace Bernael_Xenotype
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
+            // SetupToils is also called on load; both the pathing permission and cleanup must be restored.
+            WorldComponent_TraverseTheFold.Add(pawn);
+            if (!cleanupRegistered) { AddFinishAction(FinishTraversal); cleanupRegistered = true; }
             IEnumerable<Toil> baseToils = base.MakeNewToils();
             foreach (Toil toil in baseToils)
             {
                 toil.AddPreTickAction(delegate
                 {
+                    EnsureVisuals();
                     // Skip counting if already on the return trip
                     if (isReturning) return;
                     if (pawn == null || !pawn.Spawned || pawn.pather == null) return;
+                    if (!pawn.health.hediffSet.HasHediff(BernaelDefOf.BX_FoldShift_Hediff))
+                    {
+                        TriggerTurnAround();
+                        return;
+                    }
 
                     IntVec3 nextCell = pawn.pather.nextCell;
                     if (!nextCell.IsValid) return;
@@ -88,8 +140,9 @@ namespace Bernael_Xenotype
                             TriggerTurnAround();
                             return;
                         }
-                        if (BuildingBlockingNextPathCell() != null)
+                        if (BuildingBlockingNextPathCell() != null && !countedWalls.Contains(nextCell))
                         {
+                            countedWalls.Add(nextCell);
                             impassableCellCount++;
                             int maxPassWall = GetMaxPassWall();
                             if (impassableCellCount > maxPassWall)
@@ -153,7 +206,7 @@ namespace Bernael_Xenotype
         {
             if (pawn == null || pawn.Map == null || !startPosition.IsValid) return;
             isReturning = true;
-            Messages.Message($"Traverse the Fold encountered an special barrier or invalid terrain and is returning.", new TargetInfo(pawn.Position, pawn.Map), MessageTypeDefOf.CautionInput, historical: false);
+            Messages.Message("Cannot continue through the fold. Returning to the entrance.", new TargetInfo(pawn.Position, pawn.Map), MessageTypeDefOf.CautionInput, historical: false);
             job.targetA = startPosition;
             pawn.pather.StartPath(startPosition, PathEndMode.OnCell);
         }

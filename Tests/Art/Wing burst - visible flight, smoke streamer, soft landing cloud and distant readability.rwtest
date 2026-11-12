@@ -1,0 +1,28 @@
+rwtest 1
+test "Wing burst - visible flight, smoke streamer, soft landing cloud and distant readability" project="Bernael" created=2026-11-09T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+
+speed paused
+sky glow=1
+despawn area=-4,-4 size=20,14 natural
+spawn Pawn:Colonist at 0,0 name="Flier" xenotype=BX_Bernael
+draft "Flier"
+select "Flier"
+gizmo "Wing burst" expect=allowed
+target cell=8,2 expect=allowed
+speed x1
+ask "wing-comet" ticks=160 claim="the pawn stays visible in its own colours for the whole leap. Faint wisps leak from its back during the warmup. In flight a broad cloak of translucent black smoke rolls behind the wings, with a continuous body through the bends and edges that peel into thin wisps. The cloak thins as the pawn descends and a soft landing cloud rolls out around it"
+assert pawn "Flier" at 8,2 expect=present
+assert thing BX_WingBurstSmoke at 8,2 expect=present
+ask "wing-palette" claim="the smoke reads like the game's own smoke in near-black soot: soft-edged, translucent puffs with no contour lines and no flat toon shapes; the lingering haze is translucent, pawns inside it remain visible, and it has no blue-purple tint or pale vanilla cloud on top"
+assert log clean
+
+tick 600 note="wait for the ability cooldown"
+select "Flier"
+gizmo "Wing burst" expect=allowed
+target cell=0,4 expect=allowed
+ask "wing-reverse" ticks=160 claim="when flying in the opposite direction and viewed from farther away, the streamer still trails behind the pawn, its landing cloud drifts along its arrival direction, and no duplicate pawn or streamer remains along the path"
+assert pawn "Flier" at 0,4 expect=present
+assert log clean

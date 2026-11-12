@@ -27,6 +27,10 @@ namespace Bernael_Xenotype
             }
             Seal = new Material(seal) { name = "Bernael Malicious Seal (shared)" };
             Orb = new Material(orb) { name = "Bernael Dire Orb (shared)" };
+            // Use the same authored flames as the lasting ground fire.
+            Orb.SetTexture("_FlameA", ContentFinder<Texture2D>.Get("Things/CursedFlame/CursedFlame_A"));
+            Orb.SetTexture("_FlameB", ContentFinder<Texture2D>.Get("Things/CursedFlame/CursedFlame_B"));
+            Orb.SetTexture("_FlameC", ContentFinder<Texture2D>.Get("Things/CursedFlame/CursedFlame_C"));
             Quad = new Mesh { name = "Dark magic UV plane" };
             Quad.vertices = new[] { new Vector3(-0.5f, 0, -0.5f), new Vector3(-0.5f, 0, 0.5f),
                 new Vector3(0.5f, 0, 0.5f), new Vector3(0.5f, 0, -0.5f) };

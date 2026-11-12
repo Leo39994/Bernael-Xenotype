@@ -34,14 +34,12 @@ namespace Bernael_Xenotype
         }
     }
 
-    // Deals no damage itself: the burst it leaves behind implodes, then detonates.
+    // Deals no damage itself: it bursts where it strikes (DireOrbMapComponent).
     [StaticConstructorOnStartup]
     public sealed class Projectile_DireOrb : Projectile
     {
-        // DireOrb.shader assumes these quad sizes.
-        private const float OrbSize = 4f;
-        private const float TrailLength = 2.6f;
-        private const float TrailWidth = 1.2f;
+        // The orb quad holds the sphere and the cursed flames streaming up to about 2.3 cells straight behind it.
+        private const float OrbSize = 5.2f;
         private const float ChargeSeconds = 0.4f;
         private static readonly MaterialPropertyBlock properties = new MaterialPropertyBlock();
 
@@ -63,32 +61,23 @@ namespace Bernael_Xenotype
         {
             if (DarkMagicAssets.Ready())
             {
-                DrawOrb(drawLoc, Heading, Flight, Travelled, 0f, Seed);
+                DrawOrb(drawLoc, Heading, Flight, Seed);
                 return;
             }
 
             base.DrawAt(drawLoc, flip);
         }
 
-        // The orb and the wisps it sheds. time counts from launch; once the orb lands, DireOrbMapComponent
-        // keeps drawing it where it struck, with landed counting the seconds since, while it collapses.
-        public static void DrawOrb(Vector3 at, Vector3 heading, float time, float travelled, float landed, float seed)
+        // The orb and the flames streaming from it; time counts from launch.
+        public static void DrawOrb(Vector3 at, Vector3 heading, float time, float seed)
         {
             at.y = DireOrbMapComponent.Altitude;
-            // Trail below the orb, so the orb's own flame sits on top of it.
             properties.Clear();
             properties.SetFloat("_Phase", time);
             properties.SetFloat("_Seed", seed);
             properties.SetFloat("_Opacity", 1f);
-            properties.SetFloat("_Landed", landed);
-            properties.SetFloat("_Mode", 1f);
-            properties.SetFloat("_Length", TrailLength);
-            properties.SetFloat("_Travel", travelled);
-            Vector3 trail = at - heading * (TrailLength * 0.5f) - Vector3.up * (Altitudes.AltInc * 0.3f);
-            DarkMagicAssets.Draw(DarkMagicAssets.Orb, trail, DarkMagicAssets.Along(-heading),
-                new Vector3(TrailLength, 1f, TrailWidth), properties);
-
             properties.SetFloat("_Mode", 0f);
+            properties.SetFloat("_Size", OrbSize);
             properties.SetFloat("_Charge", Mathf.Clamp01(time / ChargeSeconds));
             properties.SetVector("_Direction", new Vector4(heading.x, heading.z, 0f, 0f));
             DarkMagicAssets.Draw(DarkMagicAssets.Orb, at, Quaternion.identity, Vector3.one * OrbSize, properties);
@@ -115,7 +104,7 @@ namespace Bernael_Xenotype
         public float amount;
         public float armorPenetration;
         public float seed;
-        // Carried over from the projectile, so the landed orb and its wisps pick up where it left off.
+        // Carried over from the projectile: the burst throws its shards on along the orb's flight.
         public Vector3 heading;
         public float travelled;
         public float flight;
@@ -149,14 +138,17 @@ namespace Bernael_Xenotype
 
     public sealed class DireOrbMapComponent : MapComponent
     {
-        // Authored against DireOrb.shader: the landed orb collapses for 0.3 s, then bursts into cold flames that
-        // have all burned out by 1.7 s.
-        private const int DetonateTicks = 18;
+        // The orb bursts as it strikes (Mortis, 2026-11-09: no pause or turn before the explosion). The blast's damage
+        // and fire follow two ticks later, too soon to see, so a save made in between still restores the pending
+        // burst. The burst art fades into real, lasting cursed fire.
+        private const int DetonateTicks = 2;
         private const int LifetimeTicks = 102;
         private const int StaggerTicks = 95;
         private const float EdgeDamageFactor = 0.55f;
-        // Room past the blast radius for the flames at its edge, which rise above it, and their glow.
+        // Room past the blast radius for the flames erupting at its edge, which rise above it, and their glow.
         private const float BurstMargin = 1.9f;
+        // Seconds after impact when the burst art has fully dispersed (0.6 s blast, then its flames and smoke).
+        private const float BurstSeconds = 0.95f;
         // Over pawns and everything else on the map, like vanilla's psycast skip flashes. DireOrb.shader's render
         // queue keeps it clear of the map's lighting.
         public static float Altitude => AltitudeLayer.VisEffects.AltitudeFor();
@@ -211,6 +203,20 @@ namespace Bernael_Xenotype
                     away.AngleFlat(), burst.caster));
                 if (!victim.Dead && !victim.Downed) victim.stances?.stagger.StaggerFor(StaggerTicks);
             }
+            ThingDef fireDef = DefDatabase<ThingDef>.GetNamed("BX_CursedFire");
+            foreach (IntVec3 cell in GenRadial.RadialCellsAround(burst.cell, radius, true))
+            {
+                if (!cell.InBounds(map) || !cell.Walkable(map) || cell.GetTerrain(map).IsWater ||
+                    !GenSight.LineOfSight(burst.cell, cell, map, skipFirstCell: true) ||
+                    cell.GetThingList(map).Any(t => t.FireBulwark ||
+                        (t.def.category == ThingCategory.Filth && !t.def.filth.allowsFire))) continue;
+                CursedFire fire = (CursedFire)ThingMaker.MakeThing(fireDef);
+                fire.fireSize = 0.1f;
+                // The lasting flames rise out of the burst from its centre outward, under its erupting flames.
+                fire.ConfigureDireOrb(burst.caster, burst.faction, burst.struck,
+                    6 + Mathf.RoundToInt(cell.DistanceTo(burst.cell) * 3f));
+                GenSpawn.Spawn(fire, cell, map);
+            }
         }
 
         public override void ExposeData()
@@ -234,23 +240,20 @@ namespace Bernael_Xenotype
             {
                 if (burst.cell.Fogged(map)) continue;
                 float elapsed = (now - burst.startTick) / 60f;
-                // Until it detonates, the orb hangs where it struck and collapses.
-                if (now - burst.startTick < DetonateTicks)
-                {
-                    Projectile_DireOrb.DrawOrb(burst.center, burst.heading, burst.flight + elapsed, burst.travelled, elapsed,
-                        burst.seed);
-                    continue;
-                }
+                // The toon blast is over after 0.6 s and the erupting flames shortly after; the fires remain.
+                if (elapsed > BurstSeconds) continue;
+                float size = (burst.Radius + BurstMargin) * 2f;
                 properties.Clear();
                 properties.SetFloat("_Phase", elapsed);
                 properties.SetFloat("_Seed", burst.seed);
                 properties.SetFloat("_Opacity", 1f);
                 properties.SetFloat("_Mode", 2f);
                 properties.SetFloat("_Radius", burst.Radius);
+                properties.SetFloat("_Size", size);
+                properties.SetVector("_Direction", new Vector4(burst.heading.x, burst.heading.z, 0f, 0f));
                 Vector3 position = burst.center;
                 position.y = Altitude;
-                DarkMagicAssets.Draw(DarkMagicAssets.Orb, position, Quaternion.identity,
-                    Vector3.one * ((burst.Radius + BurstMargin) * 2f), properties);
+                DarkMagicAssets.Draw(DarkMagicAssets.Orb, position, Quaternion.identity, Vector3.one * size, properties);
             }
         }
     }
