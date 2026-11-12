@@ -33,10 +33,12 @@ namespace Bernael_Xenotype
             if (CanShow(caster, victim))
                 caster.Map.GetComponent<SoulDrainMapComponent>().Complete(caster, victim);
             if (victim.Dead || victim.story == null) return;
+            /*
             HediffDef def = DefDatabase<HediffDef>.GetNamed("BX_SoulDrainPallor");
             Hediff pallor = victim.health.hediffSet.GetFirstHediffOfDef(def);
             if (pallor == null) victim.health.AddHediff(def);
             else pallor.TryGetComp<HediffComp_Disappears>()?.ResetElapsedTicks();
+            */
         }
 
         private static bool CanShow(Pawn caster, Pawn victim)
