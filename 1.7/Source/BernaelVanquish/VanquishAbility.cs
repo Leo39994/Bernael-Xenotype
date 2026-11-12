@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using HarmonyLib;
 using RimWorld;
 using Verse;
 using UnityEngine;
+using HarmonyLib;
 
 namespace Bernael_Xenotype
 {
@@ -119,40 +119,6 @@ namespace Bernael_Xenotype
     public class CompAbilityEffect_Vanquish : CompAbilityEffect
     {
         public new CompProperties_AbilityVanquish Props => (CompProperties_AbilityVanquish)props;
-        public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest) => Valid(target);
-
-        public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
-        {
-            if (!base.Valid(target, throwMessages))
-            {
-                return false;
-            }
-
-            Pawn caster = parent.pawn;
-            Pawn victim = target.Pawn;
-            if (victim == null || victim.Dead || !victim.HostileTo(caster))
-            {
-                if (throwMessages)
-                {
-                    Messages.Message("BX_VanquishHostilePawnOnly".Translate(), MessageTypeDefOf.RejectInput, false);
-                }
-
-                return false;
-            }
-
-            ThingWithComps weapon = caster.equipment?.Primary;
-            if (weapon == null || weapon.def.defName != Props.requiredWeaponDefName)
-            {
-                if (throwMessages)
-                {
-                    Messages.Message("BX_VanquishRequiresLifeVanquisher".Translate(), MessageTypeDefOf.RejectInput, false);
-                }
-
-                return false;
-            }
-
-            return FindWeaponVerb(caster, weapon) != null;
-        }
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
@@ -194,6 +160,34 @@ namespace Bernael_Xenotype
             {
                 (parent as Ability_Vanquish)?.Notify_KilledTarget();
             }
+        }
+
+        public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest) => Valid(target);
+
+        public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
+        {
+            if (!base.Valid(target, throwMessages))
+            {
+                return false;
+            }
+
+            Pawn caster = parent.pawn;
+            Pawn victim = target.Pawn;
+            /*
+            if (victim == null || victim.Dead || !victim.HostileTo(caster))
+            {
+                if (throwMessages) Messages.Message("BX_VanquishHostilePawnOnly".Translate(), MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+            */
+            ThingWithComps weapon = caster.equipment?.Primary;
+            if (weapon == null || weapon.def.defName != Props.requiredWeaponDefName)
+            {
+                if (throwMessages) Messages.Message("BX_VanquishRequiresLifeVanquisher".Translate(), MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+
+            return FindWeaponVerb(caster, weapon) != null;
         }
 
         internal static Verb FindWeaponVerb(Pawn caster, ThingWithComps weapon)

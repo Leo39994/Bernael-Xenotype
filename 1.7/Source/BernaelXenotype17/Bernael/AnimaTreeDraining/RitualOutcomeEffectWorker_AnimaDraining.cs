@@ -6,23 +6,23 @@ using UnityEngine;
 
 namespace Bernael_Xenotype
 {
-    public class RitualOutcomeEffectWorker_FeedingOnAnimaTree : RitualOutcomeEffectWorker_FromQuality
+    public class RitualOutcomeEffectWorker_AnimaDraining : RitualOutcomeEffectWorker_FromQuality
     {
         public static readonly SimpleCurve PsylinkLevelsFromQuality = new SimpleCurve
         {
             new CurvePoint(0.2f, 1f),
-            new CurvePoint(0.5f, 1f),
-            new CurvePoint(0.8f, 2f),
-            new CurvePoint(1f, 3f)
+            new CurvePoint(0.5f, 2f),
+            new CurvePoint(0.7f, 3f),
+            new CurvePoint(1f, 4f)
         };
 
         public override bool SupportsAttachableOutcomeEffect => false;
 
-        public RitualOutcomeEffectWorker_FeedingOnAnimaTree()
+        public RitualOutcomeEffectWorker_AnimaDraining()
         {
         }
 
-        public RitualOutcomeEffectWorker_FeedingOnAnimaTree(RitualOutcomeEffectDef def)
+        public RitualOutcomeEffectWorker_AnimaDraining(RitualOutcomeEffectDef def)
             : base(def)
         {
         }
@@ -34,20 +34,18 @@ namespace Bernael_Xenotype
             Thing animaTree = jobRitual.selectedTarget.Thing;
             int rawLevels = (int)PsylinkLevelsFromQuality.Evaluate(quality);
             int levelsToAdd = Mathf.Max(1, rawLevels);
-            if (pawn != null)
-            {
-                pawn.ChangePsylinkLevel(levelsToAdd, sendLetter: false);
-            }
             if (animaTree != null && !animaTree.Destroyed)
             {
-                FleckMaker.Static(animaTree.Position, pawn.Map, FleckDefOf.PsycastAreaEffect, 10f);
+                FleckMaker.Static(animaTree.Position, animaTree.Map, FleckDefOf.PsycastAreaEffect, 10f);
                 SoundDefOf.PsycastPsychicPulse.PlayOneShot(new TargetInfo(animaTree));
+                animaTree.Map.weatherManager.eventHandler.AddEvent(new WeatherEvent_LightningStrike(animaTree.Map, animaTree.Position));
                 animaTree.Destroy(DestroyMode.KillFinalize);
+                pawn?.ChangePsylinkLevel(levelsToAdd);
                 Find.History.Notify_PsylinkAvailable();
             }
-            string text = "BX_LetterTextFeedingRitualCompleted".Translate(pawn.Named("PAWN"), jobRitual.selectedTarget.Thing.Named("FEEDABLE"));
+            string text = "BX_LetterTextDrainingRitualCompleted".Translate(pawn.Named("PAWN"), jobRitual.selectedTarget.Thing.Named("DRAINABLE"));
             text = text + "\n\n" + OutcomeQualityBreakdownDesc(quality, progress, jobRitual);
-            Find.LetterStack.ReceiveLetter("BX_LetterLabelFeedingRitualCompleted".Translate(), text, LetterDefOf.RitualOutcomePositive, new LookTargets(pawn, animaTree)
+            Find.LetterStack.ReceiveLetter("BX_LetterLabelDrainingRitualCompleted".Translate(), text, LetterDefOf.RitualOutcomePositive, new LookTargets(pawn, animaTree)
             );
         }
     }

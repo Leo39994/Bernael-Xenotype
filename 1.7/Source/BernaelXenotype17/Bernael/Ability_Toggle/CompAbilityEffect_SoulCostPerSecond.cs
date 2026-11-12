@@ -1,15 +1,22 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using RimWorld;
 using Verse;
+using UnityEngine;
 
 namespace Bernael_Xenotype
 {
     public class CompProperties_AbilitySoulCostPerSecond : CompProperties_AbilityEffect
     {
-        public float soulCostPerSecond = 0.05f;
+        public float soulCostPerSecond = 0.01f;
 
         public CompProperties_AbilitySoulCostPerSecond()
         {
             compClass = typeof(CompAbilityEffect_SoulCostPerSecond);
+        }
+
+        public override IEnumerable<string> ExtraStatSummary()
+        {
+            yield return "MB_AbilitySoulCostPerSecond".Translate() + ": " + Mathf.RoundToInt(soulCostPerSecond * 100f);
         }
     }
 

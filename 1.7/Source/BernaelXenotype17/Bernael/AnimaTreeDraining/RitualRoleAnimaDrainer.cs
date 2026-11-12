@@ -3,7 +3,7 @@ using Verse;
 
 namespace Bernael_Xenotype
 {
-	public class RitualRoleAnimaFeeder : RitualRole
+	public class RitualRoleAnimaDrainer : RitualRole
 	{
 		public override bool AppliesToPawn(Pawn p, out string reason, TargetInfo selectedTarget, LordJob_Ritual ritual = null, RitualRoleAssignments assignments = null, Precept_Ritual precept = null, bool skipReason = false)
 		{

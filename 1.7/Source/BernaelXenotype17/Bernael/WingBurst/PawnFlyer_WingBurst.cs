@@ -8,8 +8,8 @@ namespace Bernael_Xenotype
     public class PawnFlyer_WingBurst : PawnFlyer
     {
         private static readonly float smokeRadius = 3.5f;
-        // The streamer behind the flying caster: its recent draw positions, newest first. Visual only and not saved;
-        // a reloaded flight grows a new one within a few ticks.
+        // The streamer behind the flying caster: its recent draw positions, newest first.
+        // Visual only and not saved; a reloaded flight grows a new one within a few ticks.
         private const int TrailPoints = 30;
         private const float TrailLength = 3.8f;
         private readonly List<Vector3> trail = new List<Vector3>(TrailPoints + 1);
@@ -17,8 +17,9 @@ namespace Bernael_Xenotype
 
         private Vector3 Direction => (DestinationPos - startVec).Yto0().normalized;
 
-        // The game draws the flying pawn itself (PawnFlyer.DynamicDrawPhaseAt), so the caster stays in view for the
-        // whole leap; base.DrawAt adds its shadow. The streamer is drawn after it.
+        // The game draws the flying pawn itself (PawnFlyer.DynamicDrawPhaseAt),
+        // so the caster stays in view for the whole leap; base.DrawAt adds its shadow.
+        // The streamer is drawn after it.
         protected override void DrawAt(Vector3 drawLoc, bool flip = false)
         {
             base.DrawAt(drawLoc, flip);
@@ -87,9 +88,9 @@ namespace Bernael_Xenotype
                 center: landCell,
                 map: targetMap,
                 radius: smokeRadius,
-                damType: DamageDefOf.Extinguish, // Extinguish Fire
+                damType: DamageDefOf.Smoke,
                 instigator: pawn,
-                damAmount: -1,
+                damAmount: 0,
                 armorPenetration: -1f,
                 explosionSound: null,
                 weapon: null,

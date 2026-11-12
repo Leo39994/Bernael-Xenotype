@@ -23,8 +23,8 @@ namespace Bernael_Xenotype
                 base.DrawAt(drawLoc, flip);
                 return;
             }
-            // Keep small fires readable without increasing their damage, growth or lifetime. Each burning cell
-            // gets its own size, lean and facing so a field of them never reads as a grid.
+            // Keep small fires readable without increasing their damage, growth or lifetime.
+            // Each burning cell gets its own size, lean and facing so a field of them never reads as a grid.
             int seed = thingIDNumber % 997;
             float r1 = (seed * 31 % 97) / 96f, r2 = (seed * 53 % 89) / 88f, r3 = (seed * 71 % 83) / 82f;
             float scale = parent != null ? 1f : r1 < 0.35f ? Mathf.Lerp(1.05f, 1.25f, r2)
@@ -62,9 +62,7 @@ namespace Bernael_Xenotype
         // Visual only: when the burst lit this fire. Loaded and merged fires are already fully grown.
         private int growStartTick = -1;
 
-        private bool CanBurn(Pawn pawn) => !pawn.Dead && (!fromDireOrb ||
-            (!pawn.Downed && (pawn == struck || (sourceFaction != null ? pawn.HostileTo(sourceFaction) :
-                instigator != null && pawn.HostileTo(instigator)))));
+        private bool CanBurn(Pawn pawn) => !pawn.Dead && (!fromDireOrb || !pawn.Downed);
 
         public override string Label
         {
@@ -78,15 +76,15 @@ namespace Bernael_Xenotype
             }
         }
 
-        public override string InspectStringAddon => "BX_CursedBurning".Translate() + " (" + "FireSizeLower".Translate((fireSize * 100f).ToString("F0")) + ")";
+        public override string InspectStringAddon => "Burning".Translate() + " (" + "BX_FireSizeLower".Translate((fireSize * 100f).ToString("F0")) + ")";
 
         public override int UpdateRateTicks => 15;
 
         public override void ExposeData()
         {
             base.ExposeData();
-            // Fire already scribes fireSize/instigator and its own ticksSinceSpawn. A separate key
-            // prevents the base and derived ages from shadowing each other on repeated loads.
+            // Fire already scribes fireSize/instigator and its own ticksSinceSpawn.
+            // A separate key prevents the base and derived ages from shadowing each other on repeated loads.
             Scribe_Values.Look(ref cursedAge, "cursedAge", 0, forceSave: true);
             if (Scribe.mode == LoadSaveMode.LoadingVars && Scribe.loader.curXmlParent?["cursedAge"] == null)
             {
@@ -106,6 +104,24 @@ namespace Bernael_Xenotype
             {
                 MergeExistingFires(map);
             }
+        }
+
+        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
+        {
+            // Sustainers may be shared by nearby fires; remove only this reporter.
+            if (sustainer != null)
+            {
+                if (sustainer.externalParams.sizeAggregator == null)
+                    sustainer.externalParams.sizeAggregator = new SoundSizeAggregator();
+                sustainer.externalParams.sizeAggregator.RemoveReporter(this);
+            }
+            base.DeSpawn(mode);
+        }
+
+        protected override void Tick()
+        {
+            // This class owns its sound rather than the base Fire's private sustainer.
+            if (sustainer != null && !sustainer.Ended) sustainer.Maintain();
         }
 
         protected override void TickInterval(int delta)
@@ -136,16 +152,9 @@ namespace Bernael_Xenotype
                 Pawn steppingPawn = Map.thingGrid.ThingAt<Pawn>(Position);
                 if (steppingPawn != null && steppingPawn.Spawned && CanBurn(steppingPawn))
                 {
-                    if (!steppingPawn.HasAttachment(def))
+                    if (CanEverAttachCursedFire(steppingPawn) && !steppingPawn.HasAttachment(def))
                     {
-                        CursedFire pawnFire = (CursedFire)ThingMaker.MakeThing(def);
-                        pawnFire.fireSize = fireSize;
-                        pawnFire.instigator = instigator;
-                        pawnFire.fromDireOrb = fromDireOrb;
-                        pawnFire.sourceFaction = sourceFaction;
-                        pawnFire.struck = struck;
-                        pawnFire.AttachTo(steppingPawn);
-                        GenSpawn.Spawn(pawnFire, Position, Map, Rot4.North);
+                        TryAttachCursedFire(steppingPawn, fireSize, instigator, fromDireOrb, sourceFaction, struck, Position, Map);
                     }
                 }
             }
@@ -163,6 +172,13 @@ namespace Bernael_Xenotype
                     fireSize = MaxFireSize;
                 }
             }
+        }
+
+        private bool CanMerge(Fire other)
+        {
+            if (other is not CursedFire cursed) return !fromDireOrb;
+            if (fromDireOrb != cursed.fromDireOrb) return false;
+            return !fromDireOrb || (instigator == cursed.instigator && sourceFaction == cursed.sourceFaction && struck == cursed.struck);
         }
 
         private void MergeExistingFires(Map map)
@@ -189,23 +205,39 @@ namespace Bernael_Xenotype
             }
         }
 
-        private bool CanMerge(Fire other)
+        private static bool CanEverAttachCursedFire(Thing t)
         {
-            if (!(other is CursedFire cursed)) return !fromDireOrb;
-            if (fromDireOrb != cursed.fromDireOrb) return false;
-            return !fromDireOrb || (instigator == cursed.instigator && sourceFaction == cursed.sourceFaction && struck == cursed.struck);
+            if (t.Destroyed)
+            {
+                return false;
+            }
+            if (t.def.category != ThingCategory.Pawn)
+            {
+                return false;
+            }
+            if (t.TryGetComp<CompAttachBase>() == null)
+            {
+                return false;
+            }
+            return true;
         }
 
-        protected override void Tick()
+        public static void TryAttachCursedFire(Thing t, float fireSize, Thing instigator, bool fromDireOrb, Faction sourceFaction, Pawn struck, IntVec3 position, Map map)
         {
-            // This class owns its sound rather than the base Fire's private sustainer.
-            if (sustainer != null && !sustainer.Ended) sustainer.Maintain();
+            CursedFire pawnFire = (CursedFire)ThingMaker.MakeThing(BernaelDefOf.BX_CursedFire);
+            pawnFire.fireSize = fireSize;
+            pawnFire.instigator = instigator;
+            pawnFire.fromDireOrb = fromDireOrb;
+            pawnFire.sourceFaction = sourceFaction;
+            pawnFire.struck = struck;
+            pawnFire.AttachTo(t);
+            GenSpawn.Spawn(pawnFire, position, map, Rot4.North);
         }
 
         private void DoCursedDamage(Thing target)
         {
-            if (fromDireOrb && (!(target is Pawn victim) || !CanBurn(victim))) return;
-            DamageDef damage = fromDireOrb ? DefDatabase<DamageDef>.GetNamed("BX_CursedFlame") : DamageDefOf.Frostbite;
+            if (fromDireOrb && (target is not Pawn victim || !CanBurn(victim))) return;
+            DamageDef damage = fromDireOrb ? BernaelDefOf.BX_CursedFlame : DamageDefOf.Frostbite;
             int damageAmount = GenMath.RoundRandom(Mathf.Clamp(0.0125f + 0.0036f * fireSize, 0.0125f, 0.05f) * 150f);
             if (damageAmount < 1)
             {
@@ -225,18 +257,6 @@ namespace Bernael_Xenotype
             {
                 target.TakeDamage(new DamageInfo(damage, damageAmount, 0f, -1f, instigator ?? this));
             }
-        }
-
-        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
-        {
-            // Sustainers may be shared by nearby fires; remove only this reporter.
-            if (sustainer != null)
-            {
-                if (sustainer.externalParams.sizeAggregator == null)
-                    sustainer.externalParams.sizeAggregator = new SoundSizeAggregator();
-                sustainer.externalParams.sizeAggregator.RemoveReporter(this);
-            }
-            base.DeSpawn(mode);
         }
     }
 }

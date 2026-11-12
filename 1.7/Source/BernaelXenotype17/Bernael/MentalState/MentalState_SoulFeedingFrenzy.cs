@@ -50,7 +50,7 @@ namespace Bernael_Xenotype
                     return;
                 }
                 Gene_Soul soulGene = pawn.genes?.GetFirstGeneOfType<Gene_Soul>();
-                if (soulGene != null && soulGene.Active && soulGene.Value >= 0.99f)
+                if (soulGene != null && soulGene.Active && soulGene.Value >= 0.35f)
                 {
                     RecoverFromState();
                     return;
@@ -62,6 +62,8 @@ namespace Bernael_Xenotype
         {
             if (pawn?.genes?.Xenotype != null && ModsConfig.IsActive("Sov.Nephilim") && pawn.genes.HasActiveGene(BernaelDefOf.GS_Grace_New) && pawn.genes.HasActiveGene(BernaelDefOf.BX_GracePendulum))
             {
+                // Only remove Nephilim-related genes and xenogenes genes.
+                /*
                 XenotypeDef oldXenotype = BernaelDefOf.GS_Nephilim;
                 if (!oldXenotype.genes.NullOrEmpty())
                 {
@@ -88,6 +90,8 @@ namespace Bernael_Xenotype
                     FleckMaker.Static(pawn.Position, pawn.Map, FleckDefOf.PsycastSkipInnerExit);
                 }
                 pawn.genes.SetXenotype(BernaelDefOf.BX_Bernael);
+                */
+                pawn.TurnIntoXenotype(BernaelDefOf.BX_Bernael);
                 SendIncidentLetter(pawn);
                 RecoverFromState();
             }

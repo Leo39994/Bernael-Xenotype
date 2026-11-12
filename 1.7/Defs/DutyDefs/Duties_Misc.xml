@@ -16,11 +16,11 @@
   </DutyDef>
 
   <DutyDef>
-    <defName>BX_FeedingOnAnimaTree</defName>
+    <defName>BX_DrainAnimaTree</defName>
     <socialModeMax>Off</socialModeMax>
     <thinkNode Class="ThinkNode_Priority">
       <subNodes>
-        <li Class="Bernael_Xenotype.JobGiver_AnimaFeeding">
+        <li Class="Bernael_Xenotype.JobGiver_AnimaDraining">
         </li>
       </subNodes>
     </thinkNode>
