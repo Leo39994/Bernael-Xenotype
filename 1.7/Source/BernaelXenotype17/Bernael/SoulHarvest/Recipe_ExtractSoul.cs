@@ -7,9 +7,9 @@ namespace Bernael_Xenotype
 {
 	public class Recipe_ExtractSoul : Recipe_Surgery
 	{
-		private const float BloodlossSeverity = 0.45f;
+		private const float BloodlossSeverity = 0.4f;
 
-		private const float MinBloodlossForFailure = 0.45f;
+		private const float MinBloodlossForFailure = 0.4f;
 
 		public override bool AvailableOnNow(Thing thing, BodyPartRecord part = null)
 		{
