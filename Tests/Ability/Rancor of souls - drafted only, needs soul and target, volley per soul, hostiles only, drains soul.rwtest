@@ -42,7 +42,7 @@ gizmo "Rancor of Souls" expect=allowed
 speed x1
 waitfor casts "Rancor" ability=BX_RancorOfSouls min=1 ticks=240
 assert pawn "Rancor" resource=BX_SoulEater max=0.01 expect=present
-tick 180 note="volley block: 10 projectiles 2 ticks apart, then flight time over about 12 cells"
+tick 180 note="burst block: short charge, ten souls released together, unguided radial spread then homing over about 12 cells"
 speed paused
 
 assert casts "Rancor" ability=BX_RancorOfSouls min=1 max=1

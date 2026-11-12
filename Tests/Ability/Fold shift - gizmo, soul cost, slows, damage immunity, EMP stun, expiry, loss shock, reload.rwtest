@@ -1,5 +1,5 @@
 rwtest 1
-test "Fold shift - gizmo, soul cost, slows, damage immunity, EMP stun, expiry, loss shock, reload" project="Bernael" created=2026-11-01T00:00:00
+test "Fold shift - toggle, soul drain, slows, damage immunity, EMP stun, exhaustion, loss shock, reload" project="Bernael" created=2026-11-01T00:00:00
 
 requires mod=Mortis.BX
 requires dlc=Biotech
@@ -9,7 +9,7 @@ spawn Pawn:Colonist at 0,0 name="Folder" xenotype=BX_Bernael
 spawn Pawn:Colonist at 2,0 name="Poor" xenotype=BX_Bernael
 spawn Pawn:Colonist at 4,0 name="Plain"
 give "Folder" resource=BX_SoulEater value=0.9
-give "Poor" resource=BX_SoulEater value=0.3
+give "Poor" resource=BX_SoulEater value=0.01
 
 assert pawn "Folder" gene=BX_FoldSeverance expect=present
 assert pawn "Plain" gene=BX_FoldSeverance expect=absent
@@ -26,26 +26,26 @@ draft "Folder"
 select "Folder"
 gizmo "Fold shift" expect=allowed
 tick 60 note="cast block: warmup 0.25 s is 15 ticks, the rest covers the job start"
-assert pawn "Folder" hediff=BX_FoldShift expect=present
-assert pawn "Folder" resource=BX_SoulEater min=0.48 max=0.52 expect=present
+assert pawn "Folder" hediff=BX_FoldShift_Hediff expect=present
+assert pawn "Folder" resource=BX_SoulEater min=0.86 max=0.90 expect=present
 assert pawn "Folder" stat=MoveSpeed max=1.2 expect=present
 gizmo "Fold shift" expect=disabled
 deselect
-ask "fold-shift-look" claim="Folder is drawn tinted pale blue and partly see-through; Poor and Plain next to it are drawn as ordinary colonists"
+ask "fold-shift-look" claim="Folder darkens under an opaque black filter with a crimson outline and glowing eyes; its body, wings and clothing remain recognizable in dark tones, while Poor and Plain stay ordinary"
 
-tick 250 note="duration block: HediffComp_Disappears counts down every tick, a hediff with no duration is gone long before this"
-assert pawn "Folder" hediff=BX_FoldShift expect=present
+tick 250 note="toggle block: the active ability keeps draining 2% soul per second while sufficient soul remains"
+assert pawn "Folder" hediff=BX_FoldShift_Hediff expect=present
 
 damage "Folder" amount=20 kind=Cut
 damage "Folder" amount=20 kind=Blunt
 assert pawn "Folder" hediff=Cut expect=absent
 assert pawn "Folder" hediff=Bruise expect=absent
-assert pawn "Folder" hediff=BX_FoldShift expect=present
+assert pawn "Folder" hediff=BX_FoldShift_Hediff expect=present
 assert pawn "Folder" hediff=XenogermLossShock expect=absent
 
 damage "Folder" amount=5 kind=EMP
 assert stun "Folder" ticks min=1400 max=1500 expect=present
-assert pawn "Folder" hediff=BX_FoldShift expect=absent
+assert pawn "Folder" hediff=BX_FoldShift_Hediff expect=absent
 assert pawn "Folder" hediff=XenogermLossShock expect=present
 
 damage "Plain" amount=10 kind=Cut
@@ -58,17 +58,18 @@ draft "Saver"
 select "Saver"
 gizmo "Fold shift" expect=allowed
 tick 60 note="reload block: the cast lands as in the cast block"
-assert pawn "Saver" hediff=BX_FoldShift expect=present
+assert pawn "Saver" hediff=BX_FoldShift_Hediff expect=present
 reload note="reload block: the hediff and its remaining time are scribed"
-assert pawn "Saver" hediff=BX_FoldShift expect=present
+assert pawn "Saver" hediff=BX_FoldShift_Hediff expect=present
 assert pawn "Saver" stat=MoveSpeed max=1.2 expect=present
 damage "Saver" amount=20 kind=Cut
 assert pawn "Saver" hediff=Cut expect=absent
-tick 700 note="expiry block: Ability_Duration 15 s is 900 ticks; 760 ticks after the cast it still holds"
-assert pawn "Saver" hediff=BX_FoldShift expect=present
+tick 700 note="sustained toggle: the effect remains active while its soul payments can be made"
+assert pawn "Saver" hediff=BX_FoldShift_Hediff expect=present
 assert pawn "Saver" hediff=XenogermLossShock expect=absent
-tick 200 note="expiry block: 960 ticks after the cast the 900 have run out"
-assert pawn "Saver" hediff=BX_FoldShift expect=absent
+give "Saver" resource=BX_SoulEater value=0.01
+tick 60 note="exhaustion: the next per-second payment cannot be made, so the toggle shuts down"
+assert pawn "Saver" hediff=BX_FoldShift_Hediff expect=absent
 assert pawn "Saver" hediff=XenogermLossShock expect=present
 assert log clean
 
@@ -91,7 +92,7 @@ draft "Wader"
 select "Wader"
 gizmo "Fold shift" expect=allowed
 tick 60 note="path cost block: the cast lands as in the cast block"
-assert pawn "Wader" hediff=BX_FoldShift expect=present
+assert pawn "Wader" hediff=BX_FoldShift_Hediff expect=present
 assert pathcost "Walker" at -1,14 min=13 max=17
 assert pathcost "Walker" at 1,14 min=25 max=29
 assert pathcost "Wader" at -1,12 min=60 max=70

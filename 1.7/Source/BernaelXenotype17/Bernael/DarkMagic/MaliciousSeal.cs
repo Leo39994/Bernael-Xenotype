@@ -51,16 +51,16 @@ namespace Bernael_Xenotype
     // again from their hediff, so nothing here is saved. Shader resources are shared.
     public sealed class MaliciousSealMapComponent : MapComponent
     {
-        // Authored against MaliciousSeal.shader. The brand floats over a sealed pawn's head, clear of the pawn: its
-        // quad reaches the shader's Extent, 1.75 ring radii, so its ring's radius is 0.27 cells and its lowest spike
-        // ends 0.36 cells below its middle. It stamps down over StampTicks, landing at StampLanding of them, and fades
-        // out over the seal's last FadeTicks.
-        private const float BrandSize = 0.95f;
-        private const float BrandHeight = 1.1f;
+        // The spiked seal with its eye floats over a sealed pawn's head, clear of the pawn: its quad reaches the
+        // shader's Extent, 2.1 ring radii, so its ring's radius is 0.27 cells and its lowest spike ends 0.48 cells
+        // below its middle. It stamps down over StampTicks, landing at StampLanding of them, and fades out over the
+        // seal's last FadeTicks.
+        private const float BrandSize = 1.14f;
+        private const float BrandHeight = 1.28f;
         private const int StampTicks = 24;
         private const float StampLanding = 0.55f;
         private const int FadeTicks = 60;
-        // The brand's stab (1 s) and bob (2 s) both divide a minute, so its phase wraps without a jump.
+        // The brand's pulse (1 s) and bob (2 s) both divide a minute, so its phase wraps without a jump.
         private const int LoopTicks = 3600;
         private const int LinkGrowTicks = 14;
         private const int LinkTicks = 50;

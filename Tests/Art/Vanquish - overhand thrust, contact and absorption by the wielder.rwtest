@@ -1,0 +1,20 @@
+rwtest 1
+test "Vanquish - overhand thrust, contact and absorption by the wielder" project="Bernael" created=2026-11-09T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Wielder" gear=none age=30
+spawn Thing:BX_LifeVanquisher at 0,1 name="Sword" quality=normal
+equip "Wielder" thing="Sword" now=true
+draft "Wielder"
+spawn Pawn:Thrumbo at 1,0 name="Target" faction=enemy pacify=true
+select "Wielder"
+gizmo "Vanquish" expect=allowed
+target "Target" expect=allowed
+speed x1
+ask "vanquish-motion" ticks=100 claim="the held sword draws back and then thrusts into the target from about 30 degrees above. A translucent cyan flash follows the line of the blade on contact, streams forward and erodes into irregular fragments. The sword withdraws to its normal aiming pose and the light clears"
+assert casts "Wielder" ability=BX_Vanquish min=1 max=1
+assert hit "Target" by="Wielder" min=1 max=1
+assert log clean

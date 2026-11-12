@@ -1,0 +1,24 @@
+rwtest 1
+test "Dire orb - detailed flight, burst on impact and lingering fire" project="Bernael" created=2026-11-09T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+requires dlc=Royalty
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Caster" xenotype=BX_Bernael
+ability "Caster" grant=BX_DireOrb psylink=3 psyfocus=1.0
+spawn Pawn:Pirate at 9,1 name="Enemy" faction=enemy pacify=true
+draft "Caster"
+select "Caster"
+gizmo "Dire orb" expect=allowed
+target cell=9,0 expect=allowed
+speed x1
+ask "dire-flight-burst" ticks=220 claim="the pale blue orb is roughly half a cell across at full charge. Its navy head follows the flight path, the tapering wake bends from the shoulders down to the tip, and small flames drift away behind it. A compact white flash marks contact. A faint pressure pulse runs ahead of the blue flame as it swells across the ground. Curling billows separate at different distances while the center dims. Sparse sparks and translucent smoke disperse among the lasting fires"
+assert casts "Caster" ability=BX_DireOrb min=1 max=1
+assert thing BX_CursedFire at 9,0 expect=present
+ask "dire-lasting-flame" ticks=120 claim="after the spreading flames fade, blue-white cursed fires remain on the ground and stay readable when zoomed out"
+reload note="persistent cursed flame keeps its age, caster and target policy"
+assert thing BX_CursedFire at 9,0 expect=present
+ask "dire-reload" ticks=120 claim="the lingering fire resumes naturally after loading without replaying the orb or explosion"
+assert log clean
