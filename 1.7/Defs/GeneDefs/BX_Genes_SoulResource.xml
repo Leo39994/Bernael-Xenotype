@@ -29,7 +29,7 @@
 				</li>
 			</prefixSymbols>
 		</symbolPack>
-		<minAgeActive>3</minAgeActive>
+		<minAgeActive>8</minAgeActive>
 		<resourceLossPerDay>0.04</resourceLossPerDay>
 		<biostatCpx>3</biostatCpx>
 		<biostatMet>0</biostatMet>

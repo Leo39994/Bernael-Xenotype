@@ -18,7 +18,7 @@
 		</descriptionHyperlinks>
 		<biostatMet>-2</biostatMet>
 		<biostatCpx>1</biostatCpx>
-		<minAgeActive>3</minAgeActive>
+		<minAgeActive>8</minAgeActive>
 		<modExtensions>
 			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
 				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>

@@ -183,7 +183,7 @@
 		<description>Carriers of this gene experience worsening pain as their mood falls, but pain itself does not reduce their mood.</description>
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>3</biostatMet>
-		<displayOrderInCategory>438</displayOrderInCategory>
+		<displayOrderInCategory>63</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_WitheredSoul</iconPath>
 		<geneClass>Bernael_Xenotype.Gene_Hediff</geneClass>
 		<modExtensions>
@@ -202,7 +202,7 @@
 		<description>The carrier perceives the psychic aura of others, developing intense affinity for those with powerful psychic sensitivity and profound contempt for those with weak or absent psychic sensitivity, regardless of their social standing or usefulness.</description>
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>3</biostatMet>
-		<displayOrderInCategory>439</displayOrderInCategory>
+		<displayOrderInCategory>63</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_Warlockracy</iconPath>
 		<symbolPack>
 			<prefixSymbols>
@@ -224,6 +224,18 @@
 		<iconPath>UI/Icons/Genes/BX_DarkSpeech</iconPath>
 	</GeneDef>
 
+	<GeneDef MayRequire="Sov.Nephilim">
+		<defName>BX_Grace_Galling</defName>
+		<label>Grace Galling</label>
+		<description>This gene causes its carriers to develop an intense aversion to individuals who have used Grace. The mere presence of a Grace user provokes deep hostility, overriding personal loyalties and social bonds.</description>
+		<geneClass>Gene</geneClass>
+		<biostatCpx>1</biostatCpx>
+		<biostatMet>1</biostatMet>
+				<displayCategory>BX_DarkEnergy</displayCategory>
+		<displayOrderInCategory>63</displayOrderInCategory>
+		<iconPath>UI/Icons/Genes/BX_GraceGalling</iconPath>
+	</GeneDef>
+
 <!-- Moved withered soul hediff to the hediff file -->
 	
 	<GeneDef>
@@ -233,7 +245,7 @@
 		<geneClass>Bernael_Xenotype.Gene_Nihilism</geneClass>
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>2</biostatMet>
-		<displayOrderInCategory>438</displayOrderInCategory>
+		<displayOrderInCategory>63</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_Nihilism</iconPath>
 		<statFactors>
 			<CertaintyLossFactor MayRequire="Ludeon.Rimworld.Ideology">0.5</CertaintyLossFactor>
@@ -248,36 +260,17 @@
 		<description>Every living creature killed by the carrier restores 10% Soul Saturation. Hostile kills also improve psycaster abilities by reducing neural heat and increasing psychic sensitivity. Each hostile kill refreshes the shared decay timer; after one in-game hour without another hostile kill, the effect loses one level per hour. This allows the player to sustain their Bernael through active combat and hunting rather than just imprisonment.</description>
 		<geneClass>Bernael_Xenotype.Gene_Hediff</geneClass>
 		<biostatCpx>1</biostatCpx>
-		<biostatMet>3</biostatMet>
+		<biostatMet>-4</biostatMet>
 				<displayCategory>BX_DarkEnergy</displayCategory>
 		<displayOrderInCategory>60</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_ReapersEcstasy</iconPath>
+		<prerequisite>BX_SoulEater</prerequisite>
 		<modExtensions>
 			<li Class="Bernael_Xenotype.GeneAddHediffExtension">
 				<hediffsToAdd>
 					<li>BX_ReaperEcstasy</li>
 				</hediffsToAdd>
 			</li>
-			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
-				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>
-				<backgroundPathEndogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathEndogenes>
-				<backgroundPathArchite>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathArchite>
-			</li>
-		</modExtensions>
-	</GeneDef>
-	
-	<GeneDef MayRequire="Sov.Nephilim">
-		<defName>BX_Grace_Galling</defName>
-		<label>Grace Galling</label>
-		<description>This gene causes its carriers to develop an intense aversion to individuals who have used Grace. The mere presence of a Grace user provokes deep hostility, overriding personal loyalties and social bonds.</description>
-		<geneClass>Gene</geneClass>
-		<biostatCpx>1</biostatCpx>
-		<biostatMet>1</biostatMet>
-				<displayCategory>BX_DarkEnergy</displayCategory>
-		<displayOrderInCategory>61</displayOrderInCategory>
-		<iconPath>UI/Icons/Genes/BX_GraceGalling</iconPath>
-		<prerequisite>BX_SoulEater</prerequisite>
-		<modExtensions>
 			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
 				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>
 				<backgroundPathEndogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathEndogenes>
@@ -319,13 +312,6 @@
 		<displayOrderInCategory>62</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_PendulumOfGrace</iconPath>
 		<prerequisite>GS_Grace_New</prerequisite>
-		<modExtensions>
-			<li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" Class="VEF.Genes.GeneExtension">
-				<backgroundPathXenogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathXenogenes>
-				<backgroundPathEndogenes>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathEndogenes>
-				<backgroundPathArchite>UI/Icons/Genes/BX_XenogenesSoul</backgroundPathArchite>
-			</li>
-		</modExtensions>
 		<mentalBreakMtbDays>0.1</mentalBreakMtbDays>
 		<mentalBreakDef>BX_SoulFeedingFrenzy</mentalBreakDef>
 	</GeneDef>
