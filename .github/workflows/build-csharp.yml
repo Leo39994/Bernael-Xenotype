@@ -39,7 +39,10 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: build-output
-        path: ./1.7/Assemblies/
+        path: |
+          ./1.7/Assemblies/BernaelSoul.dll
+          ./1.7/Assemblies/BernaelVanquish.dll
+          ./1.7/Assemblies/BernaelXenotype.dll
 
     - name: Commit rebuilt assembly
       if: |
@@ -52,8 +55,9 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-        # -f bypasses .gitignore in case *.dll is ever ignored
-        git add -f ./1.7/Assemblies/*.dll
+        git add -- ./1.7/Assemblies/BernaelSoul.dll \
+          ./1.7/Assemblies/BernaelVanquish.dll \
+          ./1.7/Assemblies/BernaelXenotype.dll
 
         if git diff --cached --quiet; then
           echo "Assembly unchanged, nothing to commit."
@@ -71,28 +75,45 @@ jobs:
         echo "version=$VERSION" >> "$GITHUB_OUTPUT"
         echo "zip=BernaelXenotype-${VERSION}-$(git rev-parse --short HEAD).zip" >> "$GITHUB_OUTPUT"
 
-    - name: Stage whole mod
+    - name: Stage game files
       run: |
-        mkdir -p artifact
-        rsync -a --delete-excluded \
-          --exclude '.git/' \
-          --exclude '.github/' \
-          --exclude '.claude/' \
-          --exclude '.rimsearcher/' \
-          --exclude '.idea/' \
-          --exclude '.vs/' \
-          --exclude '.vscode/' \
-          --exclude '.DS_Store' \
-          --exclude 'artifact/' \
-          --exclude 'Tests/' \
-          --exclude 'WeaponTweakData/' \
-          --exclude '1.7/Source/' \
-          --exclude 'QA/' \
-          --exclude 'obj/' \
-          --exclude 'bin/' \
-          --exclude '.gitignore' \
-          --exclude '.gitattributes' \
-          ./ artifact/
+        python3 - <<'PY'
+        import fnmatch
+        from pathlib import Path
+        import shutil
+        import subprocess
+
+        required = (
+            'LoadFolders.xml',
+            'About/About.xml',
+            '1.7/Assemblies/BernaelSoul.dll',
+            '1.7/Assemblies/BernaelVanquish.dll',
+            '1.7/Assemblies/BernaelXenotype.dll',
+        )
+        patterns = required + (
+            'About/*.png',
+            'Common/Languages/*.xml',
+            'Common/Sounds/*.wav',
+            'Common/Sounds/*.ogg',
+            'Common/Textures/*.png',
+            '1.7/Defs/*.xml',
+            '1.7/Languages/*.xml',
+            '1.7/Nephilim/Patches/*.xml',
+            '1.7/Patches/*.xml',
+            '1.7/Shaders/*.glsl',
+            '1.7/Textures/*.png',
+        )
+        tracked = subprocess.check_output(['git', 'ls-files', '-z']).decode().split('\0')
+        selected = [name for name in tracked if any(fnmatch.fnmatchcase(name, pattern) for pattern in patterns)]
+        missing = set(required) - set(selected)
+        if missing:
+            raise SystemExit('Missing game files: ' + ', '.join(sorted(missing)))
+        for name in selected:
+            target = Path('artifact') / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(name, target)
+        print(f'Staged {len(selected)} game files.')
+        PY
 
     - name: Zip whole mod
       run: |
@@ -132,6 +153,6 @@ jobs:
 
           Built from `${{ github.event.pull_request.head_sha }}` against RimWorld `${{ steps.version.outputs.version }}`.
 
-          Unzip straight into your RimWorld `Mods/` folder — it already contains `About/`, `Defs/`, `Assemblies/` and the freshly compiled `BernaelXenotype.dll`.
+          Unzip straight into your RimWorld `Mods/` folder. The archive contains `About/`, `Common/`, `1.7/` and the three freshly compiled assemblies.
 
           <sub>Updated automatically on every push to this PR.</sub>

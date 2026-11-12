@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
 using Verse;
+using UnityEngine;
 
 namespace Bernael_Xenotype
 {
@@ -67,6 +68,16 @@ namespace Bernael_Xenotype
     {
         private Stance_Cooldown strikeCooldown;
 
+        public override bool TryStartCastOn(LocalTargetInfo castTarg, LocalTargetInfo destTarg,
+            bool surpriseAttack = false, bool canHitNonTargetPawns = true, bool preventFriendlyFire = false,
+            bool nonInterruptingSelfCast = false)
+        {
+            bool started = base.TryStartCastOn(castTarg, destTarg, surpriseAttack, canHitNonTargetPawns, preventFriendlyFire, nonInterruptingSelfCast);
+            if (started && WarmingUp && CasterPawn?.Map != null)
+                CasterPawn.Map.GetComponent<VanquishMapComponent>().BeginWindup(ability, castTarg.Pawn, WarmupTicksLeft);
+            return started;
+        }
+
         public override void WarmupComplete()
         {
             Pawn caster = CasterPawn;
@@ -108,6 +119,7 @@ namespace Bernael_Xenotype
     public class CompAbilityEffect_Vanquish : CompAbilityEffect
     {
         public new CompProperties_AbilityVanquish Props => (CompProperties_AbilityVanquish)props;
+        public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest) => Valid(target);
 
         public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
         {
@@ -144,6 +156,7 @@ namespace Bernael_Xenotype
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
+            if (!Valid(target, true)) return;
             base.Apply(target, dest);
 
             Pawn caster = parent.pawn;
@@ -165,10 +178,17 @@ namespace Bernael_Xenotype
                 : Props.baseDamageMultiplier;
 
             bool attacked;
+            float previousHealth = victim.health.summaryHealth.SummaryHealthPercent;
+            Vector3 impactPosition = victim.DrawPos;
+            Map attackMap = caster.Map;
             using (VanquishDamageContext.Push(verb, multiplier))
             {
                 attacked = caster.meleeVerbs.TryMeleeAttack(victim, verb, true);
             }
+
+            if (attacked)
+                attackMap?.GetComponent<VanquishMapComponent>().Strike(parent, victim, impactPosition,
+                    victim.Dead || victim.health.summaryHealth.SummaryHealthPercent < previousHealth - 0.00001f, victim.Dead);
 
             if (attacked && victim.Dead)
             {

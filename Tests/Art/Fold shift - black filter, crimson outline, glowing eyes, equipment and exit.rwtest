@@ -1,0 +1,24 @@
+rwtest 1
+test "Fold shift - black filter, crimson outline, glowing eyes, equipment and exit" project="Bernael" created=2026-11-09T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Folder" xenotype=BX_Bernael
+spawn Thing:BX_LifeVanquisher at 0,1 name="Sword" quality=normal
+equip "Folder" thing="Sword" now=true
+give "Folder" resource=BX_SoulEater value=0.9
+draft "Folder"
+select "Folder"
+gizmo "Fold shift" expect=allowed
+speed x1
+ask "fold-entry" ticks=80 claim="a soft crimson pulse rolls out beneath the caster. The face darkens with the body as the red outline rises, and front-facing eyes light during the transition. The pawn's body, wings, halo and clothing stay readable as the shadow reaches full opacity"
+assert pawn "Folder" hediff=BX_FoldShift_Hediff expect=present
+ask "fold-equipment" claim="the equipped sword is still visible in the shifted state; the silhouette is not a generic replacement pawn"
+ask "fold-facing-distance" claim="movement directions update the shadow's facing and eyes (none when facing away), and its crimson outline remains recognizable at normal play zoom and when zoomed out"
+damage "Folder" amount=5 kind=EMP
+ask "fold-exit" ticks=40 claim="the shadow dissolves from the head down and the ordinary pawn gradually returns. No duplicate silhouette, lingering rim or horizontal strip appears beneath the pawn, including in the last frame of the dissolve"
+assert pawn "Folder" hediff=BX_FoldShift_Hediff expect=absent
+assert pawn "Folder" equipment=BX_LifeVanquisher expect=present
+assert log clean

@@ -1,0 +1,19 @@
+rwtest 1
+test "Malicious seal - long spikes, minimalist eye and distant readability" project="Bernael" created=2026-11-09T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Royalty
+
+speed paused
+spawn Pawn:Colonist at 0,0 name="Caster"
+spawn Pawn:Pirate at 4,0 name="Victim" faction=enemy pacify=true
+ability "Caster" grant=BX_MaliciousSeal psylink=3 psyfocus=1.0
+draft "Caster"
+select "Caster"
+gizmo "Malicious seal" expect=allowed
+target "Victim" expect=allowed
+speed x1
+waitfor pawn "Victim" hediff=BX_MaliciousSeal ticks=400 expect=present
+ask "seal-symbol" claim="the brand has four long cardinal spikes reaching well beyond its ring and a minimalist almond eye with one solid dark pupil, without a bright slit, skull, rune, teeth or internal daggers; its lowest spike stays clear of the pawn's head; the ability icon uses the same eye and four spikes"
+ask "seal-distance" ticks=120 claim="the blue-white seal keeps a clear ring, spikes and eye at normal play zoom and when zoomed out, while its existing pulse continues"
+assert log clean

@@ -1,0 +1,37 @@
+rwtest 1
+test "Rancor of souls - inner charge, radial burst, unguided spread, homing and distant readability" project="Bernael" created=2026-11-09T00:00:00
+
+requires mod=Mortis.BX
+requires dlc=Biotech
+
+speed paused
+sky glow=1
+spawn Pawn:Colonist at 0,0 name="Caster" xenotype=BX_Bernael
+give "Caster" resource=BX_SoulEater value=1.0
+spawn Pawn:Pirate at 10,3 name="East" faction=enemy pacify=true
+spawn Pawn:Pirate at -10,-3 name="West" faction=enemy pacify=true
+spawn Pawn:Pirate at 3,10 name="North" faction=enemy pacify=true
+spawn Pawn:Pirate at -3,-10 name="South" faction=enemy pacify=true
+draft "Caster"
+select "Caster"
+gizmo "Rancor of Souls" expect=allowed
+speed x1
+ask "rancor-release" ticks=180 claim="a dark pool spreads and turns under the caster while strands of cyan soul-light join one by one into a single vortex around it, a light in the body throbs ever faster and faint rings pulse out over the ground. The vortex and the pool's rim are drawn into the flaring heart, and one outward burst follows without a gap and releases the stored souls together. They slow as they spread unguided for about half a second, then curve onto the enemies. The faces grow out of the flash and differ in size, tint, tail rhythm and orientation"
+ask "rancor-colors" claim="apart from the souls, the burst is translucent and low in contrast: faint smoke, a thin soft ring and rays and a small flash, so the souls carry the moment; the pawn remains recognizable throughout"
+ask "rancor-eyes" claim="every soul has slanted eyes over a jagged mouth, like the ability's icon, drawn straight onto the mid tone of its own flame with no pale disc or circle behind the face, and none looks friendly; the volley includes several distinct eye shapes (wedges, hollow sockets, slits, half discs, diamonds), which are visible differences in the faces, not just rotated or stretched copies; each soul keeps its face throughout flight, and no thin line runs from the corners of a mouth to the edge of the face"
+ask "rancor-impact" claim="souls end with small cyan impact bursts; smoke, rings and impact flashes clear after the attack without a lasting disk"
+assert casts "Caster" ability=BX_RancorOfSouls min=1 max=1
+assert shots "Caster" min=20 max=20
+assert log clean
+
+speed paused
+spawn Pawn:Colonist at 0,20 name="Distant caster" xenotype=BX_Bernael
+give "Distant caster" resource=BX_SoulEater value=0.5
+spawn Pawn:Pirate at 10,20 name="Distant enemy" faction=enemy pacify=true
+draft "Distant caster"
+select "Distant caster"
+gizmo "Rancor of Souls" expect=allowed
+speed x1
+ask "rancor-distance" ticks=180 claim="at normal play zoom and when zoomed out, the warmup vortex, the radial release and the travelling souls remain distinct and do not read as one solid cyan disk; the half-full caster's vortex turns visibly fewer strands than the full caster's"
+assert shots "Distant caster" min=10 max=10
+assert log clean

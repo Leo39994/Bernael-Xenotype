@@ -1,0 +1,139 @@
+{
+  "provider": "Piloto Studio",
+  "importedOn": "2026-11-09",
+  "transformations": "Masks hold one channel in alpha; SDF atlases store signed distance in alpha, and WingSmokeSDF the distance to its lit tone in grey RGB. Colour and animation come from the native GLSL shaders.",
+  "assets": [
+    {
+      "file": "SoulGhost.png",
+      "source": "Piloto Studio/Textures/GhostTrail_Clamped2.png",
+      "guid": "93cf0dee01e196c42a80521c3898b4e6",
+      "sourceSha256": "2A26CC67E9F0F4271BB912E10CE59F64B97AA778A71F808002A365360B0394C3",
+      "layout": "single screaming soul, face at u 0.1-0.45 with its trail toward u 1",
+      "use": "Rancor soul heads",
+      "transformation": "mask (max of RGB x alpha) normalised, resized 256x128 -> 256x128",
+      "sha256": "6EE0D518B18DE09187144FF24007D278651803AAEB0F5DB1F8117C9E43F861BD"
+    },
+    {
+      "file": "SoulWisp.png",
+      "source": "Piloto Studio/Textures/Tx_SmokeTrail_06.png",
+      "guid": "af32b4e7c880b744881d1652890065cf",
+      "sourceSha256": "7CF465684ED8660470120C027C7E1E731DC5BB87C2F1D45B883F4199E029EFF6",
+      "layout": "horizontally tiling wisps",
+      "use": "Rancor soul trails and gathering streams",
+      "transformation": "mask (max of RGB x alpha), resized 512x256 -> 512x256",
+      "sha256": "82BC20FC2449E10D5133EE466E9B54742A3D353597D0D902D6DD288B7764527A"
+    },
+    {
+      "file": "ShockRing.png",
+      "source": "Piloto Studio/Textures/Ring_Shockwave2.png",
+      "guid": "edfead4bd95b83c488f2eb8b474b7987",
+      "sourceSha256": "039562443144185A501D747B2721CBA33516F1994078479AEE99C18ACE4A2A6C",
+      "layout": "ring, brightest at 0.85 of the half size",
+      "use": "Rancor and impact shock rings",
+      "transformation": "mask (max of RGB x alpha), resized 1024x1024 -> 512x512",
+      "sha256": "1C7140869BD2502D74F63759E3F0D6E48A7692299E9E4531AB7AD92E84B6F798"
+    },
+    {
+      "file": "SmokeRing.png",
+      "source": "Piloto Studio/Textures/Shockwave_Fluffy_Clamped.png",
+      "guid": "fc753717ed913f7428a78c7f25920836",
+      "sourceSha256": "8FAC3B505577EA02F3628DEFA4FF917730FE4EE9D8D7C5FE01E4E69388C24398",
+      "layout": "fluffy smoke donut, densest at 0.39 of the half size",
+      "use": "Rancor spirit-smoke blast",
+      "transformation": "mask (max of RGB x alpha), resized 512x512 -> 512x512",
+      "sha256": "0ECACCCF7917DB553381FECA4C9AF424564695E5B020F653CADA2FCE1F6D6585"
+    },
+    {
+      "file": "LightRays.png",
+      "source": "Piloto Studio/Textures/Impact_Lightrays.png",
+      "guid": "8a9454539c332624d913cbe273db08b1",
+      "sourceSha256": "006DDC90C4436DBE272138551E363619035A7655A94AC59AA89B2A7DA9728498",
+      "layout": "radial rays",
+      "use": "Rancor release rays, Vanquish impact",
+      "transformation": "mask (max of RGB x alpha), resized 256x256 -> 256x256",
+      "sha256": "D4C6C60D22759E1F7951073766BB99DF368B07BA3C63799C1DFD2CFC56AD780A"
+    },
+    {
+      "file": "SoulVortex.png",
+      "source": "Piloto Studio/Textures/Vortex_SwirledDot.png",
+      "guid": "7b6e3be1a5560234590c5a933283f661",
+      "sourceSha256": "DA3CEFE98FB5E05E9A479E270293CAE581BCC20850B840E3530710346BD66AB8",
+      "layout": "spiral swirl",
+      "use": "Rancor gathering vortex",
+      "transformation": "mask (max of RGB x alpha), resized 256x256 -> 256x256",
+      "sha256": "1012019AEF84A6B5478682E550AC3176F5138E40779DF27990B359BEFFFFC366"
+    },
+    {
+      "file": "CursedBlastSDF.png",
+      "source": "Piloto Studio/Textures/Tx_Fire_radial_01.png",
+      "guid": "97ada622c0e102149b632bc15ae6b1f6",
+      "sourceSha256": "19719904DD0F0C639ECC5B45F969D435845F4DB9353A685DC644E5CA11D58036",
+      "layout": "9-frame toon fire blast, row-major in a 4x4 atlas",
+      "use": "Dire Orb explosion body",
+      "transformation": "signed distance atlas: 9 frames of a 3x3 flipbook, each fitted into 232px with 12px padding in a 256px cell of a 4x4 atlas; alpha 0.5 on the edge, +/-64px mapped to 1/0 (inside high)",
+      "sha256": "D03C1A0CE6898F195CD9195152A2DD7C0BEC0F0978A747BF6EF03344E1B300A7"
+    },
+    {
+      "file": "CursedSpikesSDF.png",
+      "source": "Piloto Studio/Textures/Tx_Burst_directional_05.png",
+      "guid": "c0724deeb3d31434882107cc16cc8f3d",
+      "sourceSha256": "48FE209AD775C1479AC746F935BD80787EB254E76676C6101DC78C54DE917D24",
+      "layout": "8-frame toon flame eruption rising from the cell bottom, row-major in a 4x2 atlas",
+      "use": "Dire Orb flame eruptions",
+      "transformation": "signed distance atlas: 8 frames of a 4x2 flipbook, each fitted into 232px with 12px padding in a 256px cell of a 4x2 atlas; alpha 0.5 on the edge, +/-64px mapped to 1/0 (inside high); frames anchored at the cell bottom",
+      "sha256": "856CE92BA15F49FBB9D2D7A4B3F62D43D73A27DA9A9C2F389A39D5CDF47BACB3"
+    },
+    {
+      "file": "FogFlow.png",
+      "source": "Piloto Studio/Textures/Tx_SmokeTrail_04.png",
+      "guid": "b5548e3456f6ed14f80ec6cc18b5530a",
+      "sourceSha256": "8CC6D10606F4308F86183B8BF2725056FF7729B90213CCC588E7302B4B553A48",
+      "layout": "horizontally tiling flowing smoke",
+      "use": "Traverse the Fold fog membrane",
+      "transformation": "mask (max of RGB x alpha), resized 1024x512 -> 512x256",
+      "sha256": "82195971E3105ED8A68A991B867E44BF9367A5193D73EADD65C5689342BECB4C"
+    },
+    {
+      "file": "FogSwirl.png",
+      "source": "Piloto Studio/Textures/Vortex_Generic.png",
+      "guid": "85a8c58a3ad4a684a8d37c13c18956bc",
+      "sourceSha256": "4B0178F7DCA452DB4ED492625719F623524112973C54A60BCAD36731CA3EF37B",
+      "layout": "spiral swirl",
+      "use": "Traverse the Fold fog swirl where the pawn passes",
+      "transformation": "mask (max of RGB x alpha), resized 256x256 -> 256x256",
+      "sha256": "2E979288B10096E068B0D6440F4B1DD7CB23220405472343C8740191BE24E3AE"
+    },
+    {
+      "file": "ImpactShards.png",
+      "source": "Piloto Studio/Textures/Tx_Impact_02.png",
+      "guid": "39aea9746ef681743a83bffcded3586f",
+      "sourceSha256": "E92FE1AC408AE5F64917410B1019C3C4F80F13F85FF482D16A3DD594104E71B6",
+      "layout": "2x2 toon impact shards",
+      "use": "Vanquish impact",
+      "transformation": "mask (max of RGB x alpha), resized 2048x2048 -> 512x512",
+      "sha256": "2832EE7AC9049FF5A3604D6D7D3347AE1FFCA6789A52B538592CD0376F2D4DCA"
+    },
+    {
+      "file": "FogPuffs.png",
+      "source": "Piloto Studio/Textures/SmokePickbook_HighQualityFlowy.png",
+      "guid": "156b21592d2b7894d96407ef8a97ca7c",
+      "sourceSha256": "0EC2AB3D4DA4FAFBE7210DC68EDB626194B48CFBE5F101BDEE18FE010F944DB2",
+      "layout": "2x2 static smoke puff variants",
+      "use": "Traverse the Fold billows rolling out of the wall faces",
+      "transformation": "mask (max of RGB x alpha), resized 1024x1024 -> 512x512",
+      "sha256": "22A2166B6F26DE982FBEB467D7DF5EA67666B3F8701AA0E77971E5F88E5AE4E1"
+    },
+    {
+      "file": "WingSmokeSDF.png",
+      "source": "Piloto Studio/Textures/Tx_Smoke_radial_04.png",
+      "guid": "8dbc6e86337bbfb4a9532dc791ab51dd",
+      "sourceSha256": "3A6C47AE9ED53551C3ECD0C09D3C59996B652F826F0ABA67941C730F935B91DA",
+      "layout": "16-frame toon smoke puff (forming, billowing, breaking apart), row-major in a 4x4 atlas",
+      "use": "Wing Burst comet, take-off, wake, landing cloud and lingering haze",
+      "transformation": "two-channel signed distance atlas: 16 frames of a 4x4 flipbook, each fitted into 232px with 12px padding in a 256px cell of a 4x4 atlas; alpha holds the shape and grey RGB its lit tone (source grey above 0.8); 0.5 on the edge, +/-64px mapped to 1/0 (inside high)",
+      "sha256": "882B405F87A22DBAE8ABBB12FE6F91DC929063408DA026C9E5376312188B2DEE"
+    }
+  ],
+  "revisedOn": "2026-11-09",
+  "revision": "Second feedback round: WingSmokeSDF (toon smoke) replaces the lit SmokeBurst/SmokeLoop flipbooks; FogPuffs (density in alpha) replaces SmokePickbook (density in red); SlashToon is no longer used after Vanquish lost its slash."
+}
