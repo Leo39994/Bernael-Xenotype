@@ -68,6 +68,15 @@ assert hit "Downed" by="Orbcaster" max=0
 assert hit "Ally" by="Orbcaster" max=0
 gizmo "Dire orb" expect=disabled
 
+assert thing BX_CursedFire at 8,10 expect=present
+tick 180 note="the impact visual expires while the real cursed fire remains"
+assert thing BX_CursedFire at 8,10 expect=present
+reload note="lingering fire must retain caster, target filtering and age"
+assert thing BX_CursedFire at 8,10 expect=present
+tick 180
+assert hit "Downed" by="Orbcaster" max=0
+assert hit "Ally" by="Orbcaster" max=0
+
 undraft "Orbcaster"
 undraft "Ally"
 assert log clean

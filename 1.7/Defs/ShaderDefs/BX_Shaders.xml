@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <ShaderDef>
+    <defName>BX_Vanquish</defName>
+    <shaderProgram>
+      <vertexShaderFileName>Bernael/BX_Effect.vert.glsl</vertexShaderFileName>
+      <fragmentShaderFileName>Bernael/BX_Vanquish.frag.glsl</fragmentShaderFileName>
+      <flipTextureST>false</flipTextureST><depthTest>true</depthTest><depthWrite>false</depthWrite><cullMode>None</cullMode>
+      <blendMode>Custom</blendMode><blendSrcFactor>One</blendSrcFactor><blendDstFactor>OneMinusSrcAlpha</blendDstFactor><renderQueue>3152</renderQueue>
+    </shaderProgram>
+  </ShaderDef>
+  <!-- After the sun shadows (3170) and their fading edges (3175), whose straight-edged wall shadows otherwise cut
+       across the pale fog; still under the darkness overlay (3180). Gates are only drawn on unfogged cells. -->
+  <ShaderDef>
+    <defName>BX_FoldGate</defName>
+    <shaderProgram>
+      <vertexShaderFileName>Bernael/BX_Effect.vert.glsl</vertexShaderFileName>
+      <fragmentShaderFileName>Bernael/BX_FoldGate.frag.glsl</fragmentShaderFileName>
+      <flipTextureST>false</flipTextureST>
+      <depthTest>true</depthTest><depthWrite>false</depthWrite><cullMode>None</cullMode>
+      <blendMode>Custom</blendMode><blendSrcFactor>One</blendSrcFactor><blendDstFactor>OneMinusSrcAlpha</blendDstFactor>
+      <renderQueue>3176</renderQueue>
+    </shaderProgram>
+  </ShaderDef>
+  <ShaderDef>
+    <defName>BX_FoldShift</defName>
+    <shaderProgram>
+      <vertexShaderFileName>Bernael/BX_Effect.vert.glsl</vertexShaderFileName>
+      <fragmentShaderFileName>Bernael/BX_FoldShift.frag.glsl</fragmentShaderFileName>
+      <flipTextureST>false</flipTextureST>
+      <depthTest>true</depthTest>
+      <depthWrite>false</depthWrite>
+      <cullMode>None</cullMode>
+      <blendMode>Custom</blendMode>
+      <blendSrcFactor>One</blendSrcFactor>
+      <blendDstFactor>OneMinusSrcAlpha</blendDstFactor>
+      <renderQueue>3021</renderQueue>
+    </shaderProgram>
+  </ShaderDef>
+  <ShaderDef>
+    <defName>BX_WingSmoke</defName>
+    <shaderProgram>
+      <vertexShaderFileName>Bernael/BX_Effect.vert.glsl</vertexShaderFileName>
+      <fragmentShaderFileName>Bernael/BX_WingSmoke.frag.glsl</fragmentShaderFileName>
+      <flipTextureST>false</flipTextureST>
+      <depthTest>true</depthTest>
+      <depthWrite>false</depthWrite>
+      <cullMode>None</cullMode>
+      <blendMode>Custom</blendMode>
+      <blendSrcFactor>One</blendSrcFactor>
+      <blendDstFactor>OneMinusSrcAlpha</blendDstFactor>
+      <renderQueue>3172</renderQueue>
+    </shaderProgram>
+  </ShaderDef>
+  <ShaderDef>
+    <defName>BX_Rancor</defName>
+    <shaderProgram>
+      <vertexShaderFileName>Bernael/BX_Effect.vert.glsl</vertexShaderFileName>
+      <fragmentShaderFileName>Bernael/BX_Rancor.frag.glsl</fragmentShaderFileName>
+      <flipTextureST>false</flipTextureST>
+      <depthTest>true</depthTest>
+      <depthWrite>false</depthWrite>
+      <cullMode>None</cullMode>
+      <blendMode>Custom</blendMode>
+      <blendSrcFactor>One</blendSrcFactor>
+      <blendDstFactor>OneMinusSrcAlpha</blendDstFactor>
+      <renderQueue>3150</renderQueue>
+    </shaderProgram>
+  </ShaderDef>
+  <ShaderDef>
     <defName>BX_DarkMirage</defName>
     <shaderProgram>
       <vertexShaderFileName>Bernael/BX_Effect.vert.glsl</vertexShaderFileName>

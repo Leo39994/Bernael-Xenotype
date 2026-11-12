@@ -1,5 +1,6 @@
 #version 450
-// Port of the matching 1.6 ShaderLab effect; timing, palette and geometry are unchanged.
+// Mortis's review (2026-11-09): four much bigger spikes, and a minimalist eye in place of the rune. The original
+// timing and palette remain.
 layout(location = 0) in vec2 vUv;
 layout(location = 0) out vec4 outColor;
 #include "BX_ShaderCommon.glsl"
@@ -16,34 +17,21 @@ layout(set = 2, binding = 0) uniform MaterialUniforms
 } uMaterial;
 
 
-// Dire Orb's and Dark Mirage's palette: the concept's black emblem becomes navy and its grey skull pale
-// blue bone, inside the same solid white contour and soft white glow.
+// Caligo palette: a navy seal with pale blue detail, a white contour and restrained glow.
 const vec3 Navy = vec3(0.086,0.133,0.169);
 const vec3 Deep = vec3(0.51,0.71,0.859);
 const vec3 Pale = vec3(0.725,0.851,0.929);
-// The emblem is measured in its ring's radius, and its quad reaches this far from the middle.
-// MaliciousSealMapComponent sizes the brand by it.
-const float Extent = 1.75;
+// The emblem is measured in its ring's radius, and its quad reaches this far from the middle, clear of the spikes'
+// tips and glow. MaliciousSealMapComponent sizes the brand by it.
+const float Extent = 2.1;
 // Contour and glow widths in cells, thinner than Dire Orb's since the brand is small.
-const vec2 BrandLine = vec2(0.018,0.03);
+// The contour stays thinner than the navy ring, so the palette reads at a distance instead of a white outline.
+const vec2 BrandLine = vec2(0.015,0.026);
 const vec2 ChainLine = vec2(0.022,0.04);
 // MaliciousSealMapComponent.ChainWidth, the chain quad's width in cells.
 const float ChainWidth = 0.8;
 // Shapes measured from the concept, with the ring's radius as 1 and +y up.
-const float RingHalf = 0.055;
-// Its diagonal spikes lean 47.5 degrees off the vertical and its side daggers 50: (sin, cos) of each.
-const vec2 DiagonalAxis = vec2(0.7373,0.6756);
-const vec2 SideAxis = vec2(0.7660,0.6428);
-// How far each dagger's point rests from the middle, just clear of the skull, and the skull's scale.
-const float CentreTip = 0.37;
-const float SideTip = 0.39;
-const float SkullScale = 1.12;
-// The right eye socket's middle.
-const vec2 EyeCentre = vec2(0.115,-0.085);
-
-
-
-
+const float RingHalf = 0.11;
 vec4 over(vec4 back, vec4 front)
 {
     return front+back*(1-front.a);
@@ -130,54 +118,27 @@ vec4 paint(float d, vec3 fill, float px, vec2 widths)
     return vec4(c*rim+glow,rim+glow);
 }
 
-// The concept's ring with its eight spikes: short ones on the axes, longer ones on the diagonals.
+// Four long cardinal spikes, reaching out three quarters of the ring's radius beyond it.
 float ringShape(vec2 p)
 {
     float d=abs(length(p)-1)-RingHalf;
     // Folded into one quadrant, so each line draws a spike on every side.
     vec2 q=abs(p);
-    d=min(d,kite(q,0.84,1,1.21,0.1));
-    d=min(d,kite(q.yx,0.84,1,1.21,0.1));
-    vec2 slanted=vec2(dot(q,vec2(DiagonalAxis.y,-DiagonalAxis.x)),dot(q,DiagonalAxis));
-    return min(d,kite(slanted,0.9,1,1.32,0.1));
+    d=min(d,kite(q,0.8,1,1.78,0.165));
+    d=min(d,kite(q.yx,0.8,1,1.78,0.165));
+    return d;
 }
 
-// A dagger along +y, its point tip from the middle: a straight blade widening to the crossguard, a short
-// grip and a round pommel, so it still reads as a dagger when the brand is small.
-float dagger(vec2 p, float tip)
+// A lens of two circles of radius r whose centres lie d either side of the middle along y: its points lie on x.
+float vesica(vec2 p, float r, float d)
 {
-    p.y-=tip;
-    float d=cone(p,vec2(0,0.016),vec2(0,0.22),0.014,0.064);
-    d=min(d,box(p-vec2(0,0.245),vec2(0.1,0.025),0.014));
-    d=min(d,box(p-vec2(0,0.31),vec2(0.028,0.05),0.01));
-    return min(d,length(p-vec2(0,0.38))-0.042);
+    p=abs(p.yx);
+    float b=sqrt(r*r-d*d);
+    return ((p.y-b)*d>p.x*b)?length(p-vec2(0.0,b)):length(p-vec2(-d,0.0))-r;
 }
-
-// A plain skull: a round crown over square cheekbones and a narrower jaw.
-float skullShape(vec2 p)
-{
-    float d=length(p-vec2(0,0.02))-0.28;
-    d=smin(d,box(p-vec2(0,-0.14),vec2(0.215,0.1),0.07),0.05);
-    return smin(d,box(p-vec2(0,-0.29),vec2(0.135,0.085),0.045),0.04);
-}
-// Bone deepening toward the jaw, with scowling navy eye sockets in which an ember burns, a small nose and
-// three gaps between the teeth. As eyes rises to 1 the ember fills its socket and turns white.
-vec3 skullColor(vec2 p, float eyes, float aa)
-{
-    vec2 q=vec2(abs(p.x),p.y);
-    vec3 c=mix(Deep,Pale,bxSmoothstep(-0.38,0.1,p.y));
-    // Each socket is cut flat by a brow sloping down toward the nose.
-    float socket=max(ellipse(q-EyeCentre,vec2(0.088,0.075)),dot(q-vec2(0.03,-0.06),vec2(-0.316,0.949)));
-    float lit=saturate(eyes);
-    float core=1-bxSmoothstep(0,0.02+0.05*lit,length(q-EyeCentre+vec2(0,0.008)));
-    vec3 burn=mix(Deep,vec3(1,1,1),bxSmoothstep(0.35,0.9,lit)*core);
-    vec3 hole=mix(Navy,burn,core*saturate(lit*2.2));
-    c=mix(c,hole,1-bxSmoothstep(-aa,aa,socket));
-    // The nose narrows to a point at the top.
-    float nose=trapezoid(p-vec2(0,-0.2),0.042,0.008,0.036);
-    float teeth=max(max(abs(q.x-round(q.x/0.065)*0.065)-0.011,q.x-0.1),p.y+0.275);
-    return mix(c,Navy,1-bxSmoothstep(-aa,aa,min(nose,teeth)));
-}
+// An almond eye and a single dark pupil, readable at normal play zoom.
+float eyeShape(vec2 p) { return vesica(p,0.876,0.576); }
+float pupilShape(vec2 p) { return length(p)-0.2; }
 // Heats a colour through the palette's blue to white, so a flash never passes through grey.
 vec3 heat(vec3 c, float flash)
 {
@@ -187,46 +148,24 @@ vec3 heat(vec3 c, float flash)
 struct Pose
 {
     float ringScale;
-    vec2 skullShift;
     float squash;
-    float stab;           // how far the daggers are driven at the skull; negative when drawn back
-    float eyes, flash;
+    float pulse;
+    float flash;
 };
 
-// The ring and daggers under one fill and contour, then the skull over them, so a dagger driven into the
-// skull vanishes behind it. Its eyes light up as the blades bite.
 vec4 emblem(vec2 p, float px, vec2 widths, Pose o)
 {
-    float aa=px*0.75;
-    vec3 white=1;
-    vec2 q=vec2(abs(p.x),p.y);
-    vec2 along=vec2(dot(q,vec2(SideAxis.y,-SideAxis.x)),dot(q,SideAxis));
-    float metal=ringShape(p/o.ringScale)*o.ringScale;
-    metal=min(metal,dagger(q,CentreTip-o.stab));
-    metal=min(metal,dagger(along,SideTip-o.stab));
-    vec4 col=paint(metal,heat(Navy,o.flash),px,widths);
-    float unit=o.squash*SkullScale;
-    vec2 local=(p-o.skullShift)/(vec2(1,o.squash)*SkullScale);
-    vec3 bone=skullColor(local,o.eyes,aa/unit);
-    col=over(col,paint(skullShape(local)*unit,mix(bone,white,o.flash*0.7),px,widths));
-    // The burning eyes light the bone around them.
-    vec2 e=(vec2(abs(local.x),local.y)-EyeCentre)/vec2(1,0.75);
-    float light=o.eyes*o.eyes*exp2(-dot(e,e)*55);
-    col.rgb+=mix(Deep,white,0.4)*light;
-    col.a=saturate(col.a+light*0.45);
-    return col;
-}
-
-// Once a second of a brand's loop: how far its daggers are driven at the skull, striking it at c = 0.
-// They stay buried a moment, work free, rest, are drawn back, then strike again.
-float stab(float c)
-{
-    const float Buried=0.13, Drawn=0.07;
-    if(c<0.1) return Buried-0.012*sin(c/0.1*UNITY_PI);
-    if(c<0.42) return Buried*(1-easeInOut((c-0.1)/0.32));
-    if(c<0.6) return 0;
-    if(c<0.9) return -Drawn*easeInOut((c-0.6)/0.3);
-    return mix(-Drawn,Buried,sq((c-0.9)/0.1));
+    // A translucent navy plate inside the ring gives the seal one dark mass, like a wax seal.
+    float plate=(length(p/o.ringScale)-(1-RingHalf))*o.ringScale;
+    vec4 col=vec4(heat(Navy,o.flash*0.5),1)*(1-bxSmoothstep(-px,px,plate))*0.72;
+    float ring=ringShape(p/o.ringScale)*o.ringScale;
+    col=over(col,paint(ring,heat(Navy,o.flash),px,widths));
+    // The eye flinches with each pulse (squash) and its white brightens.
+    vec2 local=p/vec2(1,o.squash);
+    vec3 white=mix(Deep,Pale,0.45+o.pulse*0.4);
+    col=over(col,paint(eyeShape(local)*o.squash,heat(white,o.flash),px,widths*0.8));
+    float pupil=1-bxSmoothstep(-px,px,pupilShape(local)*o.squash);
+    return over(col,vec4(Navy*pupil,pupil));
 }
 
 // The chain the seal throws from a sealed corpse (uv.x 0) to the pawn it spreads to (uv.x 1). Links run
@@ -264,8 +203,7 @@ vec4 chain(vec2 uv, float px)
 }
 
 // The seal branded over a victim's head. It stamps down white hot (MaliciousSealMapComponent shrinks its
-// quad onto the pawn and lands it at 0.55 of uMaterial._Inscribe), cools to its colours, then bobs while its daggers
-// stab the skull once a second, lighting its eyes. Fading, the daggers work free and the eyes go out.
+// quad onto the pawn and lands it at 0.55 of uMaterial._Inscribe), then the eye pulses once a second.
 vec4 brand(vec2 p, float px, vec2 widths)
 {
     float t=uMaterial._Phase, stamp=saturate(uMaterial._Inscribe), fade=saturate(uMaterial._Close);
@@ -274,12 +212,18 @@ vec4 brand(vec2 p, float px, vec2 widths)
     float jolt=exp2(-c*12);
     Pose o;
     o.ringScale=1+0.025*exp2(-c*10);
-    o.skullShift=vec2(0,-0.022*jolt);
     o.squash=1-0.05*jolt;
-    o.stab=stab(c)-0.15*fade;
-    o.eyes=(0.18+0.82*exp2(-c*8))*(1-fade);
+    o.pulse=(0.18+0.82*exp2(-c*8))*(1-fade);
     o.flash=stamp<0.55?0.6+0.4*sq(stamp/0.55):exp2(-sq((stamp-0.55)/0.2)*3);
-    return emblem(p,px,widths,o)*bxSmoothstep(0,0.3,stamp)*(1-fade);
+    vec4 col=emblem(p,px,widths,o);
+    // As it lands, a thin ring of pale light runs out from the seal.
+    float k=saturate((stamp-0.55)/0.45);
+    if(stamp>0.55&&k<1)
+    {
+        float wave=abs(length(p)-mix(1.08,1.55,1-sq(1-k)))-0.035*(1-k);
+        col=over(paint(wave,Pale,px,widths*(1-k*0.6))*(1-k),col);
+    }
+    return col*bxSmoothstep(0,0.3,stamp)*(1-fade);
 }
 
 vec4 bxFragment(vec2 uv)

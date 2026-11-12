@@ -1,57 +1,112 @@
-# Local developer tools, caches and machine-specific environment notes.
-/.rimsearcher/
+# Repository roots
+/*
+!/.gitattributes
+!/.gitignore
+!/.github/
+!/1.7/
+!/About/
+!/Common/
+!/LoadFolders.xml
+!/Tests/
 
-# IDE and build output
+# Versioned game content and build sources
+/1.7/*
+!/1.7/Assemblies/
+!/1.7/Defs/
+!/1.7/Languages/
+!/1.7/Nephilim/
+!/1.7/Patches/
+!/1.7/README.md
+!/1.7/Shaders/
+!/1.7/Source/
+!/1.7/Textures/
+/1.7/Assemblies/*
+!/1.7/Assemblies/BernaelSoul.dll
+!/1.7/Assemblies/BernaelVanquish.dll
+!/1.7/Assemblies/BernaelXenotype.dll
+/1.7/Source/*
+!/1.7/Source/BernaelSoul/
+!/1.7/Source/BernaelVanquish/
+!/1.7/Source/BernaelXenotype17/
+!/1.7/Source/BernaelXenotype.slnx
+
+# Editor settings, build output and caches
+**/.*/
+!/.github/
 [Bb]in/
 [Oo]bj/
-.vs/
+node_modules/
+__pycache__/
+.env
+.env.*
+*.local
 *.suo
 *.user
-*.cache
 *.userprefs
-.idea/
-*.tmp
-*.log
-*.AssemblyReference.cache
+*.cache
 *.vsidx
 *.dtbcache.json
-*.bak
-*.orig
 *.pdb
-*.FileListAbsolute.txt
-
-# Local-only Dark Mirage tests, captures, previews and verification tools.
-1.7/Source/BernaelXenotype17/DarkMirage/QA/
-1.7/Source/BernaelXenotype17/DarkMirage/MirageQaHarness.cs
-1.7/Source/BernaelXenotype17/DarkMirage/VerifyDefs.cs
-1.7/Source/BernaelXenotype17/DarkMirage/verify.ps1
-
-# NuGet restore output
+*.dll
+*.exe
+*.nupkg
+*.snupkg
+*.meta
+*.pyc
+*.deps.json
+*.runtimeconfig.json
 project.assets.json
 *.nuget.g.props
 *.nuget.g.targets
 *.nuget.dgspec.json
 
-# OS clutter
+# Working documents, scripts and source media
+*.md
+*.txt
+*.rst
+*.html
+*.pdf
+*.docx
+*.xlsx
+*.pptx
+*.json
+*.ps1
+*.py
+*.js
+*.ts
+*.sh
+*.bat
+*.cmd
+*.psd
+*.kra
+*.blend
+*.mp3
+*.mp4
+*.mov
+*.zip
+*.7z
+*.tar
+*.gz
+*.tmp
+*.temp
+*.log
+*.bak
+*.orig
+*.rej
+*.swp
+*~
+!/1.7/README.md
+!/1.7/Assemblies/BernaelSoul.dll
+!/1.7/Assemblies/BernaelVanquish.dll
+!/1.7/Assemblies/BernaelXenotype.dll
+!/Common/Textures/Effects/Piloto/SOURCES.json
+
+# Keep only gameplay scenarios in the test tree
+/Tests/**/*
+!/Tests/**/
+!/Tests/**/*.rwtest
+
+# Operating-system files
 Thumbs.db
 desktop.ini
 .DS_Store
-
-# Additional tools for RimDevKit mod (unreleased yet)
-Tests/tools
-
-# Local captures, test profiles and caches retained from before the source migration.
-/Source/
-
-# Local QA harnesses, reports and implementation notes. Keep official Tests/*.rwtest.
-[Qq][Aa]/
-[Qq][Aa].meta
-/1.7/Source/**/*.md
-!/1.7/Source/ShaderReference/README.md
-/1.7/Source/Directory.Build.targets
-/1.7/Assemblies/*QA.dll
-/1.7/Assemblies/*.deps.json
-/1.7/Assemblies/*.runtimeconfig.json
-
-# Original audio masters; the game uses the WAV assets under Common/Sounds.
-/*.mp3
