@@ -4,7 +4,7 @@
   <RecipeDef ParentName="SurgeryFlesh">
     <defName>BX_ExtractSoul</defName>
     <label>extract soul fragment</label>
-    <description>Extract a soul fragment from the target. The operation will fail to produce a soul fragment if the target does not have enough blood.\n\nSoul fragments can be administered to satiate those who feed on blood.</description>
+    <description>Extract a soul fragment from the target. The operation will fail to produce a soul fragment if the target does not have enough soul.\n\nSoul fragments can be administered to satiate those who feed on soul.</description>
     <workerClass>Bernael_Xenotype.Recipe_ExtractSoul</workerClass>
     <jobString>Extracting soul fragment.</jobString>
     <workAmount>500</workAmount>

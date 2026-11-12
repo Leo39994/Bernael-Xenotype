@@ -45,7 +45,7 @@
       <ingestSound>Ingest_Inject</ingestSound>
       <outcomeDoers>
         <li Class="Bernael_Xenotype.IngestionOutcomeDoer_OffsetSoul">
-          <offset>0.2</offset>
+          <offset>0.4</offset>
         </li>
       </outcomeDoers>
     </ingestible>

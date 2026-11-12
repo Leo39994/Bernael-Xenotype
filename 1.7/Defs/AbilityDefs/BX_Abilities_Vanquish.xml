@@ -9,7 +9,7 @@
     <AbilityDef ParentName="AbilityTouchBase">
         <defName>BX_Vanquish</defName>
         <label>vanquish</label>
-        <description>Deliver an unavoidable psychic strike with Life Vanquisher for triple normal melee damage. Targets below 50% health take five times normal melee damage. Killing the target immediately recharges Vanquish, restores 20% psyfocus, and clears all neural heat.</description>
+        <description>Deliver an unavoidable psychic strike. Targets below 50% health take three times normal melee damage. Killing the target immediately recharges Vanquish, restores 20% psyfocus, and clears all neural heat.</description>
         <abilityClass>Bernael_Xenotype.Ability_Vanquish</abilityClass>
         <iconPath>Things/Weapons/LifeVanquisher/LifeVanquisher</iconPath>
         <cooldownTicksRange>15000</cooldownTicksRange>
@@ -35,7 +35,6 @@
             <li Class="Bernael_Xenotype.CompProperties_AbilityVanquish">
                 <healthThreshold>0.5</healthThreshold>
                 <baseDamageMultiplier>3</baseDamageMultiplier>
-                <damageMultiplier>5</damageMultiplier>
                 <psyfocusGain>0.2</psyfocusGain>
                 <requiredWeaponDefName>BX_LifeVanquisher</requiredWeaponDefName>
             </li>

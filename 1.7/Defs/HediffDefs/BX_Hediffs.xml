@@ -31,7 +31,7 @@
 	<HediffDef>
 		<defName>BX_Blindness</defName>
 		<label>Missing Eye</label>
-		<description>The eyes of this person are missing, only their eyesocket remains.</description>
+		<description>This xenotype has no eyes, just two decrepit holes.</description>
 		<hediffClass>HediffWithComps</hediffClass>
 		<initialSeverity>1</initialSeverity>
 		<minSeverity>0</minSeverity>
@@ -113,7 +113,7 @@
 <HediffDef>
 	<defName>BX_ReaperEcstasy</defName>
 	<label>Reaper's Ecstasy</label>
-		<description>Every living creature killed by this Bernael restores 10% Soul Saturation. Hostile kills also feed Reaper's Ecstasy, increasing psychic prowess and refreshing its shared decay timer. After one in-game hour without another hostile kill, the effect loses one level per hour.</description>
+		<description>Every living creature killed by this Bernael restores 10% Soul Saturation. Hostile kills also feed Reaper's Ecstasy, increasing psychic prowess and refreshing its shared decay timer. Without another hostile kill, the effect loses one level per hour.</description>
 	<hediffClass>Bernael_Xenotype.Hediff_ReapersEcstasy</hediffClass>
 	<initialSeverity>1</initialSeverity>
 	<minSeverity>0</minSeverity>
@@ -135,11 +135,11 @@
 						<points>
 							<li>(0, 1)</li>
 							<li>(1, 1)</li>
-							<li>(100, 10)</li>
+							<li>(100, 0.1)</li>
 						</points>
 					</valueBySeverity>
 				</li>
-				<li MayRequire="Ludeon.Rimworld.Royalty">
+				<!--<li MayRequire="Ludeon.Rimworld.Royalty">
 					<stat>PsychicEntropyGain</stat>
 					<valueBySeverity>
 						<points>
@@ -148,14 +148,14 @@
 							<li>(100, 0.1)</li>
 						</points>
 					</valueBySeverity>
-				</li>
+				</li>-->
 				<li MayRequire="Ludeon.Rimworld.Royalty">
 					<stat>PsychicEntropyMax</stat>
 					<valueBySeverity>
 						<points>
 							<li>(0, 1)</li>
 							<li>(1, 1)</li>
-							<li>(100, 5)</li>
+							<li>(100, 1.25)</li>
 						</points>
 					</valueBySeverity>
 				</li>
