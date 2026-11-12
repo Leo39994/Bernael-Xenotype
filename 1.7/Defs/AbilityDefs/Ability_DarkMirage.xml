@@ -36,5 +36,10 @@
         <mirageDef>BX_DarkMirageDecoy</mirageDef>
       </li>
     </comps>
+    <modExtensions>
+      <li Class="Bernael_Xenotype.PsycastGeneRequirementExtension">
+        <requireHexmaster>true</requireHexmaster>
+      </li>
+    </modExtensions>
   </AbilityDef>
 </Defs>

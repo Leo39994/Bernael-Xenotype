@@ -14,33 +14,26 @@ namespace Bernael_Xenotype
     {
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
-            if (parent?.pawn != null)
-            {
-                WorldComponent_NoPathCost.Add(parent.pawn);
-            }
+            WorldComponent_NoPathCost.Add(Pawn);
         }
 
         public override void CompPostPostRemoved()
         {
-            if (parent?.pawn != null)
+            bool hasOtherComp = false;
+            if (Pawn.health?.hediffSet?.hediffs != null)
             {
-                Pawn pawn = parent.pawn;
-                bool hasOtherComp = false;
-                if (pawn.health?.hediffSet?.hediffs != null)
+                foreach (var hediff in Pawn.health.hediffSet.hediffs)
                 {
-                    foreach (var hediff in pawn.health.hediffSet.hediffs)
+                    if (hediff != parent && hediff.TryGetComp<HediffComp_NoPathCost>() != null)
                     {
-                        if (hediff != parent && hediff.TryGetComp<HediffComp_NoPathCost>() != null)
-                        {
-                            hasOtherComp = true;
-                            break;
-                        }
+                        hasOtherComp = true;
+                        break;
                     }
                 }
-                if (!hasOtherComp)
-                {
-                    WorldComponent_NoPathCost.Remove(pawn);
-                }
+            }
+            if (!hasOtherComp)
+            {
+                WorldComponent_NoPathCost.Remove(Pawn);
             }
         }
     }

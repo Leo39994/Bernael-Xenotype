@@ -34,6 +34,8 @@
     <BX_SoulEnergy>soul saturation</BX_SoulEnergy>
     <BX_SoulEnergy_Desc>How much soul saturation this restores when consumed.</BX_SoulEnergy_Desc>
 
+    <BX_FoldShift_RestrictedAbility>Can only use Traverse the Fold or Wing Burst while in Fold Shift.</BX_FoldShift_RestrictedAbility>
+
     <BX_TraverseTheFold_TargetMustBeImpassable>Target must be an impassable blocking structure.</BX_TraverseTheFold_TargetMustBeImpassable>
     <BX_TraverseTheFold_CannotTargetBarrier>Cannot target this special barrier.</BX_TraverseTheFold_CannotTargetBarrier>
     <BX_TraverseTheFold_NoClearPassageThroughBarrier>No clear passage through this barrier.</BX_TraverseTheFold_NoClearPassageThroughBarrier>
