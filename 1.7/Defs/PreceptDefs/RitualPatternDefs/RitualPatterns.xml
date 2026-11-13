@@ -1,12 +1,12 @@
 <Defs>
 
   <RitualPatternDef>
-    <defName>BX_FeedingOnAnimaTree</defName>
+    <defName>BX_AnimaTreeDraining</defName>
     <ritualOnlyForIdeoMembers>false</ritualOnlyForIdeoMembers>
-    <ritualBehavior>BX_FeedingOnAnimaTree</ritualBehavior>
+    <ritualBehavior>BX_AnimaTreeDraining</ritualBehavior>
     <ritualTargetFilter>SelectedThing</ritualTargetFilter>
     <ritualObligationTargetFilter>BX_AnimaTree</ritualObligationTargetFilter>
-    <ritualOutcomeEffect>BX_FeedingOnAnimaTree</ritualOutcomeEffect>
+    <ritualOutcomeEffect>BX_AnimaTreeDraining</ritualOutcomeEffect>
     <playsIdeoMusic>false</playsIdeoMusic>
     <alwaysStartAnytime>true</alwaysStartAnytime>
   </RitualPatternDef>

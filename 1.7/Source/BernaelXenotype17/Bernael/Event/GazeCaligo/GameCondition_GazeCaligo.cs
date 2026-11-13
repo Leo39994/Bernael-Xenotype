@@ -52,12 +52,12 @@ namespace Bernael_Xenotype
         // or AltitudeLayer.Weather.AltitudeFor() - 0.03658537f
         private static readonly float PupilAltitude = AltitudeLayer.Weather.AltitudeFor() + 0.03658537f;
 
-        private static readonly MaterialPropertyBlock pupilPropertyBlock = new MaterialPropertyBlock();
-        private static readonly Material PupilMaterial = MaterialPool.MatFrom("Other/BX_Pupil", ShaderDatabase.Transparent);
         private static readonly MaterialPropertyBlock glowPropertyBlock = new MaterialPropertyBlock();
         private static readonly Material GlowCircleMaterial = MaterialPool.MatFrom("Other/BX_GlowCircle", ShaderDatabase.MoteGlow);
-        private Color pupilBaseColor = new Color(0f, 0f, 0f);
+        private static readonly MaterialPropertyBlock pupilPropertyBlock = new MaterialPropertyBlock();
+        private static readonly Material PupilMaterial = MaterialPool.MatFrom("Other/BX_Pupil", ShaderDatabase.Transparent);
         private Color glowBaseColor = new Color(0.6f, 0.8f, 1f);
+        private Color pupilBaseColor = new Color(0f, 0f, 0f);
 
         private int nextBlinkTick = -1;
         private int blinkEndTick = -1;
@@ -291,6 +291,53 @@ namespace Bernael_Xenotype
             }
         }
 
+        private void DrawGlow(Map map)
+        {
+            Vector3 mapCenter = new Vector3(map.Size.x * 0.5f, PupilAltitude, map.Size.z * 0.5f);
+
+            float scaleX = map.Size.x;
+            float scaleZ = map.Size.z * Mathf.Lerp(0.1f, 1.0f, Mathf.Min(TicksPassed, TicksLeft, 180) / 180f);
+
+            Vector3 glowScale = new Vector3(scaleX, 1f, scaleZ);
+            Matrix4x4 glowMatrix = default;
+            glowMatrix.SetTRS(mapCenter, Quaternion.identity, glowScale);
+            glowPropertyBlock.SetColor("_Color", new Color(glowBaseColor.r, glowBaseColor.g, glowBaseColor.b, 1f * GetBlinkFactor(map) * Mathf.Min(TicksPassed, TicksLeft, 30)/ 30f));
+            Graphics.DrawMesh(MeshPool.plane10, glowMatrix, GlowCircleMaterial, 0, null, 0, glowPropertyBlock);
+        }
+
+        private void DrawPupil(Map map)
+        {
+            Vector3 mapCenter = new Vector3(map.Size.x * 0.5f, PupilAltitude, map.Size.z * 0.5f);
+
+            float minMapSize = Mathf.Min(map.Size.x, map.Size.z);
+            float diameter = minMapSize * DiameterMapFraction;
+            float pupilRadius = diameter * 0.5f;
+            float maxValidRadius = Mathf.Max(0f, (minMapSize * 0.5f) - pupilRadius);
+
+            // Pupil distortion calculation
+            Vector3 offsetFromCenter = currentPupilPos - mapCenter;
+            float distFromCenter = offsetFromCenter.magnitude;
+            float maxOffsetRadius = Mathf.Max(0.01f, maxValidRadius);
+            float normalizedDist = Mathf.Clamp01(distFromCenter / maxOffsetRadius);
+            float circleArc = Mathf.Sqrt(1f - (normalizedDist * normalizedDist));
+            float radialScale = Mathf.Lerp(MinPupilScaleLimit, 1f, circleArc);
+
+            float scaleValue = Mathf.Min(TicksPassed, TicksLeft, 60) / 60f;
+            float scaleX = diameter * radialScale * Mathf.Lerp(0.1f, 1.0f, scaleValue);
+            float scaleZ = diameter * Mathf.Lerp(0.1f, 1.0f, scaleValue);
+
+            Quaternion rotation = Quaternion.identity;
+            if (distFromCenter > 0.0001f)
+            {
+                float angleDeg = Mathf.Atan2(offsetFromCenter.z, offsetFromCenter.x) * Mathf.Rad2Deg;
+                rotation = Quaternion.AngleAxis(-angleDeg, Vector3.up); 
+            }
+
+            Matrix4x4 pupilMatrix = Matrix4x4.TRS(currentPupilPos, rotation, new Vector3(scaleX, 1f, scaleZ));
+            pupilPropertyBlock.SetColor("_Color", new Color(pupilBaseColor.r, pupilBaseColor.g, pupilBaseColor.b, 1f * GetBlinkFactor(map) * scaleValue));
+            Graphics.DrawMesh(MeshPool.plane10, pupilMatrix, PupilMaterial, 0, null, 0, pupilPropertyBlock);
+        }
+
         private void MovePupil(Map map, int currentTick)
         {
             Vector3 mapCenter = new Vector3(map.Size.x * 0.5f, PupilAltitude, map.Size.z * 0.5f);
@@ -337,53 +384,6 @@ namespace Bernael_Xenotype
                 sustainerMoving?.End();
                 sustainerMoving = null;
             }
-        }
-
-        private void DrawPupil(Map map)
-        {
-            Vector3 mapCenter = new Vector3(map.Size.x * 0.5f, PupilAltitude, map.Size.z * 0.5f);
-
-            float minMapSize = Mathf.Min(map.Size.x, map.Size.z);
-            float diameter = minMapSize * DiameterMapFraction;
-            float pupilRadius = diameter * 0.5f;
-            float maxValidRadius = Mathf.Max(0f, (minMapSize * 0.5f) - pupilRadius);
-
-            // Pupil distortion calculation
-            Vector3 offsetFromCenter = currentPupilPos - mapCenter;
-            float distFromCenter = offsetFromCenter.magnitude;
-            float maxOffsetRadius = Mathf.Max(0.01f, maxValidRadius);
-            float normalizedDist = Mathf.Clamp01(distFromCenter / maxOffsetRadius);
-            float circleArc = Mathf.Sqrt(1f - (normalizedDist * normalizedDist));
-            float radialScale = Mathf.Lerp(MinPupilScaleLimit, 1f, circleArc);
-
-            float scaleValue = Mathf.Min(TicksPassed, TicksLeft, 60) / 60f;
-            float scaleX = diameter * radialScale * Mathf.Lerp(0.1f, 1.0f, scaleValue);
-            float scaleZ = diameter * Mathf.Lerp(0.1f, 1.0f, scaleValue);
-
-            Quaternion rotation = Quaternion.identity;
-            if (distFromCenter > 0.0001f)
-            {
-                float angleDeg = Mathf.Atan2(offsetFromCenter.z, offsetFromCenter.x) * Mathf.Rad2Deg;
-                rotation = Quaternion.AngleAxis(-angleDeg, Vector3.up); 
-            }
-
-            Matrix4x4 pupilMatrix = Matrix4x4.TRS(currentPupilPos, rotation, new Vector3(scaleX, 1f, scaleZ));
-            pupilPropertyBlock.SetColor("_Color", new Color(pupilBaseColor.r, pupilBaseColor.g, pupilBaseColor.b, 1f * GetBlinkFactor(map) * scaleValue));
-            Graphics.DrawMesh(MeshPool.plane10, pupilMatrix, PupilMaterial, 0, null, 0, pupilPropertyBlock);
-        }
-
-        private void DrawGlow(Map map)
-        {
-            Vector3 mapCenter = new Vector3(map.Size.x * 0.5f, PupilAltitude, map.Size.z * 0.5f);
-
-            float scaleX = map.Size.x;
-            float scaleZ = map.Size.z * Mathf.Lerp(0.1f, 1.0f, Mathf.Min(TicksPassed, TicksLeft, 180) / 180f);
-
-            Vector3 glowScale = new Vector3(scaleX, 1f, scaleZ);
-            Matrix4x4 glowMatrix = default;
-            glowMatrix.SetTRS(mapCenter, Quaternion.identity, glowScale);
-            glowPropertyBlock.SetColor("_Color", new Color(glowBaseColor.r, glowBaseColor.g, glowBaseColor.b, 1f * GetBlinkFactor(map) * Mathf.Min(TicksPassed, TicksLeft, 30)/ 30f));
-            Graphics.DrawMesh(MeshPool.plane10, glowMatrix, GlowCircleMaterial, 0, null, 0, glowPropertyBlock);
         }
 
         private Vector3 NewPupilTargetPos(Map map, float MinPupilScaleLimit)

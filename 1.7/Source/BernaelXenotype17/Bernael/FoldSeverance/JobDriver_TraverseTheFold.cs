@@ -206,7 +206,7 @@ namespace Bernael_Xenotype
         {
             if (pawn == null || pawn.Map == null || !startPosition.IsValid) return;
             isReturning = true;
-            Messages.Message("Cannot continue through the fold. Returning to the entrance.", new TargetInfo(pawn.Position, pawn.Map), MessageTypeDefOf.CautionInput, historical: false);
+            Messages.Message($"BX_TraverseTheFold_Returned".Translate(), new TargetInfo(pawn.Position, pawn.Map), MessageTypeDefOf.CautionInput, historical: false);
             job.targetA = startPosition;
             pawn.pather.StartPath(startPosition, PathEndMode.OnCell);
         }

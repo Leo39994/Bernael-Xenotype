@@ -352,7 +352,7 @@
 		<defName>BX_FoldSeverance</defName>
 		<label>Fold Severance</label>
 		<description>This gene allows the carrier to briefly slip out of phase with physical reality, becoming immune to physical damage and able to traverse solid barriers.</description>
-		<geneClass>Bernael_Xenotype.Gene_Hexmaster</geneClass>
+		<geneClass>Gene</geneClass>
 		<biostatCpx>4</biostatCpx>
 		<biostatMet>0</biostatMet>
 		<biostatArc>1</biostatArc>

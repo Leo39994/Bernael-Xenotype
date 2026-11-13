@@ -18,9 +18,9 @@
   </JobDef>
 
   <JobDef>
-    <defName>BX_FeedPsylinkable</defName>
-    <driverClass>Bernael_Xenotype.JobDriver_FeedPsylinkable</driverClass>
-    <reportString>feeding on TargetA</reportString>
+    <defName>BX_DrainPsylinkable</defName>
+    <driverClass>Bernael_Xenotype.JobDriver_DrainPsylinkable</driverClass>
+    <reportString>draining TargetA</reportString>
     <neverShowWeapon>true</neverShowWeapon>
   </JobDef>
 

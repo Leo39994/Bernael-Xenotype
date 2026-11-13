@@ -21,7 +21,7 @@
 			<verbClass>Verb_CastAbility</verbClass>
 			<drawAimPie>false</drawAimPie>
 			<range>3.9</range>
-			<warmupTime>4</warmupTime>
+			<warmupTime>1.5</warmupTime>
 			<targetParams>
 				<canTargetSelf>false</canTargetSelf>
 				<canTargetBuildings>false</canTargetBuildings>

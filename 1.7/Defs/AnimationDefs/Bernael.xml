@@ -2,13 +2,13 @@
 <Defs>
 
   <AnimationDef>
-    <defName>BX_BernaelFeeding</defName>
+    <defName>BX_BernaelDraining</defName>
     <durationTicks>6</durationTicks>
     <keyframeParts>
       <li>
         <key>Head</key>
         <value>
-          <workerType>Bernael_Xenotype.AnimationWorker_BernaelFeeding</workerType>
+          <workerType>Bernael_Xenotype.AnimationWorker_BernaelDraining</workerType>
           <keyframes>
             <li>
               <tick>0</tick>

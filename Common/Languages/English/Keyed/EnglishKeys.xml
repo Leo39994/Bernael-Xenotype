@@ -1,7 +1,7 @@
 <LanguageData>
 
     <BX_Mutation_CooldownFinished>Awaiting Grace</BX_Mutation_CooldownFinished>
-    <BX_Mutation_MutatesIn>{0} Usages left before mutation</BX_Mutation_MutatesIn>
+    <BX_Mutation_MutatesIn>{0} usages left before mutation</BX_Mutation_MutatesIn>
     <BX_MessageCannotUseOnSoulFeeder>{ABILITY_label} cannot be used on soul eaters.</BX_MessageCannotUseOnSoulFeeder>
     <BX_WillCauseSeriousSoulDrain>Will cause major soul drain</BX_WillCauseSeriousSoulDrain>
     <BX_WarningPawnWillHaveSeriousSoulDrainFromFeeding>Feeding on {PAWN_nameDef} will result in serious soul damage, leaving {PAWN_objective} unconscious.\n\nAre you sure?</BX_WarningPawnWillHaveSeriousSoulDrainFromFeeding>
@@ -13,7 +13,7 @@
     <BX_MentalBreak.text>{PAWN} has successfully fed on a soul during the frenzy, breaking the shackles of their former self and transforming into a Bernael.</BX_MentalBreak.text>
 
     <MB_AlertLowSoulEnergy>Low soul saturation</MB_AlertLowSoulEnergy>
-    <MB_AlertLowSoulEnergyDesc>These soul eaters are running out of soul saturation. Give them a bottled soul essence or let them drain someone</MB_AlertLowSoulEnergyDesc>
+    <MB_AlertLowSoulEnergyDesc>These soul eaters are running out of soul saturation. Give them a bottled soul essence or let them drain someone.</MB_AlertLowSoulEnergyDesc>
     <MB_BottledSoulDeliveryNotAllowed>{0} is not set to be brought food.</MB_BottledSoulDeliveryNotAllowed>
     <MB_PrisonerNotInCell>{0} is not in a prison cell.</MB_PrisonerNotInCell>
     <MB_PrisonerNeedsFoodFirst>{0} needs food before a bottled soul.</MB_PrisonerNeedsFoodFirst>
@@ -25,17 +25,29 @@
     <MB_AbilityDisabledNoSoulGene>{0} has no soul eater gene.</MB_AbilityDisabledNoSoulGene>
     <MB_AbilityDisabledNoSoul>{0} does not have enough soul saturation.</MB_AbilityDisabledNoSoul>
     <MB_AbilitySoulCost>Soul saturation cost</MB_AbilitySoulCost>
+    <MB_AbilitySoulCostPerSecond>Soul saturation cost per second</MB_AbilitySoulCostPerSecond>
     <AbilitySoulGain>Soul saturation gain</AbilitySoulGain>
+
+    <BX_AbilityDisabledNoHeiff>Requires status {0}.</BX_AbilityDisabledNoHeiff>
+    <BX_AbilityDisabledNoHeiffDefault>Required state.</BX_AbilityDisabledNoHeiffDefault>
 
     <BX_SoulEnergy>soul saturation</BX_SoulEnergy>
     <BX_SoulEnergy_Desc>How much soul saturation this restores when consumed.</BX_SoulEnergy_Desc>
 
-    <BX_CursedFireOn>TODO.</BX_CursedFireOn>
-    <BX_CursedBurning>TODO.</BX_CursedBurning>
+    <BX_FoldShift_RestrictedAbility>Can only use Traverse the Fold or Wing Burst while in Fold Shift.</BX_FoldShift_RestrictedAbility>
 
-    <BX_LetterLabelFeedingRitualCompleted>Fedding ritual completed</BX_LetterLabelFeedingRitualCompleted>
-    <BX_LetterTextFeedingRitualCompleted>{PAWN_labelShort} has completed the feeding ritual with {FEEDABLE_labelShort}.\n\n{PAWN_pronoun} now has an upgraded psylink, permitting the use of new psychic powers.</BX_LetterTextFeedingRitualCompleted>
+    <BX_TraverseTheFold_TargetMustBeImpassable>Target must be an impassable blocking structure.</BX_TraverseTheFold_TargetMustBeImpassable>
+    <BX_TraverseTheFold_CannotTargetBarrier>Cannot target this special barrier.</BX_TraverseTheFold_CannotTargetBarrier>
+    <BX_TraverseTheFold_NoClearPassageThroughBarrier>No clear passage through this barrier.</BX_TraverseTheFold_NoClearPassageThroughBarrier>
+    <BX_TraverseTheFold_Returned>Cannot continue through the fold. Returning to the entrance.</BX_TraverseTheFold_Returned>
+
+    <BX_CursedFireOn>cursed fire on {1_label}</BX_CursedFireOn>
+    <BX_FireSizeLower>cursed fire size {0}</BX_FireSizeLower>
+
+    <BX_LetterLabelDrainingRitualCompleted>Draining ritual completed</BX_LetterLabelDrainingRitualCompleted>
+    <BX_LetterTextDrainingRitualCompleted>{PAWN_labelShort} has completed the draining ritual with {DRAINABLE_labelShort}.\n\n{PAWN_pronoun} now has an upgraded psylink, permitting the use of new psychic powers.</BX_LetterTextDrainingRitualCompleted>
     <BX_RitualTargetAnimaTreeMustBeCapableOfHexmaster>Must be a colonist with Hexmaster gene who is below maximum psylink level.</BX_RitualTargetAnimaTreeMustBeCapableOfHexmaster>
-    <BX_AnimaFeedingExplanationBase>The anima linking ceremony is more powerful with more participants. The more people participate, the less time the ceremony takes, and the greater the chance of getting a high psylink level.</BX_AnimaFeedingExplanationBase>
+    <BX_AnimaDrainingExplanationBase>The anima draining ceremony is more powerful with more participants. The more people participate, the less time the ceremony takes, and the more psylink levels the drainer gains.
+\nWith {0} additional participants, the drainer will gain {1} psylink levels at the end of the ceremony.</BX_AnimaDrainingExplanationBase>
 
 </LanguageData>

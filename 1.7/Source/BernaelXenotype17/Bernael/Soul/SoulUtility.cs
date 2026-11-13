@@ -77,13 +77,11 @@ namespace Bernael_Xenotype
             }
         }
 
-        // Vanilla keeps sanguophages off each other through
-        // TargetingParameters.canTargetBloodfeeders, but that flag only asks
-        // GeneUtility.IsBloodfeeder, which looks for GeneDefOf.Bloodfeeder alone.
-        // BX_EssenceHarvest is its own GeneDef, so the flag never fires for our kind
-        // and the check has to live here. Carriers count even while the gene is
-        // still inactive (minAgeActive 3), otherwise a Bernael baby would be a
-        // valid target and TryConvertBaby would adopt it into its own xenotype.
+        // Vanilla keeps sanguophages off each other through TargetingParameters.canTargetBloodfeeders,
+        // but that flag only asks GeneUtility.IsBloodfeeder, which looks for GeneDefOf.Bloodfeeder alone.
+        // BX_EssenceHarvest is its own GeneDef, so the flag never fires for our kind and the check has to live here.
+        // Carriers count even while the gene is still inactive (minAgeActive 3),
+        // otherwise a Bernael baby would be a valid target and TryConvertBaby would adopt it into its own xenotype.
         public static bool IsSoulFeeder(Pawn pawn)
         {
             if (!ModsConfig.BiotechActive)
@@ -112,8 +110,8 @@ namespace Bernael_Xenotype
             }
             hediffToGiveTarget ??= HediffDefOf.BloodLoss;
             float num2 = targetSoulGain * victim.BodySize;
-            OffsetSoul(biter, num2);
             ApplySoulAbsorption(biter);
+            OffsetSoul(biter, num2);
             OffsetSoul(victim, -num2);
             Pawn_NeedsTracker needs = biter.needs;
             if (thoughtDefToGiveTarget != null)
@@ -144,11 +142,12 @@ namespace Bernael_Xenotype
             }
             SoulDrainVisuals.Complete(biter, victim);
         }
+
         public static bool TryConvertBaby(Pawn drainer, Pawn victim)
         {
             DevelopmentalStage? developmentStage = victim.ageTracker?.CurLifeStage?.developmentalStage;
             if (developmentStage is not (DevelopmentalStage.Baby or DevelopmentalStage.Newborn)) return false;
-
+            /*
             XenotypeDef targetXenotype = drainer.genes.Xenotype;
             victim.genes.xenotypeName = drainer.genes.xenotypeName;
             victim.genes.iconDef = drainer.genes.iconDef;
@@ -158,6 +157,8 @@ namespace Bernael_Xenotype
             {
                 victim.genes.AddGene(gene, xenogene: true);
             }
+            */
+            victim.TurnIntoXenotype(BernaelDefOf.BX_Bernael);
             List<DirectPawnRelation> relationsToRemove = [];
             List<DirectPawnRelation> relationList = victim.relations.DirectRelations;
             foreach (DirectPawnRelation relations in relationList)
