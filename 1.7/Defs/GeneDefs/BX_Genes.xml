@@ -182,7 +182,7 @@
 		<labelShortAdj>withered</labelShortAdj>
 		<description>Carriers of this gene experience worsening pain as their mood falls, but pain itself does not reduce their mood.</description>
 		<biostatCpx>1</biostatCpx>
-		<biostatMet>3</biostatMet>
+		<biostatMet>4</biostatMet>
 		<displayOrderInCategory>63</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_WitheredSoul</iconPath>
 		<geneClass>Bernael_Xenotype.Gene_Hediff</geneClass>
@@ -218,7 +218,7 @@
 		<description>This gene twists the carrier's speech into something deeply unsettling. Their words grate on the ears and leave a knot in the stomach, making every conversation memorable for the wrong reasons. Listeners find themselves irritated and uneasy, making negotiation difficult.</description>
 		<geneClass>Gene</geneClass>
 		<biostatCpx>1</biostatCpx>
-		<biostatMet>1</biostatMet>
+		<biostatMet>2</biostatMet>
 		<displayCategory>BX_DarkEnergy</displayCategory>
 		<displayOrderInCategory>63</displayOrderInCategory>
 		<iconPath>UI/Icons/Genes/BX_DarkSpeech</iconPath>

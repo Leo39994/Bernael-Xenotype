@@ -4,7 +4,7 @@
   <AbilityDef>
     <defName>BX_WingBurst</defName>
     <label>wing burst</label>
-    <description>TODO.</description>
+    <description>The caster propels themselves a short distance in a sudden burst, releasing a dense cloud of dark particles upon landing. The cloud extinguishes fires, blinds nearby enemies, and conceals the caster.</description>
     <iconPath>UI/Icons/Abilities/BX_WingBurst</iconPath>
 		<category>Bernael</category>
     <cooldownTicksRange>600</cooldownTicksRange>
@@ -16,7 +16,7 @@
       <violent>false</violent>
       <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
       <warmupTime>0.5</warmupTime>
-      <range>19.9</range>
+      <range>11.9</range>
       <requireLineOfSight>true</requireLineOfSight>
       <soundCast>Longjump_Jump</soundCast>
       <soundLanding>Longjump_Land</soundLanding>
