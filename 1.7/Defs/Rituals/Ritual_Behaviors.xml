@@ -1,19 +1,19 @@
 <Defs>
 
   <RitualBehaviorDef>
-    <defName>BX_FeedingOnAnimaTree</defName>
+    <defName>BX_AnimaTreeDraining</defName>
     <durationTicks>15000</durationTicks>
-    <workerClass>Bernael_Xenotype.RitualBehaviorWorker_AnimaFeeding</workerClass>
+    <workerClass>Bernael_Xenotype.RitualBehaviorWorker_AnimaDraining</workerClass>
     <roles>
-      <li Class="Bernael_Xenotype.RitualRoleAnimaFeeder">
-        <label>feeder</label>
+      <li Class="Bernael_Xenotype.RitualRoleAnimaDrainer">
+        <label>drainer</label>
         <id>organizer</id>
         <required>true</required>
         <maxCount>1</maxCount>
         <defaultForSelectedColonist>true</defaultForSelectedColonist>
         <noCandidatesGizmoDesc>Need a colonist with the Hexmaster gene who is below maximum psylink level and not psychically deaf.</noCandidatesGizmoDesc>
         <allowChild>false</allowChild>
-        <customChildDisallowMessage>Only adults can link with an anima tree.</customChildDisallowMessage>
+        <customChildDisallowMessage>Only adults can drain the anima tree.</customChildDisallowMessage>
       </li>
     </roles>
     <spectatorFilter Class="Bernael_Xenotype.RitualSpectatorFilter_HexmasterGene">
@@ -33,7 +33,7 @@
         <roleBehaviors>
           <li>
             <roleId>organizer</roleId>
-            <dutyDef>BX_FeedingOnAnimaTree</dutyDef>
+            <dutyDef>BX_DrainAnimaTree</dutyDef>
             <customPositions>
               <li Class="RitualPosition_AnimaLinkingSpot" />
             </customPositions>

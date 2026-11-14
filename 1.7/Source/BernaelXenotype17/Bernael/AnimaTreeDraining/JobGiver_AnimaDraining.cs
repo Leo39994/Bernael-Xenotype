@@ -4,7 +4,7 @@ using Verse.AI;
 
 namespace Bernael_Xenotype
 {
-	public class JobGiver_AnimaFeeding : ThinkNode_JobGiver
+	public class JobGiver_AnimaDraining : ThinkNode_JobGiver
 	{
 		protected override Job TryGiveJob(Pawn pawn)
 		{
@@ -43,7 +43,7 @@ namespace Bernael_Xenotype
             {
                 return null;
             }
-            return JobMaker.MakeJob(BernaelDefOf.BX_FeedPsylinkable, duty.focusSecond, duty.focus);
+            return JobMaker.MakeJob(BernaelDefOf.BX_DrainPsylinkable, duty.focusSecond, duty.focus);
 		}
 
 		public static bool TryFindLinkSpot(Pawn pawn, Thing targetThing, out LocalTargetInfo spot)

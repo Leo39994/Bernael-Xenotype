@@ -11,7 +11,7 @@
     <toggleHediffDef>BX_FoldShift_Hediff</toggleHediffDef>
     <iconPath>UI/Icons/Abilities/BX_FoldShift</iconPath>
 		<category>Bernael</category>
-    <cooldownTicksRange>500</cooldownTicksRange>
+    <cooldownTicksRange>240</cooldownTicksRange>
 		<targetRequired>false</targetRequired>
     <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
     <warmupSound>PsycastCastLoop</warmupSound>

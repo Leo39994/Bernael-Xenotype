@@ -39,6 +39,11 @@
         <brandSound>PsycastPsychicPulse</brandSound>
       </li>
     </comps>
+    <modExtensions>
+      <li Class="Bernael_Xenotype.PsycastGeneRequirementExtension">
+        <requireHexmaster>true</requireHexmaster>
+      </li>
+    </modExtensions>
   </AbilityDef>
 
   <AbilityDef MayRequire="Ludeon.RimWorld.Royalty">
@@ -77,5 +82,10 @@
         <projectileDef>BX_DireOrbProjectile</projectileDef>
       </li>
     </comps>
+    <modExtensions>
+      <li Class="Bernael_Xenotype.PsycastGeneRequirementExtension">
+        <requireHexmaster>true</requireHexmaster>
+      </li>
+    </modExtensions>
   </AbilityDef>
 </Defs>

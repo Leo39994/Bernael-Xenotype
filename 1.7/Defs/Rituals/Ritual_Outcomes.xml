@@ -1,8 +1,8 @@
 <Defs>
 
   <RitualOutcomeEffectDef>
-    <defName>BX_FeedingOnAnimaTree</defName>
-    <workerClass>Bernael_Xenotype.RitualOutcomeEffectWorker_FeedingOnAnimaTree</workerClass>
+    <defName>BX_AnimaTreeDraining</defName>
+    <workerClass>Bernael_Xenotype.RitualOutcomeEffectWorker_AnimaDraining</workerClass>
     <warnOnLowQuality>false</warnOnLowQuality>
     <givesDevelopmentPoints>false</givesDevelopmentPoints>
     <comps>

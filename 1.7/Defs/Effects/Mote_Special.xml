@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThingDef ParentName="MoteBase">
+    <defName>BX_Mote_AnimaRoots</defName>
+    <thingClass>Bernael_Xenotype.Mote_AnimaRoots</thingClass>
+    <graphicData>
+      <texPath>UI/Overlays/SelectionBracketWhole</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(255, 255, 255, 0)</color>
+    </graphicData>
+    <mote>
+      <fadeInTime>0.1</fadeInTime>
+      <solidTime>999999</solidTime>
+      <fadeOutTime>0.1</fadeOutTime>
+    </mote>
+  </ThingDef>
+
+</Defs>

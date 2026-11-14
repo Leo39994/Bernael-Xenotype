@@ -17,7 +17,8 @@ namespace Bernael_Xenotype
             DefOfHelper.EnsureInitializedInCtor(typeof(BernaelDefOf));
         }
 
-        public static AnimationDef BX_BernaelFeeding;
+        public static AnimationDef BX_BernaelDraining;
+        public static ThingDef BX_Mote_AnimaRoots;
 
         public static GeneDef BX_DarkSpeech;
         public static GeneDef BX_PsychicReach;
@@ -54,6 +55,7 @@ namespace Bernael_Xenotype
         public static GeneDef BX_SoulEater;
         public static GeneDef BX_EssenceHarvest;
 
+        public static ThingDef BX_CursedFire;
         public static ThingDef BX_WingBurstSmoke;
         public static ThingDef BX_WingBurstFlyer;
         public static ThingDef BX_BottledSoul;
@@ -64,7 +66,7 @@ namespace Bernael_Xenotype
         public static JobDef BX_BogeymanEscape;
         public static JobDef BX_BogeymanKidnap;
         public static JobDef BX_TraverseTheFold_Job;
-        public static JobDef BX_FeedPsylinkable;
+        public static JobDef BX_DrainPsylinkable;
 
         public static DutyDef BX_Bogeyman_Duty;
 

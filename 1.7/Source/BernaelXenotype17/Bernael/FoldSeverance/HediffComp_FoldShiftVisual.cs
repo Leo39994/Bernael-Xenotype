@@ -20,13 +20,15 @@ namespace Bernael_Xenotype
         private FoldShiftVisuals visuals;
         private int startedTick = -1;
 
+        public override void CompExposeData() => Scribe_Values.Look(ref startedTick, "foldVisualStarted", -1);
+
         public override void CompPostPostAdd(DamageInfo? dinfo)
         {
             startedTick = Find.TickManager.TicksGame;
             Pawn.Map?.GetComponent<FoldVisualMapComponent>().CancelExit(Pawn);
-        }
 
-        public override void CompExposeData() => Scribe_Values.Look(ref startedTick, "foldVisualStarted", -1);
+            WorldComponent_FoldShiftVisual.Add(Pawn);
+        }
 
         public override void CompPostPostRemoved()
         {
@@ -48,6 +50,23 @@ namespace Bernael_Xenotype
                 Pawn.Map.GetComponent<FoldVisualMapComponent>().EndShift(Pawn, visuals);
             else visuals?.Dispose();
             visuals = null;
+
+            bool hasOtherComp = false;
+            if (Pawn.health?.hediffSet?.hediffs != null)
+            {
+                foreach (var hediff in Pawn.health.hediffSet.hediffs)
+                {
+                    if (hediff != parent && hediff.TryGetComp<HediffComp_FoldShiftVisual>() != null)
+                    {
+                        hasOtherComp = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasOtherComp)
+            {
+                WorldComponent_FoldShiftVisual.Remove(Pawn);
+            }
         }
 
         private HediffComp_FoldShiftVisual Remaining()

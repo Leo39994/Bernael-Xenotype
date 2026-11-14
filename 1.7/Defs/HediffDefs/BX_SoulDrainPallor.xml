@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- Cosmetic only. The shader covers every rendered pawn layer. -->
+  <!-- Cosmetic only. The shader covers every rendered pawn layer.
   <HediffDef>
     <defName>BX_SoulDrainPallor</defName>
     <label>soul pallor</label>
@@ -13,5 +13,5 @@
         <disappearsAfterTicks>600</disappearsAfterTicks>
       </li>
     </comps>
-  </HediffDef>
+  </HediffDef> -->
 </Defs>

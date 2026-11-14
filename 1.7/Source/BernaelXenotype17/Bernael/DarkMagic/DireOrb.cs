@@ -14,11 +14,6 @@ namespace Bernael_Xenotype
 
     public sealed class CompAbilityEffect_DireOrb : CompAbilityEffect_LaunchProjectile
     {
-        public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
-        {
-            return base.Valid(target, throwMessages);
-        }
-
         public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest) => Valid(target);
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
@@ -31,6 +26,11 @@ namespace Bernael_Xenotype
         {
             if (target.Cell.InBounds(parent.pawn.Map))
                 GenDraw.DrawRadiusRing(target.Cell, Props.projectileDef.projectile.explosionRadius);
+        }
+
+        public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
+        {
+            return base.Valid(target, throwMessages);
         }
     }
 
@@ -113,8 +113,8 @@ namespace Bernael_Xenotype
 
         public float Radius => projectile.projectile.explosionRadius;
 
-        public bool Affects(Pawn pawn) => pawn == struck ||
-            (faction != null ? pawn.HostileTo(faction) : caster != null && pawn.HostileTo(caster));
+        /*public bool Affects(Pawn pawn) => pawn == struck ||
+            (faction != null ? pawn.HostileTo(faction) : caster != null && pawn.HostileTo(caster));*/
 
         public void ExposeData()
         {
@@ -193,8 +193,7 @@ namespace Bernael_Xenotype
             DamageDef damage = burst.projectile.projectile.damageDef;
             foreach (Pawn victim in map.mapPawns.AllPawnsSpawned.ToList())
             {
-                if (victim.Dead || victim.Downed || !burst.Affects(victim) ||
-                    !victim.Position.InHorDistOf(burst.cell, radius) ||
+                if (victim.Dead || victim.Downed || !victim.Position.InHorDistOf(burst.cell, radius) ||
                     !GenSight.LineOfSight(burst.cell, victim.Position, map, skipFirstCell: true)) continue;
                 Vector3 away = victim.DrawPos - burst.center;
                 away.y = 0f;

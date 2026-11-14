@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Bernael_Xenotype
 {
-	public class AnimationWorker_BernaelFeeding : AnimationWorker_Keyframes
+	public class AnimationWorker_BernaelDraining : AnimationWorker_Keyframes
 	{
 		private const float LensFlareScale = 0.7f;
 		private const float LensFlareAnimPeriod = 30f;

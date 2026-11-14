@@ -1,17 +1,17 @@
 <Defs>
 
   <PreceptDef>
-    <defName>BX_FeedingOnAnimaTree</defName>
-    <label>feeding On anima tree</label>
-    <description>TODO.</description>
+    <defName>BX_AnimaTreeDraining</defName>
+    <label>anima tree draining</label>
+    <description>One person will drain the Anima Tree. The drainer meditates in front of the tree, forming a psychic link, while others gather in a circle to watch and channel psychic strength into the ritual.</description>
     <issue>Ritual</issue>
     <preceptClass>Precept_Ritual</preceptClass>
     <visible>false</visible>
     <classic>true</classic>
     <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
     <selectionWeight>1.0</selectionWeight>
-    <ritualPatternBase>BX_FeedingOnAnimaTree</ritualPatternBase>
-    <iconPath>UI/Icons/Rituals/BX_FeedingOnAnimaTree</iconPath>
+    <ritualPatternBase>BX_AnimaTreeDraining</ritualPatternBase>
+    <iconPath>UI/Icons/Rituals/BX_AnimaTreeDraining</iconPath>
     <usesIdeoVisualEffects>false</usesIdeoVisualEffects>
     <mergeRitualGizmosFromAllIdeos>true</mergeRitualGizmosFromAllIdeos>
     <useRepeatPenalty>false</useRepeatPenalty>

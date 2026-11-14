@@ -33,25 +33,12 @@ namespace Bernael_Xenotype
 
         public override bool ShouldHideGizmo => Props.hideGizmoOnUndesirable && !HasEnoughHediff;
 
-        public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
-        {
-            if (!HasEnoughHediff)
-            {
-                if (throwMessages && GizmoDisabled(out string reason))
-                    Messages.Message(reason, MessageTypeDefOf.RejectInput, false);
-                return false;
-            }
-            return base.Valid(target, throwMessages);
-        }
-
-        public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest) => Valid(target);
-
         public override bool GizmoDisabled(out string reason)
         {
             if (!HasEnoughHediff)
             {
-                string label = Props.requiresHediffDef != null ? Props.requiresHediffDef.LabelCap : "required state";
-                reason = $"Requires status: {label}";
+                string label = Props.requiresHediffDef != null ? Props.requiresHediffDef.label : "BX_AbilityDisabledNoHeiffDefault".Translate();
+                reason = "BX_AbilityDisabledNoHeiff".Translate(label);
                 return true;
             }
             reason = null;
@@ -62,5 +49,18 @@ namespace Bernael_Xenotype
 	    {
 	    	return HasEnoughHediff;
 	    }
+
+        public override bool CanApplyOn(LocalTargetInfo target, LocalTargetInfo dest) => Valid(target);
+
+        public override bool Valid(LocalTargetInfo target, bool throwMessages = false)
+        {
+            if (!HasEnoughHediff)
+            {
+                if (throwMessages && GizmoDisabled(out string reason))
+                    Messages.Message(reason, MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+            return base.Valid(target, throwMessages);
+        }
     }
 }
